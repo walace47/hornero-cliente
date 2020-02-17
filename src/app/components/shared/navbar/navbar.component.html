@@ -1,0 +1,46 @@
+<nav class="navbar shadow-none rounded navbar-light">
+  <a class="navbar-brand" href="#">
+    <img src="/assets/img/logo.jpg" width="40" height="30" alt="" />
+    Hornero-alpha
+  </a>
+</nav>
+
+<nav
+  class="navbar border shadow-lg rounded navbar-expand-lg navbar-dark"
+  style="background-color: #66a6cc;"
+>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarTogglerDemo03"
+    aria-controls="navbarTogglerDemo03"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/inicio']"  [routerLinkActive]="['active']">Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/torneos']" [routerLinkActive]="['active']">Torneo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Ayuda</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  [routerLink]="['/about']"  [routerLinkActive]="['active']">Acerca De</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contacto</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
