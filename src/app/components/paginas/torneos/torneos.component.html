@@ -1,1 +1,58 @@
-<p>torneos works!</p>
+<p-dialog [header]="mensaje.header" [(visible)]="displayMensaje">
+    {{mensaje.datos}}
+    <p-footer>
+        <button type="button" pButton icon="pi pi-times" (click)="displayMensaje=false" label="Cerrar" class="ui-button-info"></button>
+    </p-footer>
+</p-dialog>
+<div  class="animated fadeIn">
+
+<i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneos"></i>
+
+<button pButton type="button" [routerLink]="['/crear-torneo','nuevo']" label="Nuevo torneo" class="ui-button-raised ui-button-success mb-3"></button>
+
+
+<p-dataView #dv [value]="torneos" [paginator]="true" [rows]="10" paginatorPosition="both" filterBy="Nombre"
+    [sortField]="sortField" [sortOrder]="sortOrder" *ngIf="torneos">
+<p-header>
+    <div class="ui-helper-clearfix">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordenar por" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+            </div>
+            <div class="ui-g-6 ui-md-4 filter-container">
+                <div style="position:relative">
+                    <input type="search" pInputText placeholder="Buscar por nombre" (input)="dv.filter($event.target.value)">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</p-header>
+<ng-template let-torneo pTemplate="listItem">
+    <div class="ui-g-12 ">
+        <div class="car-details">
+            <div>
+                <div class="ui-g">
+                    <div class="ui-g-12"> <a [routerLink]="['/torneos',torneo.idTorneo]"><h3>{{torneo.Nombre}}</h3></a></div>
+                    <div class="ui-g-12">Descripcion: <b>{{torneo.Descripcion}}</b></div>
+                    <div class="ui-g-3"> Inicio: {{torneo.FechaInicio | date}}</div>
+                    <div class="ui-g-3"> Fin: {{torneo.FechaFin | date}}</div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-6">
+
+                    <button *ngIf="incripcionHabilitada(torneo)" pButton class="ui-button-success mr-1" type="button" icon="pi pi-pencil" (click)="inscribirse(torneo)"></button>
+                </div>                
+                <div class="ui-g-6">
+
+                    <button *ngIf="incripcionHabilitada(torneo)" pButton class="ui-button-success" type="button" icon="pi pi-user-edit" [routerLink]="['/crear-torneo',torneo.idTorneo]"></button>
+                </div>
+        </div>
+    </div>
+    </div>
+</ng-template>
+</p-dataView>
+</div>
+
+

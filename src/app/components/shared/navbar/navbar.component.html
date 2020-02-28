@@ -6,7 +6,7 @@
 </nav>
 
 <nav
-  class="navbar border shadow-lg rounded navbar-expand-lg navbar-dark"
+  class="navbar border shadow rounded navbar-expand-lg navbar-dark"
   style="background-color: #66a6cc;"
 >
   <button
@@ -38,9 +38,13 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Contacto</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Login</a>
+      <li *ngIf="!loginService.isLogin()" class="nav-item">
+        <a class="nav-link" (click)="mostrarLogin()">Login</a>
+      </li>
+      <li *ngIf="loginService.isLogin()" class="nav-item">
+        <a class="nav-link" (click)="loginService.logout()" >Logout</a>
       </li>
     </ul>
   </div>
 </nav>
+  <app-login [display]="loginService.mostrarLogin()" (displayChange)="cerrarDisplay($event)"></app-login>

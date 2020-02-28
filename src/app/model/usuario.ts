@@ -17,3 +17,9 @@ export interface usuario {
   resolucions?: resolucion[];
   torneousuarios?: torneousuario[];
 }
+
+export interface UsuarioConectado{
+  usuario:usuario;
+  token: string;
+  fechaFin:Date;
+}

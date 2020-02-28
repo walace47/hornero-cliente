@@ -1,0 +1,47 @@
+
+<p-dialog header="Login" class="mydialog" [modal]="true"  [style]="{width: '360px'}" [(visible)]="display" (onHide)="onHide()">
+        
+        <p-card header="" subheader=""  class="ui-card-shadow">
+    <p-header>
+        
+        <div class="p-grid p-justify-center mt-1">
+                <img  class="rounded  mt-1" [style]="{height: '160px',width: '160px'}" src="https://www.w3schools.com/howto/img_avatar2.png">
+            </div>
+    </p-header>
+
+    <p class="text-danger" *ngIf="error">Error en contrasenia o usuario</p>
+<form action="">
+    <span class="ui-float-label mt-4">
+        <input id="float-input-username" [(ngModel)]="usuario" name="username" type="text" size="30" pInputText> 
+        <label for="float-input">Usuario</label>
+    </span>
+
+    <span class="ui-float-label mt-4">
+        <input id="float-input-password" name="pwd" [(ngModel)]="pass" type="password" size="30" pPassword [feedback]="false" [showPassword]="mostrar" >
+        <label for="float-input">Contrasenia</label>
+        <i class="pi pi-eye" *ngIf="mostrar" (click)="mostrar=!mostrar" style="font-size: 1.9em"></i>
+        <i class="pi pi-eye-slash" *ngIf="!mostrar" (click)="mostrar=!mostrar" style="font-size: 1.9em"></i>
+
+    </span>
+
+    <p-footer>
+        <div class="p-grid p-justify-center mt-2">
+                <button pButton type="submit" name="Submit" class="" label="Login" (click)="conectar()" icon="pi pi-check"></button>
+
+        </div>
+            <div class="p-grid mt-1">
+
+                <div class="p-col-12">
+                    <a [routerLink]="['/about']" (click)="display=false">Te olvidate la contresenia?</a>
+                </div>
+                <div class="p-col-12">
+                    <a [routerLink]="['/crear-usuario']" (click)="display=false">Eres nuevo?</a>
+                </div>
+        </div>
+
+    </p-footer>
+</form>
+
+</p-card>
+
+</p-dialog>
