@@ -1,0 +1,42 @@
+
+
+<div  class="animated fadeIn">
+<button pButton type="button" label="Nuevo Usuario" [routerLink]="['/crear-usuario','nuevo']" class="ui-button-raised ui-button-success mb-3"></button>
+
+
+<div class="shadow mt-2">
+<p-table [columns]="cols"  [paginator]="true" [rows]="10" styleClass="ui-table-cars"   [responsive]="true" selectionMode="single" [value]="usuarios">
+   
+    <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width">
+        </colgroup>
+    </ng-template>
+   
+    <ng-template pTemplate="header">
+        <tr>
+            <th >Id</th>
+            <th >Nombre</th>
+            <th >Institucion</th>
+            <th >Email</th>
+            <th >Rol</th>
+            <th>
+
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-usuario>
+        <tr >
+            <td> {{usuario.idUsuario}}</td>
+            <td> {{usuario.NombreUsuario}}</td>
+            <td> {{usuario.Institucion}}</td>
+            <td>{{usuario.Email}}</td>            
+            <td>{{usuario.idRol.Rol}}</td>
+            <td align="right" >
+                <button pButton type="button" class="ui-button-success ui-corner-all" icon="pi pi-user-edit" ></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>
+</div>

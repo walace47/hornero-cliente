@@ -36,19 +36,11 @@ export class TorneosService {
   }
 
   save(torneo:torneo){
-    const usuario = this._loginService.getToken()
-    let header:HttpHeaders = new HttpHeaders({
-      'token':usuario.token
-    });
-    return this.http.post(this.url,torneo,{headers:header});
+    return this.http.post(this.url,torneo);
   }
 
   edit(torneo:torneo){
-    const usuario = this._loginService.getToken()
-    let header:HttpHeaders = new HttpHeaders({
-      'token':usuario.token
-    });
-    return this.http.put(`${this.url}${torneo.idTorneo}`,torneo,{headers:header});
+    return this.http.put(`${this.url}${torneo.idTorneo}`,torneo);
   }
   
   getTipos(){

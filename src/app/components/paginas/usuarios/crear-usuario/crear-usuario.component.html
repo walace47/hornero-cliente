@@ -7,7 +7,7 @@
       style="margin: 10px 0px"
     >
       <div class="ui-grid-row"> 
-        <div class="ui-grid-col-12">Institución, Escuela, Universidad, ...:</div>
+        <div class="ui-grid-col-12"><b> Institución, Escuela, Universidad, ...:</b></div>
       </div>
 
       <div class="ui-grid-row">
@@ -20,7 +20,7 @@
     </div>
 
       <div class="ui-grid-row">
-        <div class="ui-grid-col-12">Nombre usuario:</div>
+        <div class="ui-grid-col-12"><b> Nombre usuario:</b></div>
       </div>
 
       <div class="ui-grid-row">
@@ -51,7 +51,7 @@
       </div>
 
       <div class="ui-grid-row">
-        <div class="ui-grid-col-12">Email:</div>
+        <div class="ui-grid-col-12"><b>Email:</b></div>
       </div>
 
       <div class="ui-grid-row">
@@ -85,7 +85,7 @@
       </div>
 
       <div class="ui-grid-row">
-        <div class="ui-grid-col-12">Password:</div>
+        <div class="ui-grid-col-12"><b>Password:</b></div>
       </div>      
       <div class="ui-grid-row">
 
@@ -111,7 +111,7 @@
       </div>
 
       <div class="ui-grid-row">
-        <div class="ui-grid-col-12">Password:</div>
+        <div class="ui-grid-col-12"><b>Password:</b></div>
       </div>      
       <div class="ui-grid-row">
 
@@ -130,28 +130,36 @@
       </div>
 
 
-     
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-2">
-          Lenguaje favorito:
-        </div>
-      </div>
       <div class="ui-grid-row">
 
-        <div class="ui-grid-col-6">
+          <div class="ui-grid-col-3">
+            <p-message
+              severity="error"
+              text="EL lenguaje es obligatorio"
+              *ngIf="
+                !userform.controls['lenguajes'].valid &&
+                userform.controls['lenguajes'].dirty
+              "
+            ></p-message>
+
+      </div>
+    </div>
+
+
+     
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3"> 
+          <span><b>Lengujae Favorito:</b></span>
           <p-dropdown [options]="lenguajes" formControlName="lenguajes"></p-dropdown>
+
         </div>
-        <div class="ui-grid-col-4">
-          <p-message
-            severity="error"
-            text="Lenguaje es obligatorio"
-            *ngIf="
-              !userform.controls['lenguajes'].valid &&
-              userform.controls['lenguajes'].dirty
-            "
-          ></p-message>
+        <div *ngIf="isLogin()" class="ui-grid-col-3">
+          <span><b>Rol:</b></span>
+          <p-dropdown [options]="roles" formControlName="roles"></p-dropdown>
         </div>
       </div>
+
+
       <div class="ui-grid-row">
         <div class="ui-grid-col-6">
           <button
@@ -163,11 +171,12 @@
           ></button>
           
           <button
-          pButton
-          type="submit"
-          label="Submit"
-          disabled
-          *ngIf="loading">
+            pButton
+            type="submit"
+            label="Submit"
+            disabled
+            *ngIf="loading"
+          >
             <i class="pi pi-spin pi-spinner" style="font-size: 3em" ></i>
           </button>
         </div>

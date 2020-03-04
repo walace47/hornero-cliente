@@ -23,9 +23,13 @@ import { AboutComponent } from './components/paginas/about/about.component';
 import { TorneosComponent } from './components/paginas/torneos/torneos.component';
 import { TorneoDetalleComponent } from './components/paginas/torneos/torneo-detalle/torneo-detalle.component';
 import { LoginComponent } from './components/shared/login/login.component';
-import { CrearUsuarioComponent } from './components/paginas/crear-usuario/crear-usuario.component';
+import { CrearUsuarioComponent } from './components/paginas/usuarios/crear-usuario/crear-usuario.component';
 import { CrearTorneoComponent } from './components/paginas/torneos/crear-torneo/crear-torneo.component';
 import { InterceptorTokenService } from './services/interceptor-token.service';
+import { ProblemasComponent } from './components/paginas/problemas/problemas.component';
+import { CrearProblemaComponent } from './components/paginas/problemas/crear-problema/crear-problema.component';
+import { StubsComponent } from './components/paginas/stubs/stubs.component';
+import { UsuariosComponent } from './components/paginas/usuarios/usuarios.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,10 @@ import { InterceptorTokenService } from './services/interceptor-token.service';
     LoginComponent,
     CrearUsuarioComponent,
     CrearTorneoComponent,
+    ProblemasComponent,
+    CrearProblemaComponent,
+    StubsComponent,
+    UsuariosComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -48,8 +56,10 @@ import { InterceptorTokenService } from './services/interceptor-token.service';
     PrimengModule,
     HttpClientModule
   ],
-  providers: [TorneosService,
-    {provide: HTTP_INTERCEPTORS, useClass: InterceptorTokenService, multi: true}],
+  providers: [
+    TorneosService,
+    {provide: HTTP_INTERCEPTORS, useClass: InterceptorTokenService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

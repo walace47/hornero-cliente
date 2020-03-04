@@ -8,7 +8,7 @@
 
 <i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneos"></i>
 
-<button pButton type="button" [routerLink]="['/crear-torneo','nuevo']" label="Nuevo torneo" class="ui-button-raised ui-button-success mb-3"></button>
+<button pButton type="button" *ngIf="!userTorneo" [routerLink]="['/crear-torneo','nuevo']" label="Nuevo torneo" class="ui-button-raised ui-button-success mb-3"></button>
 
 
 <p-dataView #dv [value]="torneos" [paginator]="true" [rows]="10" paginatorPosition="both" filterBy="Nombre"

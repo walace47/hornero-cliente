@@ -43,3 +43,75 @@
     animation-name: fadeIn;
   }
   
+
+  .filter-container {
+    text-align: center;
+}
+.car-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    border-bottom: 1px solid #d9dad9;
+}
+.car-details > div {
+    display: flex;
+    align-items: center;
+}
+.car-details > div img {
+    margin-right: 14px;
+}
+.car-detail {
+    padding: 0 1em 1em 1em;
+    border-bottom: 1px solid #d9dad9;
+    margin: 1em;
+}
+.ui-panel-content {
+    padding: 1em;
+}
+.dark-theme :host ::ng-deep .car-details,
+.dark-theme :host ::ng-deep .car-detail {
+    border-bottom: 1px solid #191919;
+}
+
+@media (max-width: 1024px) {
+    .car-details img {
+         width: 75px;
+    }
+    .filter-container {
+        text-align: left;
+    }
+}
+
+.ui-table.ui-table-cars .ui-table-caption.ui-widget-header {
+  border: 0 none;
+  padding: 12px;
+  text-align: left;
+  font-size: 20px;
+}
+.ui-column-filter {
+  margin-top: 1em;
+}
+.ui-column-filter .ui-multiselect-label {
+  font-weight: 500;
+}
+
+.ui-table.ui-table-cars .ui-table-thead > tr > th {
+  border: 0 none;
+  text-align: left;
+}
+
+.ui-table-globalfilter-container {
+  float: right;
+  display: inline;
+}
+.ui-table.ui-table-cars .ui-table-tbody > tr > td {
+  border: 0 none;
+}
+.ui-table.ui-table-cars .ui-table-tbody .ui-column-title {
+  font-size: 16px;
+}
+.ui-table.ui-table-cars .ui-paginator {
+  border: 0 none;
+  padding: 1em;
+}

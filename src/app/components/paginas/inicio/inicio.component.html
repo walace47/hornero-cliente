@@ -1,5 +1,5 @@
 <div  class="animated fadeIn">
-  <div class="row pt-4">
+  <div class="row pt-4" *ngIf="!isLogin()">
     <div class="col-sm  align-self-center">
       <h1>Bienvenidos !!!!!</h1>
       <h2>Al torneo de programacion Hornero</h2>
@@ -14,4 +14,9 @@
       <img src="/assets/img/prisma455.png" alt="" />
     </div>
   </div>
+
+  <div *ngIf="isLogin()">
+    <h2>Mis torneos</h2>
+    <app-torneos [userTorneo]="true" ></app-torneos>
+</div>
 </div>

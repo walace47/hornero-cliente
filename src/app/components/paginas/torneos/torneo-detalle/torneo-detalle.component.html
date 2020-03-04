@@ -5,7 +5,7 @@
 
     <h3>Torneo: {{torneo.Nombre}}</h3>
 
-    <b>Token: </b>
+    <b *ngIf="isLogin()&&torneoUsuario">Token: {{torneoUsuario.Token}} </b>
     <h1>Participantes</h1>
     <p-table [value]="torneo.torneousuarios">
         <ng-template pTemplate="header">
@@ -51,4 +51,8 @@
     </p-table>
 
 </div>
+</div>
+
+<div>
+    {{torneo | json}}
 </div>

@@ -1,0 +1,89 @@
+<form [formGroup]="problemaForm" (ngSubmit)="onSubmit(problemaForm.value)" class="shadow" >
+    <p-panel header="Nuevo Problema">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-6">
+                  <span><b>Nombre:</b></span>
+                  <input pInputText type="text" formControlName="nombre" placeholder=""/>
+                </div>
+                <div class="ui-grid-col-4">
+                <p-message severity="error" text="El nombre de la institucion es requerido" *ngIf="!problemaForm.controls['nombre'].valid && problemaForm.controls['nombre'].dirty"></p-message>
+              </div>
+            </div>
+
+            
+      <div class="ui-grid-row">
+
+        <div class="ui-grid-col-6 p-col-align-end">
+          <span><b>Enunciado:</b></span>
+            <textarea pInputTextarea rows="5" cols="30" type="text" formControlName="enunciado"></textarea>
+        </div>
+
+        <div class="ui-grid-col-4">
+
+          <p-message
+            severity="error"
+            text= "El enunciado es obligatorio"
+            *ngIf="!problemaForm.controls['enunciado'].valid && problemaForm.controls['enunciado'].dirty">
+        </p-message>
+          
+        </div>
+      </div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3"> 
+          <span><b>Tipo de problema:</b></span>
+          <p-dropdown formControlName="tipo"  ></p-dropdown>
+        </div>
+        <div class="ui-grid-col-3">
+          <span><b>Complejidad:</b></span>
+          <p-dropdown  formControlName="complejidad"></p-dropdown>
+        </div>
+      </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <span><b>Tiempo de ejecucion maximo:</b></span>
+              <input pInputText type="text" formControlName="tiempoEjecucion" placeholder=""/>
+            </div>
+            <div class="ui-grid-col-4">
+            <p-message severity="error" text="El tiempo de ejecucion es requerido" *ngIf="!problemaForm.controls['tiempoEjecucion'].valid && problemaForm.controls['tiempoEjecucion'].dirty"></p-message>
+          </div>
+        </div>
+
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-2">
+          <span><b>Archivo:</b></span>
+          <div class="custom-file">
+            <input (change)="myUploader($event)" type="file" name="archivo" formControlName="archivo" placeholder=""/>
+          </div>
+        </div>
+    </div>
+
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-6">
+        <button
+          pButton
+          type="submit"
+          label="Submit"
+          [disabled]="!problemaForm.valid"
+          *ngIf="!loading"
+        ></button>
+        
+        <button
+        pButton
+        type="submit"
+        label="Submit"
+        disabled
+        *ngIf="loading">
+          <i class="pi pi-spin pi-spinner" style="font-size: 3em" ></i>
+        </button>
+      </div>
+      <div class="ui-grid-col-4"></div>
+    </div>
+</div>
+
+    </p-panel>
+</form>
+
+<button (click)="verDatos()">prueba</button >

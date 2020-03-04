@@ -19,10 +19,12 @@ import {ToastModule} from 'primeng/toast';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {CalendarModule} from 'primeng/calendar';
 
+import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
   declarations: [],
   imports: [
+    FileUploadModule,
     CalendarModule,
     InputTextareaModule,
     MessagesModule,
@@ -42,6 +44,7 @@ import {CalendarModule} from 'primeng/calendar';
     PasswordModule
   ],
   exports:[
+    FileUploadModule,
     CalendarModule,
     InputTextareaModule,
     ToastModule,

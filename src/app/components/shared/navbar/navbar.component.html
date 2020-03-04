@@ -33,17 +33,33 @@
         <a class="nav-link" href="#">Ayuda</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/stubs']"  [routerLinkActive]="['active']">Stubs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/usuarios']"  [routerLinkActive]="['active']">Usuarios</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link"  [routerLink]="['/about']"  [routerLinkActive]="['active']">Acerca De</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Contacto</a>
       </li>
+
       <li *ngIf="!loginService.isLogin()" class="nav-item">
         <a class="nav-link" (click)="mostrarLogin()">Login</a>
       </li>
-      <li *ngIf="loginService.isLogin()" class="nav-item">
-        <a class="nav-link" (click)="loginService.logout()" >Logout</a>
+
+      <li *ngIf="loginService.isLogin()" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Usuario
+        </a>
+        <div  class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" (click)="loginService.logout()" >Logout</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Perfil</a>
+        </div>
       </li>
+
     </ul>
   </div>
 </nav>

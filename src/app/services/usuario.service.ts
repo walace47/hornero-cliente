@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { usuario } from '../model/usuario';
-import { FormControl } from '@angular/forms';
-import { LoginService } from './login.service';
+import { usuario, UsuarioConectado } from '../model/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +15,12 @@ export class UsuarioService {
     this.url = environment.url + '/usuarios'
    }
 
-  getAll(select?:string){
-    console.log(select)
-    return this.http.get<usuario[]>(this.url+`/todos?select=${select}`);
+  getAll(select:string[] = null,relations:string[] = null){
+    const relationsString = JSON.stringify(relations);
+    const selectString = JSON.stringify(select);
+    return this.http.get<usuario[]>(this.url+`/?select=${selectString}&relations=${relationsString}`);
   }
-  get(id:string,select?:string,relations?:string){
+  get(id:string,select:string = null,relations:string = null){
     return this.http.get(this.url+`/${id}?relations=${relations}`)
   }
 
@@ -36,6 +35,18 @@ export class UsuarioService {
 
   existeEmail(email:string){
     return this.http.post(this.url+`/emailRegistrado`,{email:email})
+  }
+
+  async getTorneos(){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    const relations = JSON.stringify(['idRol','torneousuarios','torneousuarios.idTorneo']);
+    usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null,relations).toPromise()
+    return usuario.usuario.torneousuarios;
+    
+  }
+
+  isAdmin(){
+    
   }
 
 }

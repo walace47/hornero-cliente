@@ -1,28 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import {SelectItem} from 'primeng/api';
 import { torneo } from 'src/app/model/torneo';
 import {TorneosService} from '../../../services/torneos.service'
 import { LoginService } from 'src/app/services/login.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { torneousuario } from 'src/app/model/torneousuario';
 @Component({
   selector: 'app-torneos',
   templateUrl: './torneos.component.html',
-  styleUrls: ['./torneos.component.css'],
   providers:[]
 })
 export class TorneosComponent implements OnInit {
   public mensaje:any;
   public displayMensaje:boolean = false
   torneos: torneo[];
+  torneosUsuario: torneousuario[];
   selectTorneo: torneo;
   sortOptions: SelectItem[];
   sortKey: string;
   sortField: string;
   sortOrder: number;
+  @Input() userTorneo:boolean = false;
 
   constructor(
     private _torneos:TorneosService,
     private _loginService:LoginService,
+    private _usuarioService:UsuarioService,
     private router:Router) { 
       this.mensaje = {
         datos:"",
@@ -32,7 +36,15 @@ export class TorneosComponent implements OnInit {
 
 
   ngOnInit() {
-      this._torneos.getAll().subscribe((torneos:torneo[]) => {this.torneos = torneos})
+      if(!this.userTorneo){
+        this._torneos.getAll().subscribe((torneos:torneo[]) => {this.torneos = torneos})
+      }else{
+        this._usuarioService.getTorneos().then(torneosUsuarios =>{
+          this.torneosUsuario = torneosUsuarios;
+          this.torneos = this.torneosUsuario.map(userTorneo=> userTorneo.idTorneo );
+
+        });
+      }
       this.sortOptions = [
           {label: 'Oldest First', value: 'FechaFin'},
           {label: 'Newest First', value: '!FechaFin'},
@@ -83,7 +95,7 @@ export class TorneosComponent implements OnInit {
 
   incripcionHabilitada(torneo:torneo){
     const fechaTorneo = new Date(torneo.FechaFin);
-    return fechaTorneo > (new Date()) 
+    return (fechaTorneo > (new Date()) && !this.torneosUsuario) 
   }
 
 }

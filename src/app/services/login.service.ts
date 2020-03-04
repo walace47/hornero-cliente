@@ -28,7 +28,7 @@ export class LoginService {
   isLogin() {
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) return false;
-    if (usuario.fechaFin < (new Date()) ) return false
+    if ( new Date(usuario.fechaFin) < (new Date()) ) return false
     return true;
   }
 
