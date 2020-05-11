@@ -1,25 +1,25 @@
-import { rol } from "./rol";
-import { lenguaje } from "./lenguaje";
-import { cambioclave } from "./cambioclave";
-import { resolucion } from "./resolucion";
-import { torneousuario } from "./torneousuario";
+import { Rol } from "./Rol";
+import { Lenguaje } from "./Lenguaje";
+import { CambioClave } from "./CambioClave";
+import { Resolucion } from "./Resolucion";
+import { TorneoUsuario } from "./TorneoUsuario";
 
-export interface usuario {
+export interface Usuario {
   idUsuario?: number;
-  Institucion?: string;
-  NombreUsuario?: string;
-  Descripcion?: string;
-  Clave?: string;
-  idRol?: rol | null;
-  Email?: string;
-  idLenguaje?: lenguaje | null;
-  cambioclaves?: cambioclave[];
-  resolucions?: resolucion[];
-  torneousuarios?: torneousuario[];
+  institucion?: string;
+  nombreUsuario?: string;
+  descripcion?: string;
+  clave?: string;
+  rol?: Rol | null;
+  email?: string;
+  lenguaje?: Lenguaje | null;
+  cambioClaves?: CambioClave[];
+  resoluciones?: Resolucion[];
+  torneosUsuarios?: TorneoUsuario[];
 }
 
 export interface UsuarioConectado{
-  usuario:usuario;
+  usuario:Usuario;
   token: string;
   fechaFin:Date;
 }

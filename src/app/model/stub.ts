@@ -1,8 +1,8 @@
-import { lenguaje } from "./lenguaje";
+import { Lenguaje } from "./Lenguaje";
 
-export interface stub {
+export interface Stub {
   idStubs?: number;
-  idLenguaje?: lenguaje | null;
-  Descripcion?: string;
-  Archivo?: string;
+  lenguaje?: Lenguaje | null;
+  descripcion?: string;
+  archivo?: string;
 }

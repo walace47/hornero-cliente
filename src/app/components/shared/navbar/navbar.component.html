@@ -1,14 +1,14 @@
-<nav class="navbar shadow-none rounded navbar-light">
+<nav class="navbar border border-white rounded navbar-light" style="background-color: #F6F3E7;">
   <a class="navbar-brand" href="#">
-    <img src="/assets/img/logo.jpg" width="40" height="30" alt="" />
+    <img src="./assets/img/logo2.png" width="40" height="30" alt="" />
     Hornero-alpha
   </a>
 </nav>
 
 <nav
-  class="navbar border shadow rounded navbar-expand-lg navbar-dark"
-  style="background-color: #66a6cc;"
->
+  class="navbar border navbar-dark border-secondary rounded navbar-expand-lg "
+  style="background-color: #66a6cc;">
+  
   <button
     class="navbar-toggler"
     type="button"
@@ -26,17 +26,40 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/inicio']"  [routerLinkActive]="['active']">Inicio</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/torneos']" [routerLinkActive]="['active']">Torneo</a>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown5" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Torneo</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown5" >
+            <div *ngIf="loginService.isAdmin()">
+              <a  class="dropdown-item" [routerLink]="['crear-torneo','nuevo']">
+                Nueva torneo
+              </a>
+              <div class="dropdown-divider"></div>
+            </div>
+              <a class="dropdown-item" [routerLink]="['/torneos']" >Torneos</a>
+          </div>
       </li>
+
+      <!--li class="nav-item">
+        <a class="nav-link" [routerLink]="['/torneos']" [routerLinkActive]="['active']">Torneo</a>
+      </li-->
+
       <li class="nav-item">
         <a class="nav-link" href="#">Ayuda</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/stubs']"  [routerLinkActive]="['active']">Stubs</a>
       </li>
+
       <li class="nav-item">
-        <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/usuarios']"  [routerLinkActive]="['active']">Usuarios</a>
+        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/usuarios']"  [routerLinkActive]="['active']">Usuarios</a>
+      </li>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/problemas']"  [routerLinkActive]="['active']">Problemas</a>
       </li>
       <li class="nav-item">
         <a class="nav-link"  [routerLink]="['/about']"  [routerLinkActive]="['active']">Acerca De</a>
@@ -44,20 +67,26 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Contacto</a>
       </li>
-
-      <li *ngIf="!loginService.isLogin()" class="nav-item">
-        <a class="nav-link" (click)="mostrarLogin()">Login</a>
+      
+      <li *ngIf="!loginService.isLogin()" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Usuario</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+          <a class="dropdown-item" (click)="mostrarLogin()">Login</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [routerLink]="['/crear-usuario','nuevo']" >Nuevo usuario</a>
+        </div>
       </li>
 
       <li *ngIf="loginService.isLogin()" class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Usuario
         </a>
-        <div  class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" (click)="loginService.logout()" >Logout</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Perfil</a>
-        </div>
+          <div  class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" (click)="loginService.logout()" >Logout</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item">Perfil</a>
+          </div>
+ 
       </li>
 
     </ul>

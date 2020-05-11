@@ -3,23 +3,25 @@ import {Validators,FormControl,FormGroup,FormBuilder} from '@angular/forms';
 import {SelectItem} from 'primeng/api';
 import {MessageService} from 'primeng/api';
 import { LenguajesService } from 'src/app/services/lenguajes.service';
-import {usuario} from '../../../../model/usuario' 
+import { Usuario } from '../../../../model/Usuario' 
+import { ROLES } from '../../../../model/Rol' 
 import { UsuarioService } from 'src/app/services/usuario.service';
 import {  Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RolService } from 'src/app/services/rol.service';
 import { LoginService } from 'src/app/services/login.service';
-
+import { Lenguaje } from 'src/app/model/Lenguaje';
+import { NotifierService } from "angular-notifier"
 
 @Component({
   selector: 'app-crear-usuario',
   templateUrl: './crear-usuario.component.html',
   styleUrls: ['./crear-usuario.component.css'],
   providers:[ 
-      MessageService,
       LenguajesService,
       RolService,
-      LoginService
+      LoginService,
+      NotifierService
     ]
 })
 export class CrearUsuarioComponent implements OnInit, OnDestroy {
@@ -28,13 +30,14 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   public submitted: boolean;
   public lenguajes: SelectItem[];
   public description: string;
-  public usuarios:usuario[]
+  public usuarios:Usuario[]
   public loading:boolean
   private suscripciones:Subscription[] = [];
   public roles:SelectItem[];
+  public rolesCommonUser:SelectItem[] = [];
   public editando:boolean;
   public id:string;
-  public usuarioEditando:usuario;
+  public usuarioEditando:Usuario;
 
   constructor(
     private fb: FormBuilder, 
@@ -44,7 +47,8 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
     private router: Router,
     private rolService:RolService,
     private loginService:LoginService,
-    private activeRoute:ActivatedRoute){
+    private activeRoute:ActivatedRoute,
+    private notifier:NotifierService){
 
       this.formConfig();
       this.loading = false;
@@ -58,15 +62,20 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
     this.id = this.activeRoute.snapshot.paramMap.get('id');
 
     this.suscripciones.push(
-      this.lenguajeService.getAll().subscribe(lng => {
-        this.lenguajes = lng.map(elem => {return {label:elem.Lenguaje, value:elem}})
+      this.lenguajeService.getAll().subscribe((lng:Lenguaje[]) => {
+        this.lenguajes = lng.map((elem:Lenguaje) => ({label:elem.lenguaje, value:elem}))
         this.lenguajes.unshift({label:"Elige un lenguaje", value:null}) 
       }))
 
       this.suscripciones.push(
         this.rolService.getAll().subscribe((roles)=>{
-          this.roles = roles.map(rol => ({label:rol.Rol, value:rol}));
-          this.roles.unshift({label:"Elige un rol",value:null})
+        
+          this.roles = roles.map(rol => ({label:rol.rol, value:rol}));
+          this.rolesCommonUser = this.roles.filter((e:SelectItem) => e.value.idRol !== ROLES.admin )
+        
+          this.roles.unshift({label:"Elige un rol",value:null});
+          this.rolesCommonUser.unshift({label:"Elige un rol",value:null});
+        
         }))
 
     if(Number(this.id)){
@@ -86,7 +95,8 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
       'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
       'passwordRepetir': new FormControl('',Validators.compose([Validators.required])),
       'lenguajes': new FormControl('', Validators.required),
-      'roles': new FormControl('')
+      'roles': new FormControl(''),
+      'rolesCommonUser':new FormControl('')
     },
     {
       validator: [this.MustMatch('password', 'passwordRepetir')]
@@ -96,28 +106,32 @@ export class CrearUsuarioComponent implements OnInit, OnDestroy {
   isLogin(){
     return this.loginService.isLogin();
   }
+  isAdmin(){
+    return this.loginService.isAdmin();
+  }
 
   onSubmit(value: any) {
       this.submitted = true;
       this.loading = true;
-      const nuevoUsuario:usuario = {
-        Clave:value.password,
-        Institucion:value.institucion,
-        NombreUsuario:value.nombreUsuario,
-        idLenguaje:value.lenguajes,
-        Email:value.email,
-        Descripcion: value.nombreUsuario,
-        idRol: value.rol || {idRol:2}
+      const nuevoUsuario:Usuario = {
+        clave:value.password,
+        institucion:value.institucion,
+        nombreUsuario:value.nombreUsuario,
+        lenguaje:value.lenguajes,
+        email:value.email,
+        descripcion: value.nombreUsuario,
+        rol: value.rol || value.rolesCommonUser || {idRol:ROLES.jugador}
       }
       this.suscripciones.push(
         this.usuariosService.save(nuevoUsuario).subscribe(
           () => {
-              this.messageService.add({severity:'info', summary:'Success', detail:'Usuario creado con exito'});
-              setTimeout( ()=> this.router.navigate(["/inicio"]),2000 )
+              this.notifier.notify("success","Usuario creado con exito")
+              this.router.navigate(["/inicio"])
               this.loading = false
           },
           () =>{
-            this.messageService.add({severity:'error', summary:'error', detail:'Error al crear el usuario'});
+            this.notifier.notify("error","Ubo un error al crear un usuario")
+            this.router.navigate(["/inicio"])
             this.loading = false
           }))
   }

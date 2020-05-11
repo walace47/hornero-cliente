@@ -1,18 +1,18 @@
-import { usuario } from "./usuario";
-import { problema } from "./problema";
-import { solucion } from "./solucion";
-import { torneo } from "./torneo";
-import { estadoresolucion } from "./estadoresolucion";
+import { Usuario } from "./Usuario";
+import { Problema } from "./Problema";
+import { solucion } from "./Solucion";
+import { Torneo } from "./Torneo";
+import { EstadoResolucion } from "./EstadoResolucion";
 
-export interface resolucion {
+export interface Resolucion {
   idResolucion?: number;
-  idUsuario?: usuario | null;
-  idProblema?: problema | null;
-  idSolucion?: solucion | null;
-  idTorneo?: torneo | null;
-  Token?: string;
-  FechaSolicitud?: string;
-  FechaRespuesta?: string | null;
-  Respuesta?: string | null;
-  idEstado?: estadoresolucion | null;
+  usuario?: Usuario | null;
+  problema?: Problema | null;
+  solucion?: solucion | null;
+  torneo?: Torneo | null;
+  token?: string;
+  fechaSolicitud?: string;
+  fechaRespuesta?: string | null;
+  respuesta?: string | null;
+  estado?: EstadoResolucion | null;
 }

@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  url:"http://localhost:3000"
+  url:"http://localhost:3000/api",
+  url_public:"http://localhost:3000",
+  URL_SOCKET:"http://localhost:3000/"
 };
 
 /*

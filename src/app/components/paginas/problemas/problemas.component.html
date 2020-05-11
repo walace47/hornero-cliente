@@ -1,1 +1,16 @@
-<p>problemas works!</p>
+<form (keydown.enter)="onChangeTest($event)" >
+
+
+    <p-multiSelect #ms name="ms" (onChange)="onChangeTest($event)" [options]="cars" [(ngModel)]="selectedCars2">
+        <ng-template let-value pTemplate="selectedItems">
+            <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+                <span style="width:20px;vertical-align:middle;margin-right:.5em">{{val}}</span>
+            </div>
+            <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Choose</span>
+        </ng-template>
+        <ng-template let-car pTemplate="item">
+            <div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
+        </ng-template>
+    </p-multiSelect>
+</form>
+    

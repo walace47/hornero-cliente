@@ -1,7 +1,12 @@
-import { problema } from "./problema";
+import { Problema } from "./Problema";
 
-export interface complejidad {
+export interface Complejidad {
   idComplejidad?: number;
-  Complejidad?: string;
-  problemas?: problema[];
+  complejidad?: string;
+  problemas?: Problema[];
+}
+export enum COMPLEJIDAD{
+  baja = 1,
+  media = 2,
+  alta = 3
 }

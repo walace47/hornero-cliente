@@ -11,12 +11,12 @@
       </p>
     </div>
     <div class="col-sm">
-      <img src="/assets/img/prisma455.png" alt="" />
+      <img class="imgTam" src="./assets/img/prisma4552.png" alt="" />
     </div>
   </div>
 
   <div *ngIf="isLogin()">
     <h2>Mis torneos</h2>
-    <app-torneos [userTorneo]="true" ></app-torneos>
+    <app-torneos cantRows="3" [userTorneo]="true" ></app-torneos>
 </div>
 </div>

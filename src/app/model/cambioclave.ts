@@ -1,8 +1,8 @@
-import { usuario } from "./usuario";
+import { Usuario } from "./Usuario";
 
-export interface cambioclave {
+export interface CambioClave {
   idCambio?: number;
-  idUsuario?: usuario | null;
+  usuario?: Usuario | null;
   fecha?: Date;
   token?: string;
   estado?: number;

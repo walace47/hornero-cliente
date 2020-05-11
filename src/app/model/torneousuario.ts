@@ -1,11 +1,11 @@
-import { torneo } from "./torneo";
-import { usuario } from "./usuario";
+import { Torneo } from "./Torneo";
+import { Usuario } from "./Usuario";
 
-export interface torneousuario {
+export interface TorneoUsuario {
   idTorneoUsuario?: number;
-  idTorneo?: torneo | null;
-  idUsuario?: usuario | null;
-  Puntos?: number;
-  Tiempo?: string;
-  Token?: string;
+  torneo?: Torneo | null;
+  usuario?: Usuario | null;
+  puntos?: number;
+  tiempo?: string;
+  token?: string;
 }

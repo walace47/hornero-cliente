@@ -1,18 +1,20 @@
-import { estadotorneo } from "./estadotorneo";
-import { tipotorneo } from "./tipotorneo";
-import { resolucion } from "./resolucion";
-import { torneoproblema } from "./torneoproblema";
-import { torneousuario } from "./torneousuario";
+import { EstadoTorneo } from "./EstadoTorneo";
+import { TipoTorneo } from "./TipoTorneo";
+import { Resolucion } from "./Resolucion";
+import { TorneoProblema } from "./TorneoProblema";
+import { TorneoUsuario } from "./TorneoUsuario";
+import { Usuario } from './Usuario';
 
-export interface torneo {
+export interface Torneo {
   idTorneo?: number;
-  Nombre?: string;
-  Descripcion?: string;
-  FechaInicio?: Date;
-  FechaFin?: Date;
-  idEstado?: estadotorneo | null;
-  idTipo?: tipotorneo | null;
-  resolucions?: resolucion[];
-  torneoproblemas?: torneoproblema[];
-  torneousuarios?: torneousuario[];
+  nombre?: string;
+  descripcion?: string;
+  fechaInicio?: Date;
+  fechaFin?: Date;
+  estado?: EstadoTorneo | null;
+  tipo?: TipoTorneo | null;
+  resoluciones?: Resolucion[];
+  torneosProblemas?: TorneoProblema[];
+  torneosUsuarios?: TorneoUsuario[];
+  creador?:Usuario;
 }

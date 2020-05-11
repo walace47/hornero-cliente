@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StubsService } from 'src/app/services/stubs.service';
 import { Subscription } from 'rxjs';
-import { stub } from 'src/app/model/stub';
+import { Stub } from 'src/app/model/Stub';
 import * as fileSaver from 'file-saver';
 
 @Component({
@@ -11,14 +11,14 @@ import * as fileSaver from 'file-saver';
 })
 export class StubsComponent implements OnInit,OnDestroy {
   private suscripciones:Subscription[] = [];
-  public stubs:stub[];
+  public stubs:Stub[];
   
   constructor(
     private _stubService:StubsService) { }
 
   ngOnInit(): void {
     this.suscripciones.push(
-      this._stubService.getAll(["idLenguaje"]).subscribe((stubs) => {
+      this._stubService.getAll(["lenguaje"]).subscribe((stubs) => {
         this.stubs = stubs; 
         console.log(this.stubs)
       })

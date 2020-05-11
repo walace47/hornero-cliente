@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 import {DataViewModule} from 'primeng/dataview';
 import {PanelModule} from 'primeng/panel';
@@ -18,12 +19,27 @@ import {ScrollPanelModule} from 'primeng/scrollpanel';
 import {ToastModule} from 'primeng/toast';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {CalendarModule} from 'primeng/calendar';
+import {TabMenuModule} from 'primeng/tabmenu';
+import { HighlightJsModule } from 'ngx-highlight-js';
+import {MegaMenuModule} from 'primeng/megamenu';
+import {InputMaskModule} from 'primeng/inputmask';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {MultiSelectModule} from 'primeng/multiselect';
+import { NotifierModule } from "angular-notifier";
+
 
 import {FileUploadModule} from 'primeng/fileupload';
 
 @NgModule({
   declarations: [],
   imports: [
+    NotifierModule,
+    ConfirmDialogModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    MegaMenuModule,
+    InputMaskModule,
+    HighlightJsModule,
     FileUploadModule,
     CalendarModule,
     InputTextareaModule,
@@ -38,14 +54,22 @@ import {FileUploadModule} from 'primeng/fileupload';
     TabViewModule,
     InputTextModule,
     ButtonModule,
+    TabMenuModule,
     TableModule,
     CardModule,
     ScrollPanelModule,
     PasswordModule
   ],
   exports:[
+    ConfirmDialogModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    InputMaskModule,
+    MegaMenuModule,
+    HighlightJsModule,
     FileUploadModule,
     CalendarModule,
+    NotifierModule,
     InputTextareaModule,
     ToastModule,
     MessagesModule,

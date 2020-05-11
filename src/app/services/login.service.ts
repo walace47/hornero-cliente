@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { UsuarioConectado } from '../model/usuario';
+import { UsuarioConectado } from '../model/Usuario';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-
+import {ROLES} from "../model/Rol"
+import { Torneo } from '../model/Torneo';
 @Injectable({
   providedIn: "root"
 })
@@ -28,7 +29,35 @@ export class LoginService {
   isLogin() {
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) return false;
-    if ( new Date(usuario.fechaFin) < (new Date()) ) return false
+    if ( new Date(usuario.fechaFin) < (new Date()) ){
+      this.logout(); 
+      return false;
+    }
+    return true;
+  }
+
+   esDuenio(torneo:Torneo){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario) return false;
+    if ( new Date(usuario.fechaFin) < (new Date()) ) return false;
+    if(!torneo.creador) return false;
+    if(torneo.creador.idUsuario !== usuario.usuario.idUsuario) return false;
+    return true;
+  }
+
+  isAdmin(){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario)  return false;
+    if ( new Date(usuario.fechaFin) < (new Date()) ) return false;
+    if(usuario.usuario.rol.idRol !== ROLES.admin) return false;
+    return true;
+  }
+  //El docente tiene privilegios mas limitados que el admin
+  isDocente(){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario) return false;
+    if ( new Date(usuario.fechaFin) < (new Date()) ) return false;
+    if(usuario.usuario.rol.idRol !== ROLES.docente && usuario.usuario.rol.idRol !== ROLES.admin) return false;
     return true;
   }
 
@@ -38,6 +67,8 @@ export class LoginService {
 
   logout(){
     localStorage.removeItem("usuario");
+    location.reload();
+
   }
 
 }

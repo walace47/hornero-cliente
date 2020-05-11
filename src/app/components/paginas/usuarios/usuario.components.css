@@ -63,3 +63,8 @@
         display: table-cell;
     }
 }
+
+.header-table {
+    background-color: #7B95A3 !important;
+    color: #ffffff !important;
+}

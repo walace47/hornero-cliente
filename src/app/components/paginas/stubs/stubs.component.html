@@ -1,7 +1,7 @@
 
 <div  class="animated fadeIn">
 
-<p-dataView #dv filterBy="idLenguaje.Lenguaje" [value]="stubs" [paginator]="true" [rows]="5" paginatorPosition="both">
+<p-dataView #dv filterBy="lenguaje.lenguaje" [value]="stubs" [paginator]="true" [rows]="5" paginatorPosition="both">
     
     <p-header>
         <div class="ui-helper-clearfix">
@@ -20,9 +20,9 @@
         <div class="ui-g-12 ">
             <div class="car-details">
               <div class="ui-g">
-                <div class="ui-g-12"><b>Lenguaje:</b> {{stub.idLenguaje.Lenguaje}}</div>
-                <div class="ui-g-12"><b>Descripcion:</b> {{stub.Descripcion}}</div>
-                <div class="ui-g-12"><b>Archivo: </b> <button class="btn btn-link p-0" (click)="download(stub.Archivo)">Descargar</button></div>
+                <div class="ui-g-12"><b>Lenguaje:</b> {{stub.lenguaje.lenguaje}}</div>
+                <div class="ui-g-12"><b>Descripcion:</b> {{stub.descripcion}}</div>
+                <div class="ui-g-12"><b>Archivo: </b> <button class="btn btn-link p-0" (click)="download(stub.archivo)">Descargar</button></div>
              </div>
         </div>
     </div>

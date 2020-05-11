@@ -1,9 +1,9 @@
-import { stub } from "./stub";
-import { usuario } from "./usuario";
+import { Stub } from "./Stub";
+import { Usuario } from "./Usuario";
 
-export interface lenguaje {
+export interface Lenguaje {
   idLenguaje?: number;
-  Lenguaje?: string;
-  stubs?: stub[];
-  usuarios?: usuario[];
+  lenguaje?: string;
+  stubs?: Stub[];
+  usuarios?: Usuario[];
 }

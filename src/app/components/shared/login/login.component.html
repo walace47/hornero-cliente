@@ -1,28 +1,47 @@
+<div class="ui-fluid">
 
-<p-dialog header="Login" class="mydialog" [modal]="true"  [style]="{width: '360px'}" [(visible)]="display" (onHide)="onHide()">
+<p-dialog header="Login" class="mydialog" [modal]="true"  [(visible)]="display" (onHide)="onHide()">
         
         <p-card header="" subheader=""  class="ui-card-shadow">
     <p-header>
         
         <div class="p-grid p-justify-center mt-1">
-                <img  class="rounded  mt-1" [style]="{height: '160px',width: '160px'}" src="https://www.w3schools.com/howto/img_avatar2.png">
+                <img  class="rounded  mt-1" [style]="{height: '160px',width: '160px'}" src="./assets/img/fai.png">
             </div>
     </p-header>
 
-    <p class="text-danger" *ngIf="error">Error en contrasenia o usuario</p>
-<form action="">
-    <span class="ui-float-label mt-4">
-        <input id="float-input-username" [(ngModel)]="usuario" name="username" type="text" size="30" pInputText> 
-        <label for="float-input">Usuario</label>
-    </span>
+    <form action="">
+        <div class="p-grid">
+            <div class="p-col p-md p-lg ">
 
-    <span class="ui-float-label mt-4">
-        <input id="float-input-password" name="pwd" [(ngModel)]="pass" type="password" size="30" pPassword [feedback]="false" [showPassword]="mostrar" >
-        <label for="float-input">Contrasenia</label>
-        <i class="pi pi-eye" *ngIf="mostrar" (click)="mostrar=!mostrar" style="font-size: 1.9em"></i>
-        <i class="pi pi-eye-slash" *ngIf="!mostrar" (click)="mostrar=!mostrar" style="font-size: 1.9em"></i>
+                <p class="text-danger" *ngIf="error">Error en contrasenia o usuario</p>
+            </div>
+        </div>
+        <div class="p-grid mt-1">
+            <div class="p-col p-md p-lg">
+              <div class="ui-inputgroup">
 
-    </span>
+                <span class="ui-float-label">
+                    <input id="float-input-username" [(ngModel)]="usuario" size="30" name="username" type="text" pInputText> 
+                    <label for="float-input-username">Usuario</label>
+                </span>
+                <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+              </div>
+            </div>
+     </div>
+    <div class="p-grid mt-1">
+        <div class="p-col p-md p-lg">
+            <div class="ui-inputgroup">
+            <span class="ui-float-label">
+                <input id="float-input-password" size="30" name="pwd" [(ngModel)]="pass" type="password"  pPassword [feedback]="false" [showPassword]="mostrar" >
+                <label for="float-input-password">contrasenias</label>
+            </span>
+            <button pButton type="button" icon="pi pi-eye" class="ui-button-warn"  *ngIf="mostrar" (click)="mostrar=!mostrar" ></button>      
+            <button pButton type="button" icon="pi pi-eye-slash" class="ui-button-warn" *ngIf="!mostrar" (click)="mostrar=!mostrar"></button>      
+        </div>
+    </div>
+</div>
+
 
     <p-footer>
         <div class="p-grid p-justify-center mt-2">
@@ -45,3 +64,5 @@
 </p-card>
 
 </p-dialog>
+
+</div>

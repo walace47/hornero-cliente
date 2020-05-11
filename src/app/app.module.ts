@@ -30,6 +30,13 @@ import { ProblemasComponent } from './components/paginas/problemas/problemas.com
 import { CrearProblemaComponent } from './components/paginas/problemas/crear-problema/crear-problema.component';
 import { StubsComponent } from './components/paginas/stubs/stubs.component';
 import { UsuariosComponent } from './components/paginas/usuarios/usuarios.component';
+import { BlocklyComponent } from './components/paginas/blockly/bloques/blockly.component';
+import { SwapComponent } from './components/paginas/blockly/swap/swap.component';
+import { XmlPipePipe } from './pipes/xml-pipe.pipe';
+import { AgregarProblemaComponent } from './components/paginas/torneos/agregar-problema/agregar-problema.component';
+import { ReadMoreComponent } from './components/utiles/read-more/read-more.component';
+
+
 
 @NgModule({
   declarations: [
@@ -46,6 +53,11 @@ import { UsuariosComponent } from './components/paginas/usuarios/usuarios.compon
     CrearProblemaComponent,
     StubsComponent,
     UsuariosComponent,
+    BlocklyComponent,
+    SwapComponent,
+    XmlPipePipe,
+    AgregarProblemaComponent,
+    ReadMoreComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -60,6 +72,6 @@ import { UsuariosComponent } from './components/paginas/usuarios/usuarios.compon
     TorneosService,
     {provide: HTTP_INTERCEPTORS, useClass: InterceptorTokenService, multi: true}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

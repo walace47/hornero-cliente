@@ -1,7 +1,7 @@
-import { torneo } from "./torneo";
+import { Torneo } from "./Torneo";
 
-export interface tipotorneo {
+export interface TipoTorneo {
   idTipo?: number;
-  Tipo?: string;
-  torneos?: torneo[];
+  tipo?: string;
+  torneos?: Torneo[];
 }

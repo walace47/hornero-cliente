@@ -5,7 +5,9 @@
   .gris{
     background-color: #DCDCDC;
   }
-  
+  .br-ln { 
+    overflow-wrap: anywhere; 
+ }
   .puntero{
     cursor: pointer;
   }
@@ -47,6 +49,20 @@
   .filter-container {
     text-align: center;
 }
+
+@media screen and (min-width: 40em) {
+  .tabla-responsiva{
+      display: none !important;
+  }
+}
+
+@media screen and (max-width: 40em) {
+  .imgTam {
+    width: 60%;
+  } 
+}
+
+
 .car-details {
     display: flex;
     justify-content: space-between;
@@ -114,4 +130,9 @@
 .ui-table.ui-table-cars .ui-paginator {
   border: 0 none;
   padding: 1em;
+}
+
+.header-table {
+  background-color: #7B95A3 !important;
+  color: #ffffff !important;
 }

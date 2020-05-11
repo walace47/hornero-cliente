@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Subscription } from 'rxjs';
-import { usuario } from 'src/app/model/usuario';
+import { Usuario } from 'src/app/model/Usuario';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,7 +10,7 @@ import { usuario } from 'src/app/model/usuario';
 })
 export class UsuariosComponent implements OnInit,OnDestroy {
   private suscripciones:Subscription[] = [];
-  public usuarios:usuario[];
+  public usuarios:Usuario[];
   public cols: any[];
 
   constructor(private _usuariosService:UsuarioService) { }
@@ -27,7 +27,7 @@ export class UsuariosComponent implements OnInit,OnDestroy {
 
   ];
     this.suscripciones.push(
-    this._usuariosService.getAll(null,["idRol"]).subscribe(usuarios => {this.usuarios = usuarios; console.log(usuarios)}))
+    this._usuariosService.getAll(null,["rol"]).subscribe(usuarios => this.usuarios = usuarios ))
   }
 
   ngOnDestroy(){

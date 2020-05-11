@@ -111,7 +111,7 @@
       </div>
 
       <div class="ui-grid-row">
-        <div class="ui-grid-col-12"><b>Password:</b></div>
+        <div class="ui-grid-col-12"><b>Repetir Password:</b></div>
       </div>      
       <div class="ui-grid-row">
 
@@ -149,16 +149,21 @@
      
       <div class="ui-grid-row">
         <div class="ui-grid-col-3"> 
-          <span><b>Lengujae Favorito:</b></span>
+          <span><b>Lenguaje Favorito:</b></span>
           <p-dropdown [options]="lenguajes" formControlName="lenguajes"></p-dropdown>
 
         </div>
-        <div *ngIf="isLogin()" class="ui-grid-col-3">
+        <div *ngIf="isAdmin()" class="ui-grid-col-3">
           <span><b>Rol:</b></span>
           <p-dropdown [options]="roles" formControlName="roles"></p-dropdown>
         </div>
+        
+        <div *ngIf="!isAdmin()" class="ui-grid-col-3">
+          <span><b>Rol:</b></span>
+          <p-dropdown [options]="rolesCommonUser" formControlName="rolesCommonUser"></p-dropdown>
+        </div>
+        
       </div>
-
 
       <div class="ui-grid-row">
         <div class="ui-grid-col-6">

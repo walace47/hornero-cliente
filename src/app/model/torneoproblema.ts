@@ -1,9 +1,9 @@
-import { problema } from "./problema";
-import { torneo } from "./torneo";
+import { Problema } from "./Problema";
+import { Torneo } from "./Torneo";
 
-export interface torneoproblema {
+export interface TorneoProblema {
   idTorneoProblema?: number;
-  idProblema?: problema | null;
-  idTorneo?: torneo | null;
-  Orden?: number;
+  problema?: Problema | null;
+  torneo?: Torneo | null;
+  orden?: number;
 }

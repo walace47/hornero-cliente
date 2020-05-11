@@ -1,14 +1,10 @@
-import { problema } from "./problema";
-import { resolucion } from "./resolucion";
+import { Problema } from "./Problema";
+import { Resolucion } from "./Resolucion";
 
 export interface solucion {
   idSolucion?: number;
-
-  idProblema?: problema | null;
-
-  ParametrosEntrada?: string;
-
-  Salida?: string;
-
-  resolucions?: resolucion[];
+  problema?: Problema | null;
+  parametrosEntrada?: string;
+  salida?: string;
+  resoluciones?: Resolucion[];
 }

@@ -1,0 +1,180 @@
+<p-table
+  [columns]="cols"
+  [value]="problemasTorneoElegidos"
+  [responsive]="true"
+  [resizableColumns]="true"
+  selectionMode="single"
+  [reorderableColumns]="true"
+>
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col *ngFor="let col of columns" [style.width]="col.width" />
+    </colgroup>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th class="header-table" pResizableColumn>
+        Nro
+      </th>
+      <th class="header-table" pResizableColumn>
+        Nombre Problema
+      </th>
+      <th class="header-table">
+        Acciones
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template
+    pTemplate="body"
+    let-problema
+    let-columns="columns"
+    let-index="rowIndex"
+  >
+    <div class="tabla-responsiva"><br /></div>
+
+    <tr [pReorderableRow]="index" class="shadow puntero">
+      <td pReorderableRowHandle>
+        {{ index + 1 }}
+      </td>
+      <td pReorderableRowHandle>
+        {{ problema.nombre }}
+      </td>
+      <td>
+        <button
+          type="button"
+          class="ui-button-danger"
+          pButton
+          icon="pi pi-times"
+          (click)="deteleElemt(problema.idProblema)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<br />
+<div class="p-grid">
+  <div class="p-col-fixer">
+    <button
+      type="button"
+      class="ui-button-rounded ui-button-success"
+      pButton
+      icon="pi pi-plus"
+      (click)="showDialogToAdd()"
+      label="Agregar"
+    ></button>
+  </div>
+</div>
+
+<p-dialog
+  header="Agregar Problema"
+  [(visible)]="displayDialog"
+  [focusOnShow]="true"
+  [modal]="true"
+  showEffect="fade"
+  [style]="{ width: '75vw' }"
+  styleClass="mydialog"
+>
+<p-scrollPanel [style]="{width: '100%', height: '75vh'}" styleClass="custom">
+
+  <p-table
+    class="ml-1 mr-1"
+    #dt
+    [paginator]="true"
+    [rows]="10"
+    [responsive]="true"
+    [value]="todoLosProblemas"
+    [(selection)]="problemasSeleccionadoAux"
+    dataKey="idProblema"
+    [globalFilterFields]="['nombre','enunciado']"
+  >
+
+    <ng-template pTemplate="caption">
+        <div style="text-align: right;">        
+            <input type="text" pInputText size="50" placeholder="Buscar" (input)="dt.filterGlobal($event.target.value, 'contains')" >
+        </div>
+    </ng-template>
+    <ng-template pTemplate="colgroup" let-columns>
+        <colgroup>
+            <col [style.width]="'5%'">
+            <col [style.width]="'20%'">
+            <col [style.width]="'40%'">
+            <col [style.width]="'15%'">
+            <col [style.width]="'15%'">
+        </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr class="shadow">
+        <th style="width: 3em;">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th>
+          Nombre
+        </th>
+        <th>
+          Enunciado
+        </th>
+        <th>
+            Complejidad
+        </th>
+        <th>
+          Etiquetas
+        </th>
+      </tr>
+
+      <tr>
+        <th></th>
+        <th>
+            <input pInputText type="text" (input)="dt.filter($event.target.value, 'nombre', 'contains')">
+        </th>
+        <th>
+            <input pInputText type="text" (input)="dt.filter($event.target.value, 'enunciado', 'contains')">
+        </th>
+        <th>
+            <p-multiSelect 
+                [filter]="false"
+                optionLabel="complejidad" 
+                [options]="opcionesComplejidad" 
+                placeholder="All" 
+                (onChange)="filtratPorComplejidad($event)" 
+                styleClass="ui-column-filter" >
+            </p-multiSelect>
+        </th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-problema >
+        <div class="tabla-responsiva"> <br></div>
+      <tr class="shadow">
+        <td>
+          <p-tableCheckbox [value]="problema"></p-tableCheckbox>
+        </td>
+        <td>
+          {{ problema.nombre }}
+        </td>
+        <td>
+            <read-more [text]="problema.enunciado" [maxLength]="50">
+            </read-more>
+        </td>
+        <td>
+            {{problema.complejidad.complejidad}}
+        </td>
+        <td>
+          Etiquetas
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-scrollPanel>
+
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button
+        type="button"
+        pButton
+        icon="pi pi-check"
+        (click)="agregar()"
+        label="Agregar"
+      ></button>
+    </div>
+  </p-footer>
+</p-dialog>

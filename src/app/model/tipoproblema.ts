@@ -1,7 +1,7 @@
-import { problema } from "./problema";
+import { Problema } from "./Problema";
 
-export interface tipoproblema {
+export interface TipoProblema {
   idTipo: number;
-  Tipo: string;
-  problemas: problema[];
+  tipo: string;
+  problemas: Problema[];
 }

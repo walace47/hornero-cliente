@@ -1,0 +1,72 @@
+
+
+
+    <div class="p-grid">
+        <div class="p-col" *ngIf="torneo">
+            <p-dropdown [options]="torneo.torneosProblemas" [(ngModel)]="selectedProblem" placeholder="Seleccionar problema" optionLabel="problema.nombre" [showClear]="true"></p-dropdown>
+        </div>
+        
+            <div *ngIf="selectedProblem" class="p-col">
+
+                {{selectedProblem.problema.enunciado}}
+            </div>
+                <div  *ngIf="selectedProblem"  class="p-col" >
+                    <div *ngIf="selectedProblem.problema.archivo">
+                        <img id="imgid" src="{{environment.url}}/problemas/{{selectedProblem.problema.archivo}}" width="100" height="100" >
+                    </div>
+                </div>
+        
+    </div>
+<div class="p-grid">
+    <div class="p-col">
+        <div class="shadow mt-1">
+            <p-megaMenu [model]="itemsTab"></p-megaMenu>
+        </div>
+    </div>
+</div>
+<div class="p-grid">
+    <div class="p-col">
+
+        <div class="shadow ">
+            
+            <p-tabView >
+                <p-tabPanel header="Bloques">
+                    <ng-template pTemplate="content">
+                        <app-blockly [token]="token" [cargarXml]="xmlNuevo" (mostrarJavascript)="mostrarJs($event)"></app-blockly>
+                    </ng-template>
+                    
+                </p-tabPanel>
+                <p-tabPanel header="Javascript">
+                    <textarea *ngIf="codeJs" highlight-js [options]="{}" [lang]="'javascript'">
+                        {{codeJs}}
+                    </textarea>        
+                    
+                </p-tabPanel>
+                <p-tabPanel header="Xml">
+                    <textarea *ngIf="codeXml" highlight-js [options]="{}" [lang]="'xml'">
+                        {{codeXml | xml}}
+                    </textarea>   
+                </p-tabPanel>
+                
+                <p-tabPanel header="Problema">
+                    
+                </p-tabPanel>
+            </p-tabView>
+            
+        </div>
+        
+        </div>
+    </div>
+    <form [formGroup]="xmlForm" (ngSubmit)="onSubmit(xmlForm.value)">
+        
+        <textarea pInputTextarea  formControlName="xmlImportado"></textarea>
+        <button 
+        pButton
+        icon="pi pi-check"
+        type="submit"
+        label="Submit"
+        ></button>
+    </form>
+    
+    
+    

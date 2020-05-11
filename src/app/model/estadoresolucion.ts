@@ -1,7 +1,7 @@
-import { resolucion } from "./resolucion";
+import { Resolucion } from "./Resolucion";
 
-export interface estadoresolucion {
+export interface EstadoResolucion {
   idEstado?: number;
-  Estado?: string;
-  resolucions?: resolucion[];
+  estado?: string;
+  resolucions?: Resolucion[];
 }

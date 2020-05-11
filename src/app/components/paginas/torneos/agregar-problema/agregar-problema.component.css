@@ -1,0 +1,14 @@
+.ui-g label {
+    font-weight: bold;
+    margin-top: .25em;
+    display: block;
+  }
+  .mydialog {
+    width: 50vw;
+}
+
+@media screen and (max-width: 40em) {
+    .mydialog {
+        width: 75vw;
+    }
+}

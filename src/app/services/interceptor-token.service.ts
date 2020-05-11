@@ -6,7 +6,7 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UsuarioConectado } from '../model/usuario';
+import { UsuarioConectado } from '../model/Usuario';
 
 @Injectable({
   providedIn: 'root'

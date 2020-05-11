@@ -1,50 +1,80 @@
 <div  class="animated fadeIn">
 
 <i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneo"></i>
-<div *ngIf="torneo">
+<div class="br-ln" *ngIf="torneo">
 
-    <h3>Torneo: {{torneo.Nombre}}</h3>
-
-    <b *ngIf="isLogin()&&torneoUsuario">Token: {{torneoUsuario.Token}} </b>
+    <h3>Torneo: {{torneo.nombre}}</h3>
+    <div *ngIf="isLogin()&&torneoUsuario">
+        <b >Token: {{torneoUsuario.token}} </b>
+        <br>
+        <button pButton type="button" [routerLink]="['/bloques',torneo.idTorneo,torneoUsuario.token]" label="Jugar con Bloques" class="ui-button-rounded ui-button-primary"></button>
+    </div>
+    <div *ngIf="isLogin()&&!torneoUsuario">
+        <button pButton type="button" (click)="inscribirse()" label="Incribirse" class="ui-button-rounded ui-button-primary"></button>
+    </div>
     <h1>Participantes</h1>
-    <p-table [value]="torneo.torneousuarios">
+    <p-table [value]="torneo.torneosUsuarios" [responsive]="true">
         <ng-template pTemplate="header">
             <tr>
-                <th>Posición</th>
-                <th>Institución</th>
-                <th>Equipo</th>
-                <th>Lenguaje</th>
-                <th>Puntos</th>
-                <th>Ultima respuesta</th>
+                <th class="header-table">Posición</th>
+                <th class="header-table">Institución</th>
+                <th class="header-table">Equipo</th>
+                <th class="header-table">Lenguaje</th>
+                <th class="header-table">Puntos</th>
+                <th class="header-table">Ultima respuesta</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-usuario  let-i="rowIndex">
-            <tr>
-                <td>{{i}}</td>
-                <td>{{usuario.idUsuario.Institucion}}</td>
-                <td>{{usuario.idUsuario.NombreUsuario}}</td>
-                <td>{{usuario.idUsuario.idLenguaje.Lenguaje}}</td>
-                <td>{{usuario.Puntos}}</td>
-                <td>tiempo</td>
+        <ng-template pTemplate="body" let-torneoUsuario  let-i="rowIndex">
+            <div class="tabla-responsiva"> <br></div>
+            <tr class = "shadow">
+                <td>
+                    <span class="ui-column-title">Posicion:</span>
+                    {{i + 1}}
+                </td>
+                <td  >
+                    <span class="ui-column-title">Institucion:</span>
+                    {{torneoUsuario.usuario.institucion}}
+                </td>
+                <td >
+                    <span class="ui-column-title">Nombre usuario:</span>
+                    {{torneoUsuario.usuario.nombreUsuario}}</td>
+                    <td >
+                        <span class="ui-column-title">Lenguaje:</span>
+                        {{torneoUsuario.usuario.lenguajeFavorito.lenguaje}}</td>
+                        <td  class="ui-column-title">
+                            <span class="ui-column-title">Puntos:</span>
+                            {{torneoUsuario.puntos}}</td>
+                            <td>
+                    <span class="ui-column-title">Ultima respuesta:</span>
+                    0
+                </td>
 
             </tr>
+            
         </ng-template>
     </p-table>
-
     <h1>Problemas</h1>
-    <p-table [value]="torneo.torneoproblemas">
+    <p-table [responsive]="true" [value]="torneo.torneosProblemas">
         <ng-template pTemplate="header">
             <tr>
-                <th>Orden</th>
-                <th>Problema</th>
-                <th>Tiempo Max (ms)</th>
+                <th class="header-table">Orden</th>
+                <th class="header-table">Problema</th>
+                <th class="header-table">Tiempo Max (ms)</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-problema let-i="rowIndex">
-            <tr>
-                <td>{{i}}</td>
-                <td>{{problema.idProblema.Nombre}}</td>
-                <td>{{problema.idProblema.TiempoEjecucionMax}}</td>
+        <ng-template pTemplate="body" let-torneoProblema let-i="rowIndex">
+            <div class="tabla-responsiva"> <br></div>
+            <tr class = "shadow">
+                <td>
+                    <span class="ui-column-title">Orden:</span>
+                    {{i + 1}}</td>
+                <td>
+                    <span class="ui-column-title">Nombre:</span>
+                    {{torneoProblema.problema.nombre}}
+                </td>
+                <td>
+                    <span class="ui-column-title">Tiempo maximo de ejecucion:</span>
+                    {{torneoProblema.problema.tiempoEjecucionMax}}</td>
 
             </tr>
         </ng-template>
@@ -53,6 +83,3 @@
 </div>
 </div>
 
-<div>
-    {{torneo | json}}
-</div>

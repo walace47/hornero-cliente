@@ -1,18 +1,20 @@
-import { tipoproblema } from "./tipoproblema";
-import { complejidad } from "./complejidad";
-import { resolucion } from "./resolucion";
-import { solucion } from "./solucion";
-import { torneoproblema } from "./torneoproblema";
+import { TipoProblema } from "./TipoProblema";
+import { Complejidad } from "./Complejidad";
+import { Resolucion } from "./Resolucion";
+import { solucion } from "./Solucion";
+import { TorneoProblema } from "./TorneoProblema";
+import {Etiqueta} from './Etiqueta';
 
-export interface problema {
+export interface Problema {
   idProblema?: number;
-  idTipo?: tipoproblema | null;
-  Nombre?: string;
-  Archivo?: string | null;
-  Enunciado?: string;
-  idComplejidad?: complejidad | null;
-  TiempoEjecucionMax?: number;
-  resolucions?: resolucion[];
-  solucions?: solucion[];
-  torneoproblemas?: torneoproblema[];
+  tipo?: TipoProblema | null;
+  nombre?: string;
+  archivo?: string | null;
+  enunciado?: string;
+  complejidad?: Complejidad | null;
+  tiempoEjecucionMax?: number;
+  resoluciones?: Resolucion[];
+  soluciones?: solucion[];
+  torneoproblemas?: TorneoProblema[];
+  etiquetas?:Etiqueta[];
 }
