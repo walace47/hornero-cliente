@@ -35,6 +35,10 @@ import { SwapComponent } from './components/paginas/blockly/swap/swap.component'
 import { XmlPipePipe } from './pipes/xml-pipe.pipe';
 import { AgregarProblemaComponent } from './components/paginas/torneos/agregar-problema/agregar-problema.component';
 import { ReadMoreComponent } from './components/utiles/read-more/read-more.component';
+import { ResolucionesComponent } from './components/paginas/problemas/resoluciones/resoluciones.component';
+import { BlocklySocketHandler } from './services/blocklySocketHandler.service';
+import { CodigoUsuarioComponent } from './components/paginas/blockly/codigo-usuario/codigo-usuario.component';
+import { ChatComponent } from './components/paginas/blockly/chat/chat.component';
 
 
 
@@ -58,6 +62,9 @@ import { ReadMoreComponent } from './components/utiles/read-more/read-more.compo
     XmlPipePipe,
     AgregarProblemaComponent,
     ReadMoreComponent,
+    ResolucionesComponent,
+    CodigoUsuarioComponent,
+    ChatComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -70,6 +77,7 @@ import { ReadMoreComponent } from './components/utiles/read-more/read-more.compo
   ],
   providers: [
     TorneosService,
+    BlocklySocketHandler,
     {provide: HTTP_INTERCEPTORS, useClass: InterceptorTokenService, multi: true}
   ],
   bootstrap: [AppComponent],

@@ -45,8 +45,15 @@
 
     <p-footer>
         <div class="p-grid p-justify-center mt-2">
-                <button pButton type="submit" name="Submit" class="" label="Login" (click)="conectar()" icon="pi pi-check"></button>
-
+                <button *ngIf="!loading" pButton type="submit" name="Submit" class="" label="Login" (click)="conectar()" icon="pi pi-check"></button>
+                <button 
+                    pButton
+                    type="submit"
+                    icon="pi pi-spin pi-spinner"
+                    disabled
+                    label="Login"
+                    *ngIf="loading">
+              </button>
         </div>
             <div class="p-grid mt-1">
 

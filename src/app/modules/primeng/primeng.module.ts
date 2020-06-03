@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {StepsModule} from 'primeng/steps';
 
 import {DataViewModule} from 'primeng/dataview';
 import {PanelModule} from 'primeng/panel';
@@ -26,6 +27,9 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { NotifierModule } from "angular-notifier";
+import {EditorModule} from 'primeng/editor';
+import {MenubarModule} from 'primeng/menubar';
+import {SidebarModule} from 'primeng/sidebar';
 
 
 import {FileUploadModule} from 'primeng/fileupload';
@@ -33,6 +37,10 @@ import {FileUploadModule} from 'primeng/fileupload';
 @NgModule({
   declarations: [],
   imports: [
+    SidebarModule,
+    MenubarModule,
+    EditorModule,
+    StepsModule,
     NotifierModule,
     ConfirmDialogModule,
     MultiSelectModule,
@@ -61,6 +69,10 @@ import {FileUploadModule} from 'primeng/fileupload';
     PasswordModule
   ],
   exports:[
+    SidebarModule,
+    MenubarModule,
+    StepsModule,
+    EditorModule,
     ConfirmDialogModule,
     MultiSelectModule,
     SplitButtonModule,

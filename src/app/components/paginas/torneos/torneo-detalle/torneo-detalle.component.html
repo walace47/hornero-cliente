@@ -7,10 +7,13 @@
     <div *ngIf="isLogin()&&torneoUsuario">
         <b >Token: {{torneoUsuario.token}} </b>
         <br>
-        <button pButton type="button" [routerLink]="['/bloques',torneo.idTorneo,torneoUsuario.token]" label="Jugar con Bloques" class="ui-button-rounded ui-button-primary"></button>
+        <button pButton type="button" [routerLink]="['/bloques',torneo.idTorneo,torneoUsuario.token]" label="Jugar con Bloques" class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
     </div>
     <div *ngIf="isLogin()&&!torneoUsuario">
         <button pButton type="button" (click)="inscribirse()" label="Incribirse" class="ui-button-rounded ui-button-primary"></button>
+    </div>
+    <div *ngIf="!isLogin()">
+        <button pButton type="button" (click)="login()" label="Login" class="ui-button-rounded ui-button-primary"></button>
     </div>
     <h1>Participantes</h1>
     <p-table [value]="torneo.torneosUsuarios" [responsive]="true">

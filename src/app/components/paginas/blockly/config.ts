@@ -1,23 +1,14 @@
 export const toolbox = `
-<xml id="toolbox" style="display: none">
+<xml id="toolbox" xmlns="https://developers.google.com/blockly/xml">
       <category name="hornero" colour="#5b6da5">
           <block type="entrada">
-            <value name="Entrada">
+            <value name="entrada">
               <shadow type="math_number">
                  <field name="NUM">0</field>
               </shadow>
             </value>
           </block>
-          <block type="parametro">
-          <value name="parametroNumero">
-            <shadow type="math_number">
-               <field name="NUM">0</field>
-            </shadow>
-          </value>
-
-          parametro
-        </block>
-          <block type="respuesta"></block>
+          <block type="salida"></block>
       </category>
       <category name="Logicos" colour="%{BKY_LOGIC_HUE}">
           <block type="controls_if"></block>

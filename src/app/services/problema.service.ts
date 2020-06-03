@@ -26,4 +26,8 @@ export class ProblemaService {
     return this.http.get<Problema>(this.url+`${id}?relations=${relationsString}&select=${selectString}`)  
   }
 
+  crear(problema:Problema){
+    return this.http.post(this.url,problema).toPromise();
+  }
+
 }

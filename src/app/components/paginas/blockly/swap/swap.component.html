@@ -1,6 +1,4 @@
 
-
-
     <div class="p-grid">
         <div class="p-col" *ngIf="torneo">
             <p-dropdown [options]="torneo.torneosProblemas" [(ngModel)]="selectedProblem" placeholder="Seleccionar problema" optionLabel="problema.nombre" [showClear]="true"></p-dropdown>
@@ -20,7 +18,16 @@
 <div class="p-grid">
     <div class="p-col">
         <div class="shadow mt-1">
-            <p-megaMenu [model]="itemsTab"></p-megaMenu>
+            <p-menubar  [model]="itemsTab">
+                <div class="p-grid">
+
+                    <div  *ngFor="let usuarioConectado of usuariosConectados" class="p-col">
+                            <a [title]="usuarioConectado.nombreUsuario" class="badge" [style.color]="cambiarColor(usuarioConectado.color)" [style.background]="usuarioConectado.color">
+                                {{getfirstLeter(usuarioConectado.nombreUsuario)}}
+                            </a>
+                    </div>
+                </div>
+            </p-menubar >
         </div>
     </div>
 </div>
@@ -48,25 +55,38 @@
                     </textarea>   
                 </p-tabPanel>
                 
-                <p-tabPanel header="Problema">
-                    
-                </p-tabPanel>
+
             </p-tabView>
             
         </div>
         
         </div>
     </div>
-    <form [formGroup]="xmlForm" (ngSubmit)="onSubmit(xmlForm.value)">
-        
-        <textarea pInputTextarea  formControlName="xmlImportado"></textarea>
-        <button 
-        pButton
-        icon="pi pi-check"
-        type="submit"
-        label="Submit"
-        ></button>
-    </form>
     
-    
-    
+
+<p-sidebar [(visible)]="isVisibleChat" position="right" [baseZIndex]="10000">
+    <h3 style="font-weight:normal">Chat</h3>
+    <app-chat></app-chat>
+</p-sidebar>
+
+<p-dialog [responsive]="true" header="Cargar Codigo" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
+    <p-scrollPanel [style]="{width: '100%', height: '300px'}" styleClass="custombar1">
+
+        <app-codigo-usuario></app-codigo-usuario>
+    </p-scrollPanel>
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="displayModal=false" label="Yes"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="displayModal=false" label="No" class="ui-button-secondary"></button>
+        </p-footer>
+</p-dialog>
+
+<p-dialog header="Guardar Xml" [(visible)]="displayGuardar" [modal]="true" [responsive]="true">
+    <span class="ui-float-label mt-2">
+        <input id="float-input-username" [(ngModel)]="nombreCodigoAGuardar"  name="nombreCodigoAGuardar" type="text" pInputText> 
+        <label for="float-input-username">Nombre</label>
+    </span>
+    <p-footer>
+        <button type="button" class="ui-button-success" (click)="displayGuardar=false" pButton icon="pi pi-check" label="Guardar"></button>
+    </p-footer>
+</p-dialog>

@@ -9,11 +9,15 @@ import { environment } from 'src/environments/environment';
     public socket:SocketIOClient.Socket;
     PATH:string = environment.URL_SOCKET;
 
-    constructor(){}
+    constructor(){
+      console.log("conexiones")
+      this.socket = connect(this.PATH)
+
+    }
 
     init(){
         console.log(this.PATH)
-        this.socket = connect(this.PATH)
+        //this.socket = connect(this.PATH)
     }
     
   }

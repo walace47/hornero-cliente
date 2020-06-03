@@ -8,6 +8,6 @@ export class XmlPipePipe implements PipeTransform {
 
   transform(value: string): string {
     return vkbeautify.xml(value);
-}
+  }
 
 }

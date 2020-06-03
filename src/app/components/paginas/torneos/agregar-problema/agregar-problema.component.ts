@@ -77,10 +77,7 @@ export class AgregarProblemaComponent implements OnInit, OnDestroy {
   }
 
   agregar(){
-    console.log(this.problemasTorneoElegidos);
-    console.log(this.problemasSeleccionadoAux);
     this.problemasTorneoElegidos = unionBy(this.problemasTorneoElegidos,this.problemasSeleccionadoAux,"idProblema");
-    console.log(this.problemasTorneoElegidos);
 
     this.problemasOutput.emit(this.problemasTorneoElegidos);
     this.displayDialog = false;

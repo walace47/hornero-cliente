@@ -36,6 +36,8 @@ export class LoginService {
     return true;
   }
 
+
+
    esDuenio(torneo:Torneo){
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) return false;
@@ -43,6 +45,11 @@ export class LoginService {
     if(!torneo.creador) return false;
     if(torneo.creador.idUsuario !== usuario.usuario.idUsuario) return false;
     return true;
+  }
+
+  getUsuario(){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    return usuario.token;
   }
 
   isAdmin(){

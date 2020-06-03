@@ -1,7 +1,7 @@
 import { TipoProblema } from "./TipoProblema";
 import { Complejidad } from "./Complejidad";
 import { Resolucion } from "./Resolucion";
-import { solucion } from "./Solucion";
+import { Solucion } from "./Solucion";
 import { TorneoProblema } from "./TorneoProblema";
 import {Etiqueta} from './Etiqueta';
 
@@ -14,7 +14,7 @@ export interface Problema {
   complejidad?: Complejidad | null;
   tiempoEjecucionMax?: number;
   resoluciones?: Resolucion[];
-  soluciones?: solucion[];
+  soluciones?: Solucion[];
   torneoproblemas?: TorneoProblema[];
   etiquetas?:Etiqueta[];
 }

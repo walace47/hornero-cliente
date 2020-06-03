@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <p-splitButton class="p-col-fixed p-sm p-md p-lg" *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label="Acciones" (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-warning" icon="pi pi-list"  [model]="torneoMapItems[torneo.idTorneo]"></p-splitButton>
+            <p-splitButton (onClick)=navegarTorneoDetalle(torneo.idTorneo) class="p-col-fixed p-sm p-md p-lg" *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label="Acciones" (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-info" icon="pi pi-list"  [model]="torneoMapItems[torneo.idTorneo]"></p-splitButton>
     </div>
     </div>
 </ng-template>

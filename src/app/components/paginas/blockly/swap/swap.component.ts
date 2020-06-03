@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TorneosService } from 'src/app/services/torneos.service';
 import { Torneo } from 'src/app/model/Torneo';
@@ -10,12 +10,16 @@ import { JugarService } from 'src/app/services/jugar.service';
 import { EntradaJuego,RespuestaJuego } from 'src/app/model/Jugar';
 import { NotifierService } from 'angular-notifier';
 import { environment } from 'src/environments/environment'
+import {js as jsPritier} from 'js-beautify'
+import { BlocklySocketHandler } from 'src/app/services/blocklySocketHandler.service';
+import invert from 'invert-color';
+import { CodigoUsuarioService } from 'src/app/services/codigo-usuario.service';
 
 @Component({
   selector: 'app-swap',
   templateUrl: './swap.component.html',
   styleUrls: ['./swap.component.css'],
-  providers:[TorneosService,JugarService,NotifierService]
+  providers:[TorneosService,JugarService,NotifierService,CodigoUsuarioService]
 })
 export class SwapComponent implements OnInit {
   items: MenuItem[];
@@ -31,18 +35,26 @@ export class SwapComponent implements OnInit {
   public xmlForm:FormGroup;
   public torneo:Torneo;
   private suscripciones:Subscription[] = [];
-
-
+  public isVisibleChat:boolean = false;
+  public usuariosConectados: usuarioSala[];
   public token: string;
-  problemas: any[] = [{name:"1"},{name:"2"},{name:"3"},{name:"4"}]
+  public displayModal:boolean = false;
+  public displayGuardar = false;
+  public nombreCodigoAGuardar = ""
 
 
   constructor(
+    private codigoService:CodigoUsuarioService,
     private fb: FormBuilder,
     private _torneoService:TorneosService,
     private _jugarService:JugarService,
     private notifier:NotifierService,
-    private activeRoute: ActivatedRoute) { }
+    private activeRoute: ActivatedRoute,
+    private _blocklySocket: BlocklySocketHandler,
+    ){ 
+ 
+      this._blocklySocket.socket.on('getUsuarios',(data:usuarioSala[]) => {this.usuariosConectados = data;})
+    }
 
 
   ngOnInit(): void {
@@ -56,8 +68,13 @@ export class SwapComponent implements OnInit {
     ))
 
     this.itemsTab = [
-      {label:"Guardar", icon:"pi pi-pw pi-save",},
-      {label:"Cargar", icon:"pi pi-pw pi-upload", items:[[{label:"Saves",items:[{label:"cargar1"}]}]]},
+      {label:"Guardar", icon:"pi pi-pw pi-save",command:()=>{
+        this.displayGuardar = true
+      }},
+      {label:"Cargar", icon:"pi pi-pw pi-upload",command:()=>{
+        this.displayModal = true
+      }},
+      {separator:true},
       {label:"Ejecutar", icon:"pi pi-pw pi-play", command: () => {
         this.ejecutarServidor()
           .then(() =>{})
@@ -66,18 +83,23 @@ export class SwapComponent implements OnInit {
       {label:"Ejecutar Local", icon:"pi pi-pw pi-play",command:()=>{
         this.ejecutarLocal();  
       }},
+      {separator:true},
+      {label:"Chat", icon:"pi pi-pw pi-comment", command:()=>{
+        this.isVisibleChat = true
+      }},
+
 
     ]
     this.items = [
       {label: 'Bloques', icon: 'pi pi-fw pi-home'},
       {label: 'Javascript', icon: 'pi pi-fw pi-calendar'},
       {label: 'Xml', icon: 'pi pi-fw pi-pencil'},
-      {label:'Problema',icon:''}
   ];
 
   this.xmlForm = this.fb.group({
     'xmlImportado': new FormControl(''),
   })
+
   }
 
   onSubmit(value:any){
@@ -90,9 +112,15 @@ export class SwapComponent implements OnInit {
     js = js || null;
     xml = xml || null;
     //console.log(js);
-    this.codeJs = js;
+    this.codeJs = jsPritier(js);
     this.codeXml = xml;
    // console.log(this.codeXml)
+  }
+  cambiarColor(color){
+    return invert(color,true)
+  }
+  getfirstLeter(text:string = ""){
+    return text.charAt(0).toUpperCase()
   }
 
   evaluar(){
@@ -166,4 +194,16 @@ export class SwapComponent implements OnInit {
     }
   }
 
+}
+interface blockHandler {
+  token: string;
+  xml: string;
+  usuario?:string;
+  usuariosConectados?: usuarioSala[]
+}
+
+interface usuarioSala {
+  nombreUsuario?:string,
+  color?:string,
+  bloqueSeleccionado?:string
 }

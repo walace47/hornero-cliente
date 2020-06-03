@@ -1,28 +1,28 @@
-import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectItem } from 'primeng/api/selectitem';
 import { MultiSelect } from 'primeng/multiselect/multiselect';
+import { Problema } from 'src/app/model/Problema';
+import { ProblemaService } from 'src/app/services/problema.service';
 
 @Component({
   selector: 'app-problemas',
   templateUrl: './problemas.component.html',
   styleUrls: ['./problemas.component.css']
 })
-export class ProblemasComponent implements OnInit,AfterViewInit {
+export class ProblemasComponent implements OnInit {
+
+  public problemas:Problema[] = [];
 
 
+
+  //componentes a borrar//////////////////
   @ViewChild("ms") ms:MultiSelect;
-
   cars: SelectItem[];
-
   selectedCars1: string[] = [];
-
-  selectedCars2: string[] = [];
-
   items: SelectItem[];
-
   item: string;
-
-  constructor() {
+/////////////////////////////////////
+  constructor(private _problemaService:ProblemaService) {
       this.cars = [
           {label: 'Audi', value: 'Audi'},
           {label: 'BMW', value: 'BMW'},
@@ -42,18 +42,24 @@ export class ProblemasComponent implements OnInit,AfterViewInit {
       }
   }
 
-  ngAfterViewInit():void{    
-  }
+ 
+
 
   ngOnInit(): void {
+    this._problemaService.getAll().toPromise()
+      .then((problemas:Problema[]) => this.problemas = problemas)
+      .catch(error => console.error(error));
+      
   }
   onChangeTest(event1){ 
     let elemento = this.ms.filterInputChild.nativeElement.value 
+    //Controlar que la etiqueta  
     if(elemento){
 
       console.log(this.ms.filterInputChild.nativeElement.value )
       this.cars.push({label:elemento,value:elemento});
-      this.selectedCars2.push(elemento);
+      
+      //this.selectedCars2.push(elemento);
       
       console.log(event1)
     }

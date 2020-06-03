@@ -3,3 +3,32 @@
     position:absolute;
     align-content: right;
 }
+
+.circulo {
+    width: 35px;
+    height: 35px;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    font-size: 50px;
+    color: #fff;
+    line-height: 500px;
+    text-align: center;
+}
+.badge {
+    height: 30px;
+    width: 30px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    border-radius: 50%; /* may require vendor prefixes */
+  }
+.derecha {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    right: 400px;
+    z-index:9999
+
+}

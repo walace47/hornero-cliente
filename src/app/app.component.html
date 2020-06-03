@@ -1,22 +1,17 @@
 <!--div style="background-color:#F1FEFF;
   "-->
 
-  <p-messages key="c"  [(value)]="mensaje.mensajes" ></p-messages>
 
   <div style="background-color:  #F6F3E7;">
     <app-navbar ></app-navbar>
 
 
-    <div class="container-sm container-md container-lg main-container">
-      <div class="pt-3">
-        <p-messages key="c"  [(value)]="mensaje.mensajes" ></p-messages>
-        <p-toast ></p-toast>
+      <div class="p-5">
 
-  <notifier-container></notifier-container>
+        <notifier-container></notifier-container>
       
         <router-outlet></router-outlet>
       </div>
-    </div>
     
     <div *ngIf="false">
       <div class="pt-3"> 

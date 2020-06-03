@@ -35,12 +35,15 @@ import * as javascript from "blockly/javascript";
 import { toolbox } from "../config";
 import { BlocklySocketHandler } from "src/app/services/blocklySocketHandler.service";
 import { ActivatedRoute } from "@angular/router";
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: "app-blockly",
   templateUrl: "./blockly.component.html",
   styleUrls: ["./blockly.component.css"],
-  providers: [BlocklySocketHandler],
+  providers: [
+    LoginService],
 })
 export class BlocklyComponent implements OnInit, AfterContentInit {
   space: Blockly.WorkspaceSvg;
@@ -49,6 +52,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
   toolbox: any;
   private eventChangeHandler: boolean = false;
   recive: boolean = false;
+  public color:string;
   @Output() mostrarJavascript = new EventEmitter();
 
   @Input()
@@ -62,10 +66,12 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
 
   constructor(
     private _blocklySocket: BlocklySocketHandler,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private loginService: LoginService
   ) {
     this.toolbox = toolbox;
   }
+  
   ngOnInit() {
     this.token = this.activeRoute.snapshot.paramMap.get("idToken");
 
@@ -79,79 +85,110 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
     const mensaje: blockHandler = {
       token: this.token,
       xml: "",
+      usuario: this.loginService.getUsuario()
     };
 
-    this._blocklySocket.init();
+    //this._blocklySocket.init();
+    this._blocklySocket.socket.on("actualizarBloque",(data:marcaControler) => {
+      const block = this.space.getBlockById(data.idBloque);
+      const marker = new Blockly.Marker();
+      const node = Blockly.ASTNode.createBlockNode(block);
+      marker.colour = data.color;
+      this.space.getMarkerManager().registerMarker(data.idMarca,marker);
+      marker.setCurNode(node);
+
+    })
+    
+    this._blocklySocket.socket.on("getColor",(color:string)=>{
+      this.color = color;
+    })
+    
     this._blocklySocket.socket.emit("conexionBloques", mensaje);
+    
     this._blocklySocket.socket.on("updateXml", (data: blockHandler) => {
-      this.recive = true;
-      console.log(this.recive);
+      //this.recive = true;
+      Blockly.Events.disable();
+      //console.log(this.recive);
       let xmlAux = Blockly.Xml.workspaceToDom(this.space);
       let xml_text = Blockly.Xml.domToText(xmlAux);
 
-      if (xml_text !== data.xml) {
+      let js = javascript.workspaceToCode(this.space);
+      this.mostrarJavascript.emit({ js, xml: xml_text });
+      if (xml_text !== data.xml && data.xml != "") {
         let xml = Blockly.Xml.textToDom(data.xml);
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(xml, this.space);
+        let xml_text = Blockly.Xml.domToText(xmlAux);
+
+        let js = javascript.workspaceToCode(this.space);
+        this.mostrarJavascript.emit({ js, xml: xml_text });
       }
+      Blockly.Events.enable();
+      this._blocklySocket.socket.emit("getAllSelects",mensaje);
+
     });
 
     this.space = Blockly.inject(this.blocklyDiv, {
       readOnly: false,
       move: {
+        media: 'media/',
         scrollbars: true,
         drag: true,
         wheel: true,
       },
+      zoom: {controls: true},
       toolbox,
     } as Blockly.BlocklyOptions);
-    console.log(this.space);
   }
 
   ngAfterContentInit() {
     const changeWordkSpaceListener = (event) => {
-      console.log(event);
-
       let js = javascript.workspaceToCode(this.space);
       let xml = Blockly.Xml.workspaceToDom(this.space);
       let xml_text = Blockly.Xml.domToText(xml);
       this.mostrarJavascript.emit({ js, xml: xml_text });
-      if (event.element == "dragStop" || event.type === Blockly.Events.DELETE) {
-        const mensaje: blockHandler = {
-          token: this.token,
-          xml: xml_text,
-        };
-        if (!this.recive) {
-          this._blocklySocket.socket.emit("updateXml", mensaje);
-        }
-      }
-      //Este evento se demora un poco la transmision para no saturar los cambios
-      if (event.type === Blockly.Events.CHANGE) {
-        if (!this.eventChangeHandler) {
-          this.eventChangeHandler = true;
-          setTimeout(() => {
-            const mensaje: blockHandler = {
+
+
+      if (event.type !== Blockly.Events.UI &&
+        event.type !== Blockly.Events.CREATE){
+          const mensaje: blockHandler = {
+            token: this.token,
+            xml: xml_text,
+            usuario: this.loginService.getUsuario()
+         };
+         
+         this._blocklySocket.socket.emit("updateXml", mensaje);
+    }else{
+      if(event.type == Blockly.Events.UI){
+        if (event.element == 'selected') {
+
+            const block = this.space.getBlockById(event.newValue);
+
+            const marker = new Blockly.Marker();
+            const node = Blockly.ASTNode.createBlockNode(block);
+            marker.colour = this.color;
+            this.space.getMarkerManager().registerMarker(this.space.id,marker);
+            marker.setCurNode(node);
+            let mensaje:blockHandler = {
+              bloqueMarca:event.newValue,
               token: this.token,
-              xml: xml_text,
-            };
-            this._blocklySocket.socket.emit("updateXml", mensaje);
-            this.eventChangeHandler = false;
-          }, 500);
+              usuario: this.loginService.getUsuario(),
+              idMarca:this.space.id
+            }
+            this._blocklySocket.socket.emit("seleccionarBloque",mensaje)
         }
       }
-      if (this.recive && event.type === Blockly.Events.FINISHED_LOADING) {
-        this.recive = false;
-      }
+    }
     };
-    this.space.addChangeListener(changeWordkSpaceListener);
+  this.space.addChangeListener(changeWordkSpaceListener);
   }
 
   generateHorneroElements() {
-    Blockly.Blocks["respuesta"] = {
+    Blockly.Blocks["salida"] = {
       init: function () {
-        this.appendValueInput("respuesta")
+        this.appendValueInput("salida")
           .setCheck(null)
-          .appendField("respuesta");
+          .appendField("Salida");
         this.setPreviousStatement(true, null);
 
         this.setColour(230);
@@ -160,21 +197,9 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
       },
     };
 
-    Blockly.Blocks["retorna"] = {
-      init: function () {
-        this.appendValueInput("respuesta")
-          .setCheck(null)
-          .appendField("Retorna");
-        this.setPreviousStatement(true, null);
-        this.setColour(230);
-        this.setTooltip("Salida");
-        this.setHelpUrl("Salida");
-      },
-    };
-
     Blockly.Blocks["entrada"] = {
       init: function () {
-        this.appendValueInput("Entrada")
+        this.appendValueInput("entrada")
           .setCheck("Number")
           .appendField("Entrada");
         this.setOutput(true, null);
@@ -199,52 +224,28 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
   }
 
   configJavascript() {
-    javascript["parametro"] = function (block) {
-      var value_parametronumero = javascript.valueToCode(
-        block,
-        "parametroNumero",
-        javascript.ORDER_ATOMIC
-      );
-      // TODO: Assemble JavaScript into code variable.
-      var code = "parseInt(entrada(" + value_parametronumero + "))";
-      // TODO: Change ORDER_NONE to the correct strength.
-      return [code, javascript.ORDER_NONE];
-    };
-
-    javascript["respuesta"] = function (block) {
+    
+    javascript["salida"] = function (block) {
       var value_respuesta = javascript.valueToCode(
         block,
-        "respuesta",
+        "salida",
         javascript.ORDER_ATOMIC
       );
       // TODO: Assemble JavaScript into code variable.
-      var code = "respuesta =" + value_respuesta;
+      var code = "salida =" + value_respuesta+"\n";
       return code;
     };
 
     // debería tener dos funcionalidades asignar a respuesta y si no escribe la salida
 
-    javascript["retorna"] = function (block) {
-      var value_respuesta = javascript.valueToCode(
-        block,
-        "respuesta",
-        javascript.ORDER_ATOMIC
-      );
-      // TODO: Assemble JavaScript into code variable.
-      var code = "respuesta =" + value_respuesta;
-      return code;
-    };
-
-    // debería tener dos funcionalidades acceder al valor de parámentro o leer un valor
-
     javascript["entrada"] = function (block) {
       var value_entrada = javascript.valueToCode(
         block,
-        "Entrada",
+        "entrada",
         javascript.ORDER_ATOMIC
       );
       // TODO: Assemble JavaScript into code variable.
-      var code = "entrada(" + value_entrada + ")"; //parseInt(parametros['+value_entrada+'])';
+      var code = "entrada(" + value_entrada + ")"+"\n"; //parseInt(parametros['+value_entrada+'])';
       // TODO: Change ORDER_NONE to the correct strength.
       return [code, javascript.ORDER_NONE];
     };
@@ -252,6 +253,22 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
 }
 
 interface blockHandler {
-  token: string;
-  xml: string;
+  token?:string,
+  xml?:string,
+  usuario?:string,
+  usuariosConectados?: usuarioSala[],
+  idMarca?:string,
+  bloqueMarca?:string,
+}
+
+interface marcaControler {
+  idBloque:string,
+  idMarca:string,
+  color:string
+}
+
+interface usuarioSala {
+  nombreUsuario?:string,
+  color?:string,
+  bloqueSeleccionado?:string
 }

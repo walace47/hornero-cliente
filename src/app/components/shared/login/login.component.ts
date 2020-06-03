@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   public error:boolean;
   @Input("display") public display:boolean
   @Output() displayChange = new EventEmitter();
+  public loading = false;
 
 
   constructor(private loginService:LoginService) {
@@ -22,17 +23,24 @@ export class LoginComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    
   }
 
   conectar(){
+    this.loading = true;
+
     this.loginService.login(this.usuario,this.pass).subscribe(
       (usuario:UsuarioConectado) => {
         this.error = false
         localStorage.setItem("usuario",JSON.stringify(usuario));
+        this.loading = false;
         location.reload();
         this.display = false
       },
-      error => this.error = true
+      error => {
+        this.loading = false;
+        this.error = true;
+      }
     )
       this.usuario = "";
       this.pass = "";

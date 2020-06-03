@@ -68,6 +68,11 @@ export class TorneoDetalleComponent implements OnInit,OnDestroy {
         .catch(error => console.log(error));
     }
   }
+
+  login(){
+    console.log("login")
+    this._loginService.setDisplay(true);
+  }
   
 
 

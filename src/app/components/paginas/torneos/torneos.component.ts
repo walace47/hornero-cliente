@@ -157,7 +157,9 @@ export class TorneosComponent implements OnInit {
     console.log(this.dv.filteredValue)
     this.estadoFilter(this.sortKeyEstado, this.dv.filteredValue)
   }
-
+  navegarTorneoDetalle(idTorneo:number){
+    this.router.navigate(['/torneos',idTorneo]);
+  }
   estadoFilter(value: string, listaAFiltrar:any[] = this.dv.value ) {
     //El dataview tiene informacion
     if (this.dv.value && this.dv.value.length) {
