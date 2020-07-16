@@ -73,11 +73,11 @@
     [draggable]="false" [resizable]="false">
     <p-scrollPanel [style]="{width: '100%', height: '300px'}" styleClass="custombar1">
 
-        <app-codigo-usuario></app-codigo-usuario>
+        <app-codigo-usuario [codigos]="codigosUsuarios"></app-codigo-usuario>
     </p-scrollPanel>
         <p-footer>
-            <button type="button" pButton icon="pi pi-check" (click)="displayModal=false" label="Yes"></button>
-            <button type="button" pButton icon="pi pi-times" (click)="displayModal=false" label="No" class="ui-button-secondary"></button>
+            <button type="button" pButton icon="pi pi-check" (click)="displayModal=false" label="Cargar"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="displayModal=false" label="Cancelar" class="ui-button-secondary"></button>
         </p-footer>
 </p-dialog>
 
@@ -87,6 +87,6 @@
         <label for="float-input-username">Nombre</label>
     </span>
     <p-footer>
-        <button type="button" class="ui-button-success" (click)="displayGuardar=false" pButton icon="pi pi-check" label="Guardar"></button>
+        <button type="button" class="ui-button-success" (click)="guardarXml()" pButton icon="pi pi-check" label="Guardar"></button>
     </p-footer>
 </p-dialog>

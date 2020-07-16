@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import {Message} from 'primeng/api';
-import { DiplayerMessageService } from './services/diplayer-message.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +12,13 @@ export class AppComponent implements OnDestroy {
   public msgs: Message[] = [];
   private suscription:Subscription[] = [];
   title = 'hornero-cliente';
-  constructor(private messageService: MessageService,public mensaje:DiplayerMessageService){
+  
+  constructor(
+    private messageService: MessageService,
+  ){
     this.suscription.push(
       this.messageService.messageObserver.subscribe(
-        (mensaje:Message) => {console.log("mensaje23123");this.msgs.push(mensaje)},
+        (mensaje:Message) => this.msgs.push(mensaje),
         (error) => console.log(error))
       )
   }

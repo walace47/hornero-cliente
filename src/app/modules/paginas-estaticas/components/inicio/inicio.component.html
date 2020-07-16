@@ -1,0 +1,23 @@
+<div  class="animated fadeIn">
+  <div class="row pt-4" *ngIf="!isLogin()">
+    <div class="col-sm  align-self-center">
+      <h1>Bienvenidos !!!!!</h1>
+      <h2>Al torneo de programacion Hornero</h2>
+      <button type="button" class="btn btn-secondary">Empezar a jugar</button>
+      <p class="pt-3">
+        Se puede programar/competir con cualquier lenguaje" java, python, php,
+        c, c++, pascal, javascript, c#, ciao-prolog, perl, bash, lisp, ruby,
+        smalltalk, PSeInt, ..... cualquier lenguaje.
+      </p>
+    </div>
+    <div class="col-sm">
+      <img class="imgTam" src="./assets/img/prismazorzal2naranja.png" alt="" />
+    </div>
+  </div>
+
+
+  <div *ngIf="isLogin()">
+    <h2>Mis torneos</h2>
+    <app-torneos cantRows="5" [userTorneo]="true" ></app-torneos>
+</div>
+</div>

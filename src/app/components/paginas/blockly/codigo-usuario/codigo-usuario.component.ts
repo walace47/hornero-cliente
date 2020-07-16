@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CodigoUsuarioService } from 'src/app/services/codigo-usuario.service';
 
 @Component({
@@ -8,19 +8,22 @@ import { CodigoUsuarioService } from 'src/app/services/codigo-usuario.service';
   providers:[]
 })
 export class CodigoUsuarioComponent implements OnInit {
-  public test:string[] = [];
+  @Input() public codigos:string[] = [];
   constructor() { 
+    
 
-    for (let i = 0; i < 500; i++){
-      this.test.push("1")
+  }
+  doubleClick(codigo){
+    console.log(codigo)
+  }
+
+  achicarTexto(texto:string){
+    if(texto.length < 10){
+      return texto
+    }else{
+      return texto.substring(0, 10) + "...";
+
     }
-  }
-  doubleClick(){
-    console.log("hola mundo")
-  }
-
-  achicarTexto(texto){
-    return texto.substring(0, 10) + "...";
 
   }
 

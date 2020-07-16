@@ -35,8 +35,8 @@ import * as javascript from "blockly/javascript";
 import { toolbox } from "../config";
 import { BlocklySocketHandler } from "src/app/services/blocklySocketHandler.service";
 import { ActivatedRoute } from "@angular/router";
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { LoginService } from 'src/app/services/login.service';
+import { UsuarioService } from 'src/app/modules/usuario/services/usuario.service';
+import { LoginService } from 'src/app/modules/shared/service/login.service';
 
 @Component({
   selector: "app-blockly",
@@ -76,19 +76,20 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
     this.token = this.activeRoute.snapshot.paramMap.get("idToken");
 
     this.blocklyDiv = document.getElementById("blocklyDiv");
-    console.log(this.blocklyDiv);
     this.generateHorneroElements();
     this.configJavascript();
     Blockly.setLocale(es);
 
-    /* Inicializacion  socket*/
     const mensaje: blockHandler = {
       token: this.token,
       xml: "",
       usuario: this.loginService.getUsuario()
     };
+    //Se conecta a la sala
+    this._blocklySocket.socket.emit("conexionBloques", mensaje);
 
-    //this._blocklySocket.init();
+
+    //Suscribe al evento actualizar bloque que actualiza los marcadores de los bloques
     this._blocklySocket.socket.on("actualizarBloque",(data:marcaControler) => {
       const block = this.space.getBlockById(data.idBloque);
       const marker = new Blockly.Marker();
@@ -99,21 +100,21 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
 
     })
     
+    //suscribe al evento para obtener el color del usuario
     this._blocklySocket.socket.on("getColor",(color:string)=>{
       this.color = color;
     })
-    
-    this._blocklySocket.socket.emit("conexionBloques", mensaje);
-    
-    this._blocklySocket.socket.on("updateXml", (data: blockHandler) => {
-      //this.recive = true;
-      Blockly.Events.disable();
-      //console.log(this.recive);
-      let xmlAux = Blockly.Xml.workspaceToDom(this.space);
-      let xml_text = Blockly.Xml.domToText(xmlAux);
 
-      let js = javascript.workspaceToCode(this.space);
-      this.mostrarJavascript.emit({ js, xml: xml_text });
+    
+    //suscribe al evento que Actualiza el xml del espacio de trabajo
+    this._blocklySocket.socket.on("updateXml", (data: blockHandler) => {
+      //Se desabilitan eventos de los bloques mientras recibe la data
+      Blockly.Events.disable();
+      //se obtiene los bloques del espacio de trabajo
+      let xmlAux = Blockly.Xml.workspaceToDom(this.space);
+      //casteo a string
+      let xml_text = Blockly.Xml.domToText(xmlAux);
+      
       if (xml_text !== data.xml && data.xml != "") {
         let xml = Blockly.Xml.textToDom(data.xml);
         Blockly.mainWorkspace.clear();
@@ -124,6 +125,12 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
         this.mostrarJavascript.emit({ js, xml: xml_text });
       }
       Blockly.Events.enable();
+    
+      xml_text = Blockly.Xml.domToText(xmlAux);
+      let js = javascript.workspaceToCode(this.space);
+      //emite al componente padre el java script y xml nuevo 
+      this.mostrarJavascript.emit({ js, xml: xml_text });
+      //pide a demanda los marcadores, ya que la actualizacion los borra
       this._blocklySocket.socket.emit("getAllSelects",mensaje);
 
     });
@@ -142,13 +149,15 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
+    //Listener de eventos del estapacio de trabajo
     const changeWordkSpaceListener = (event) => {
+      //Si hay un cambio se actualiza al componente padre
       let js = javascript.workspaceToCode(this.space);
       let xml = Blockly.Xml.workspaceToDom(this.space);
       let xml_text = Blockly.Xml.domToText(xml);
       this.mostrarJavascript.emit({ js, xml: xml_text });
 
-
+      //Si no es del tipo ui y no es create entonces actualiza todos los espacios de trabajo
       if (event.type !== Blockly.Events.UI &&
         event.type !== Blockly.Events.CREATE){
           const mensaje: blockHandler = {
@@ -159,6 +168,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
          
          this._blocklySocket.socket.emit("updateXml", mensaje);
     }else{
+      //sino si ui y se esta seleccionando un elemento actualizo los marcadores en los espacios de trabajo
       if(event.type == Blockly.Events.UI){
         if (event.element == 'selected') {
 
@@ -180,9 +190,12 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
       }
     }
     };
-  this.space.addChangeListener(changeWordkSpaceListener);
+    //Se suscribe la funcion definida anteriormente
+    this.space.addChangeListener(changeWordkSpaceListener);
   }
 
+
+  //Genera la estructura de los bloques personalizados
   generateHorneroElements() {
     Blockly.Blocks["salida"] = {
       init: function () {
@@ -190,7 +203,6 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
           .setCheck(null)
           .appendField("Salida");
         this.setPreviousStatement(true, null);
-
         this.setColour(230);
         this.setTooltip("");
         this.setHelpUrl("");
@@ -209,20 +221,10 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
       },
     };
 
-    Blockly.Blocks["parametro"] = {
-      init: function () {
-        this.appendValueInput("parametroNumero")
-          .setCheck("Number")
-          .appendField("Parámetro Número");
-        this.setOutput(true, null);
-
-        this.setColour(230);
-        this.setTooltip("Parámetro de hornero");
-        this.setHelpUrl("");
-      },
-    };
   }
 
+
+  // configura la compilacion a ajava script de los bloques personalizados
   configJavascript() {
     
     javascript["salida"] = function (block) {

@@ -62,6 +62,11 @@
   } 
 }
 
+.imgTam {
+    width: 455px;
+    height: 455px;
+} 
+
 
 .car-details {
     display: flex;

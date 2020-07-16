@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TorneosService } from 'src/app/services/torneos.service';
+import { TorneosService } from 'src/app/modules/torneo/services/torneos.service';
 import { Torneo } from 'src/app/model/Torneo';
 import { Subscription } from 'rxjs';
 import { TorneoProblema } from 'src/app/model/TorneoProblema';
@@ -14,25 +14,33 @@ import {js as jsPritier} from 'js-beautify'
 import { BlocklySocketHandler } from 'src/app/services/blocklySocketHandler.service';
 import invert from 'invert-color';
 import { CodigoUsuarioService } from 'src/app/services/codigo-usuario.service';
+import { CodigoUsuario } from 'src/app/model/CodigoUsuario';
+import {UsuarioService} from 'src/app/modules/usuario/services/usuario.service'
 
 @Component({
   selector: 'app-swap',
   templateUrl: './swap.component.html',
   styleUrls: ['./swap.component.css'],
-  providers:[TorneosService,JugarService,NotifierService,CodigoUsuarioService]
+  providers:[
+    TorneosService,
+    JugarService,
+    NotifierService,
+    CodigoUsuarioService,
+    UsuarioService
+    ]
 })
 export class SwapComponent implements OnInit {
-  items: MenuItem[];
+  public items: MenuItem[];
   public environment = environment;
   public codeJs:string = null;
   public codeXml:string = null;
-  itemsTab: MenuItem[];
+  public itemsTab: MenuItem[];
   public selectedProblem:TorneoProblema;
-  public valorEntrada:number;
-  public resultado = 0;
+  //public valorEntrada:number;
+  //public resultado = 0;
   public xmlNuevo = "";
-  public displayResultado = false;
-  public xmlForm:FormGroup;
+  //public displayResultado = false;
+ // public xmlForm:FormGroup;
   public torneo:Torneo;
   private suscripciones:Subscription[] = [];
   public isVisibleChat:boolean = false;
@@ -41,7 +49,7 @@ export class SwapComponent implements OnInit {
   public displayModal:boolean = false;
   public displayGuardar = false;
   public nombreCodigoAGuardar = ""
-
+  public codigosUsuarios:CodigoUsuario[] = [];
 
   constructor(
     private codigoService:CodigoUsuarioService,
@@ -51,6 +59,7 @@ export class SwapComponent implements OnInit {
     private notifier:NotifierService,
     private activeRoute: ActivatedRoute,
     private _blocklySocket: BlocklySocketHandler,
+    private _usuarioService: UsuarioService
     ){ 
  
       this._blocklySocket.socket.on('getUsuarios',(data:usuarioSala[]) => {this.usuariosConectados = data;})
@@ -58,12 +67,15 @@ export class SwapComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this._usuarioService.getCodigos()
+      .then(codigos => this.codigosUsuarios = codigos)
+      .catch(error => console.log(error))
     this.token = this.activeRoute.snapshot.paramMap.get("idToken");
     const idTorneo = this.activeRoute.snapshot.paramMap.get("idTorneo");
 
     const relations = ["torneosProblemas","torneosProblemas.problema"]
     this.suscripciones.push(this._torneoService.get(idTorneo,relations).subscribe(
-      (torneo:Torneo) => {this.torneo = torneo; console.log(torneo)},
+      (torneo:Torneo) => this.torneo = torneo,
       (error:any) => console.log(error)
     ))
 
@@ -96,27 +108,34 @@ export class SwapComponent implements OnInit {
       {label: 'Xml', icon: 'pi pi-fw pi-pencil'},
   ];
 
-  this.xmlForm = this.fb.group({
+  /*this.xmlForm = this.fb.group({
     'xmlImportado': new FormControl(''),
-  })
+  })*/
 
   }
+  //Guarda el xml en la base de datos
+  guardarXml(){
+    const nuevoCodigo:CodigoUsuario = {
+      nombre:this.nombreCodigoAGuardar,
+      codigo:this.codeXml,
 
-  onSubmit(value:any){
-    console.log(typeof value.xmlImportado);
-    this.xmlNuevo = value.xmlImportado;
+    }
+    this.codigoService.save(nuevoCodigo)
+      .then(res => console.log(res))
+      .catch(error => console.log(error))
+    this.displayGuardar = false
   }
-
+  //actualiza la solapa de js y xml, esta funcion la emite desde el componente hijo
   mostrarJs({js,xml}){
 
     js = js || null;
     xml = xml || null;
-    //console.log(js);
     this.codeJs = jsPritier(js);
     this.codeXml = xml;
-   // console.log(this.codeXml)
   }
-  cambiarColor(color){
+
+  //invierte el color recibido en negro o blanco para mejor contraste
+  cambiarColor(color:string){
     return invert(color,true)
   }
   getfirstLeter(text:string = ""){
@@ -129,68 +148,92 @@ export class SwapComponent implements OnInit {
   }
 
 
+  //Ejecuta sobre el servidor el codigo escrito en los bloques
   async ejecutarServidor(){
     try{
-
+      //Ejecuta solo si hay un codigo javascript
       if(this.codeJs){
-        let respuesta;
+        //Def variable salida del programa
+        let salida;
+        //arreglo de parametros donde se van a cargar los parametros recibidos en el servidor
         let parametros = [];
-        console.log(this.selectedProblem)
+        //Sino tiene ningun problema seleccionado
         if(!this.selectedProblem){
           this.notifier.notify("error",`Seleccione un problema porfavor`);
           return false
         }
+        //Pide los parametros de entrada para comepetir
         let entradaJuego:EntradaJuego = await this._jugarService.obtenerParametrosEntrada(this.selectedProblem.orden,this.token);
-        console.log(entradaJuego);
+        
         parametros = entradaJuego.parametrosEntrada.split(",");
+        //Se define la funcion entrada que hace el manejo del bloque entrada.
         let entrada = (i:number) =>{
           if(!parametros[i] && parametros[i] != 0){
             parametros[i] =  window.prompt('Entrada '+ i);
-            return parametros[i];
+            if( !isNaN(parametros[i]) ){
+              return Number(parametros[i]);
+            }else{
+              return parametros[i];
+            }
           }else{
-            return parametros[i];
+            if( !isNaN(parametros[i]) ){
+              return Number(parametros[i]);
+            }else{
+              return parametros[i];
+            }  
           }
         }
+        //Evalua el codigo en los bloques
         eval(this.codeJs);
+        //captura la respuesta en la variable salida
         const respuestaJuego:RespuestaJuego = {
-          respuesta,
+          respuesta:salida,
           token:entradaJuego.token
         };
+        //responde al servidor
         const res = await this._jugarService.enviarRespuesta(respuestaJuego);
         if(res.idEstado === 2 ){ 
           this.notifier.notify("success",`resultado:${res.estado}`);
         }else if(res.idEstado === 100){
           this.notifier.notify("info","Felicidades a recibido un punto")
+        }else if(res.idEstado === 10){
+          this.notifier.notify("info","La respuesta es correcta pero ya a ganado el punto del problema")
         }
         else{
           this.notifier.notify("error",`resultado:${JSON.stringify(res)}`);
         }
       }
       return true;
-
     }catch(error){
-      console.log(error);
       this.notifier.notify("error","Ubo un error al conectarse con el servidor")
     }
   }
-
+//Ejecuta de manera local el codigo que hay en los bloques
   ejecutarLocal(){
     if(this.codeJs){
-      let respuesta;
+      let salida;
       let parametros = [];
 
       let entrada = (i:number) =>{
         if(!parametros[i] && parametros[i] != 0){
           //this.displayEntrada = true;
           parametros[i] =  window.prompt('Entrada '+ i);
-          return parametros[i];
+          if( !isNaN(parametros[i]) ){
+            return Number(parametros[i]);
+          }else{
+            return parametros[i];
+          }
         }else{
-          return parametros[i];
+          if( !isNaN(parametros[i]) ){
+            return Number(parametros[i]);
+          }else{
+            return parametros[i];
+          }
         }
       }
       eval(this.codeJs)
-      window.alert("La respuesta es: " + respuesta);
-      console.log(respuesta)
+      window.alert("La respuesta es: " + salida);
+      console.log(salida)
     }
   }
 

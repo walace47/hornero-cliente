@@ -3,6 +3,7 @@ import { Lenguaje } from "./Lenguaje";
 import { CambioClave } from "./CambioClave";
 import { Resolucion } from "./Resolucion";
 import { TorneoUsuario } from "./TorneoUsuario";
+import { CodigoUsuario } from './CodigoUsuario';
 
 export interface Usuario {
   idUsuario?: number;
@@ -16,6 +17,7 @@ export interface Usuario {
   cambioClaves?: CambioClave[];
   resoluciones?: Resolucion[];
   torneosUsuarios?: TorneoUsuario[];
+  codigosGuardados?: CodigoUsuario[];
 }
 
 export interface UsuarioConectado{

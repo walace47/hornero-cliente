@@ -1,6 +1,6 @@
 export const toolbox = `
 <xml id="toolbox" xmlns="https://developers.google.com/blockly/xml">
-      <category name="hornero" colour="#5b6da5">
+      <category name="Hornero" colour="#5b6da5">
           <block type="entrada">
             <value name="entrada">
               <shadow type="math_number">
