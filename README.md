@@ -1,11 +1,11 @@
 # Hornero: Zorzal Cliente
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.21.
-
+Tener instalado angular-cli >sudo npm install -g @angular/cli@9.1.0
 
 ## Instalacion
 1. Clonar el repositorio
-2. Ejecutar `npm install`
+2. Ejecutar `npm install` o `npm install @types/angular`
 
 
 ## Archivos de configuracion

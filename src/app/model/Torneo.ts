@@ -1,9 +1,9 @@
-import { EstadoTorneo } from "./EstadoTorneo";
 import { TipoTorneo } from "./TipoTorneo";
 import { Resolucion } from "./Resolucion";
 import { TorneoProblema } from "./TorneoProblema";
 import { TorneoUsuario } from "./TorneoUsuario";
 import { Usuario } from './Usuario';
+import { EstadoTorneo } from './EstadoTorneo';
 
 export interface Torneo {
   idTorneo?: number;
