@@ -15,6 +15,10 @@ export class UsuarioService {
     this.url = environment.url + '/usuarios'
    }
 
+   actualizarContrasenia(payload:string,nuevaPassword:string){
+     return this.http.put(`${this.url}/resetear-password`,{payload,nuevaPassword}).toPromise();
+   }
+
   getAll(select:string[] = null,relations:string[] = null){
     const relationsString = JSON.stringify(relations);
     const selectString = JSON.stringify(select);

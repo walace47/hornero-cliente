@@ -42,8 +42,7 @@ import { LoginService } from 'src/app/modules/shared/service/login.service';
   selector: "app-blockly",
   templateUrl: "./blockly.component.html",
   styleUrls: ["./blockly.component.css"],
-  providers: [
-    LoginService],
+  providers: [LoginService],
 })
 export class BlocklyComponent implements OnInit, AfterContentInit {
   space: Blockly.WorkspaceSvg;

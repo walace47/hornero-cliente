@@ -26,6 +26,10 @@ export class LoginService {
     this.display = nuevoEstado;
   }
 
+  recuperarPass(email:string){
+    return this.http.post(this.url+"/recuperar-pass",{email}).toPromise();
+  }
+
   isLogin() {
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario) return false;

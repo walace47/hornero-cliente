@@ -9,12 +9,14 @@ import { UsuariosComponent } from './components/lista-usuarios/usuarios.componen
 import { UsuarioService } from 'src/app/modules/usuario/services/usuario.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorTokenService } from 'src/app/modules/utiles/services/interceptor-token.service';
+import { ResetiarPasswordComponent } from './components/resetiar-password/resetiar-password.component';
 
 
 @NgModule({
   declarations: [
     CrearUsuarioComponent,
-    UsuariosComponent],
+    UsuariosComponent,
+    ResetiarPasswordComponent],
   imports: [    
     FormsModule,
     ReactiveFormsModule,

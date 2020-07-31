@@ -1,75 +1,102 @@
 <div class="ui-fluid">
 
-<p-dialog header="Login" class="mydialog" [modal]="true"  [(visible)]="display" (onHide)="onHide()">
-        
-        <p-card header="" subheader=""  class="ui-card-shadow">
-    <p-header>
-        
-        <div class="p-grid p-justify-center mt-1">
-                <img  class="rounded  mt-1" [style]="{height: '160px',width: '160px'}" src="./assets/img/fai.png">
-            </div>
-    </p-header>
+    <p-dialog header="Login" class="mydialog" [modal]="true" [(visible)]="display" (onHide)="onHide()">
 
-    <form action="">
-        <div class="p-grid">
-            <div class="p-col p-md p-lg ">
+        <p-card header="" subheader="" class="ui-card-shadow">
+            <p-header>
 
-                <p class="text-danger" *ngIf="error">Error en contrasenia o usuario</p>
-            </div>
-        </div>
-        <div class="p-grid mt-1">
-            <div class="p-col p-md p-lg">
-              <div class="ui-inputgroup">
-
-                <span class="ui-float-label">
-                    <input id="float-input-username" [(ngModel)]="usuario" size="30" name="username" type="text" pInputText> 
-                    <label for="float-input-username">Usuario</label>
-                </span>
-                <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
-              </div>
-            </div>
-     </div>
-    <div class="p-grid mt-1">
-        <div class="p-col p-md p-lg">
-            <div class="ui-inputgroup">
-            <span class="ui-float-label">
-                <input id="float-input-password" size="30" name="pwd" [(ngModel)]="pass" type="password"  pPassword [feedback]="false" [showPassword]="mostrar" >
-                <label for="float-input-password">contrasenias</label>
-            </span>
-            <button pButton type="button" icon="pi pi-eye" class="ui-button-warn"  *ngIf="mostrar" (click)="mostrar=!mostrar" ></button>      
-            <button pButton type="button" icon="pi pi-eye-slash" class="ui-button-warn" *ngIf="!mostrar" (click)="mostrar=!mostrar"></button>      
-        </div>
-    </div>
-</div>
-
-
-    <p-footer>
-        <div class="p-grid p-justify-center mt-2">
-                <button *ngIf="!loading" pButton type="submit" name="Submit" class="" label="Login" (click)="conectar()" icon="pi pi-check"></button>
-                <button 
-                    pButton
-                    type="submit"
-                    icon="pi pi-spin pi-spinner"
-                    disabled
-                    label="Login"
-                    *ngIf="loading">
-              </button>
-        </div>
-            <div class="p-grid mt-1">
-
-                <div class="p-col-12">
-                    <a [routerLink]="['/about']" (click)="display=false">Te olvidate la contresenia?</a>
+                <div class="p-grid p-justify-center mt-1">
+                    <img class="rounded  mt-1" [style]="{height: '160px',width: '160px'}" src="./assets/img/fai.png">
                 </div>
-                <div class="p-col-12">
-                    <a [routerLink]="['/crear-usuario','nuevo']" (click)="display=false">Eres nuevo?</a>
+            </p-header>
+
+            <form action="" *ngIf="!recuperarContrasenia" >
+                <div class="p-grid">
+                    <div class="p-col p-md p-lg ">
+                        <p class="text-danger" *ngIf="error">Error en contrasenia o usuario</p>
+                    </div>
                 </div>
-        </div>
+                <div class="p-grid mt-1">
+                    <div class="p-col p-md p-lg">
+                        <div class="ui-inputgroup">
+                            <span class="ui-float-label">
+                                <input id="float-input-username" [(ngModel)]="usuario" size="30" name="username"
+                                    type="text" pInputText>
+                                <label for="float-input-username">Usuario</label>
+                            </span>
+                            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid mt-1">
+                    <div class="p-col p-md p-lg">
+                        <div class="ui-inputgroup">
+                            <span class="ui-float-label">
+                                <input id="float-input-password" size="30" name="pwd" [(ngModel)]="pass" type="password"
+                                    pPassword [feedback]="false" [showPassword]="mostrar">
+                                <label for="float-input-password">contrasenias</label>
+                            </span>
+                            <button pButton type="button" icon="pi pi-eye" class="ui-button-warn" *ngIf="mostrar"
+                                (click)="mostrar=!mostrar"></button>
+                            <button pButton type="button" icon="pi pi-eye-slash" class="ui-button-warn" *ngIf="!mostrar"
+                                (click)="mostrar=!mostrar"></button>
+                        </div>
+                    </div>
+                </div>
 
-    </p-footer>
-</form>
 
-</p-card>
+                <p-footer>
+                    <div class="p-grid p-justify-center mt-2">
+                        <button *ngIf="!loading" pButton type="submit" name="Submit" class="" label="Login"
+                            (click)="conectar()" icon="pi pi-check"></button>
+                        <button pButton type="submit" icon="pi pi-spin pi-spinner" disabled label="Login"
+                            *ngIf="loading">
+                        </button>
+                    </div>
+                    <div class="p-grid mt-1">
 
-</p-dialog>
+                        <div class="p-col-12">
+                            <a href="#" (click)="recuperarContraseniaClick()">Te olvidate la contresenia?</a>
+                        </div>
+                        <div class="p-col-12">
+                            <a [routerLink]="['/crear-usuario','nuevo']" (click)="display=false">Eres nuevo?</a>
+                        </div>
+                    </div>
+
+                </p-footer>
+            </form>
+
+            <form action="" *ngIf="recuperarContrasenia">
+                <div class="p-grid mt-1">
+                    <div class="p-col p-md p-lg">
+                        <div class="ui-inputgroup">
+                            <span class="ui-float-label">
+                                <input id="float-input-username" [(ngModel)]="email" size="40" name="email"
+                                    type="text" pInputText>
+                                <label for="float-input-username">email</label>
+                            </span>
+                            <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <p-footer>
+                    <div class="p-grid p-justify-center mt-2">
+                        <button *ngIf="!loading" pButton type="submit" name="Submit" class="" label="Recuperar"
+                            (click)="recuperarPassword()" icon="pi pi-check">
+                        </button>
+                        <button pButton type="submit" icon="pi pi-spin pi-spinner" disabled label="Recuperar"
+                            *ngIf="loading">
+                        </button>
+                    </div>
+                </p-footer>
+
+            </form>
+
+
+
+        </p-card>
+
+    </p-dialog>
 
 </div>
