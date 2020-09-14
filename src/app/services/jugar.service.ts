@@ -16,6 +16,7 @@ export class JugarService {
    }
 
   async obtenerParametrosEntrada(numeroProblema:number,tokenJugador:string){
+    console.log(`${this.url}/solicitud?problema=${numeroProblema}&token=${tokenJugador}`)
     return this.http
       .get<EntradaJuego>(`${this.url}/solicitud?problema=${numeroProblema}&token=${tokenJugador}`)
       .toPromise();

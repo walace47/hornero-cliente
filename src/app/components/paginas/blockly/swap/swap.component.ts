@@ -36,11 +36,9 @@ export class SwapComponent implements OnInit {
   public codeXml:string = null;
   public itemsTab: MenuItem[];
   public selectedProblem:TorneoProblema;
-  //public valorEntrada:number;
-  //public resultado = 0;
+  public penalidad:number = 0;
   public xmlNuevo = "";
-  //public displayResultado = false;
- // public xmlForm:FormGroup;
+
   public torneo:Torneo;
   private suscripciones:Subscription[] = [];
   public isVisibleChat:boolean = false;
@@ -198,6 +196,9 @@ export class SwapComponent implements OnInit {
           this.notifier.notify("info","Felicidades a recibido un punto")
         }else if(res.idEstado === 10){
           this.notifier.notify("info","La respuesta es correcta pero ya a ganado el punto del problema")
+        }else if(res.idEstado === 3){
+          this.penalidad = 300000;
+          this.notifier.notify("error","La respuesta es incorrecta no lo puede volver a intentar en 5 minutos")
         }
         else{
           this.notifier.notify("error",`resultado:${JSON.stringify(res)}`);
@@ -205,7 +206,8 @@ export class SwapComponent implements OnInit {
       }
       return true;
     }catch(error){
-      this.notifier.notify("error","Ubo un error al conectarse con el servidor")
+      const mensaje =  error.error.error ? error.error.error : "Ubo un error al conectarse con el servidor";
+      this.notifier.notify("error", mensaje )
     }
   }
 //Ejecuta de manera local el codigo que hay en los bloques

@@ -5,11 +5,13 @@ import { LoginComponent } from './components/login/login.component';
 import { TorneoModule } from '../torneo/torneo.module';
 import { PrimengModule } from '../primeng/primeng.module';
 import { FormsModule } from '@angular/forms';
+import { RelojComponent } from './components/reloj/reloj.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     NavbarComponent,
+    RelojComponent,
   ],
   imports: [
     CommonModule,
@@ -19,6 +21,7 @@ import { FormsModule } from '@angular/forms';
   ],
   exports:[
     LoginComponent,
-    NavbarComponent]
+    NavbarComponent,
+    RelojComponent]
 })
 export class SharedModule { }
