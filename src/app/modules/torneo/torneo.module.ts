@@ -12,6 +12,7 @@ import { PrimengModule } from '../primeng/primeng.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorTokenService } from 'src/app/modules/utiles/services/interceptor-token.service';
 import { UtilesModule } from '../utiles/utiles.module';
+import { HornereandoComponent } from './components/hornereando/hornereando.component';
 
 
 @NgModule({
@@ -19,7 +20,9 @@ import { UtilesModule } from '../utiles/utiles.module';
     TorneosComponent,
     AgregarProblemaComponent,
     CrearTorneoComponent,
-    TorneoDetalleComponent],
+    TorneoDetalleComponent,
+    HornereandoComponent,
+    ],
   imports: [
     UtilesModule,
     FormsModule,

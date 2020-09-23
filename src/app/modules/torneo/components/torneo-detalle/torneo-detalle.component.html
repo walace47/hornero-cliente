@@ -12,6 +12,15 @@
         label="Jugar con Bloques"
         class="ui-button-rounded ui-button-primary mt-2 mb-1"
       ></button>
+
+      <button
+      pButton
+      type="button"
+      [routerLink]="['/hornereando', torneo.idTorneo, torneoUsuario.token]"
+      label="Hornerear"
+      class="ui-button-rounded ui-button-primary mt-2 mb-1"
+    ></button>
+
     </div>
     <div *ngIf="isLogin() && !torneoUsuario">
       <button

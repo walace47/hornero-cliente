@@ -25,6 +25,9 @@ export class ProblemaService {
     const selectString = JSON.stringify(select);
     return this.http.get<Problema>(this.url+`${id}?relations=${relationsString}&select=${selectString}`)  
   }
+  editar(problema:Problema){
+    return this.http.put(`${this.url}/${problema.idProblema}`,problema)
+  }
 
   crear(problema:Problema){
     return this.http.post(this.url,problema).toPromise();

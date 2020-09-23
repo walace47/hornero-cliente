@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MenuItem} from 'primeng/api';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TorneosService } from 'src/app/modules/torneo/services/torneos.service';
 import { Torneo } from 'src/app/model/Torneo';

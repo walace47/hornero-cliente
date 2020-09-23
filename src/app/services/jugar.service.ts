@@ -22,6 +22,12 @@ export class JugarService {
       .toPromise();
   }
 
+  async obtenerUltimoProblema(tokenJugador:string){
+    return this.http
+      .get<any>(`${this.url}/ultimoProblema?token${tokenJugador}`)
+      .toPromise();
+  }
+
   async enviarRespuesta(respuesta:RespuestaJuego){
     return this.http
       .get<any>(`${this.url}/respuesta?solucion=${respuesta.respuesta}&tokenSolicitud=${respuesta.token}`)

@@ -11,7 +11,7 @@ export class ResolucionesComponent implements OnInit {
   soluciones:Solucion[] = [];
   @Input("soluciones") 
   set solucionesInput(soluciones:Solucion[]){
-    this.modoEdicion = true
+    this.modoEdicion = true;
     this.soluciones = soluciones;
   };
   @Output() solucionesEmiter =  new EventEmitter();
@@ -19,14 +19,11 @@ export class ResolucionesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if(this.soluciones?.length > 0){
-      this.modoEdicion = false;
-    }else{
-      this.modoEdicion = true;
-    }
+    
   }
 
   agregarSolucion(){
+    if(!this.soluciones) this.soluciones = []
     this.soluciones.push({
       parametrosEntrada:"0",
       salida:"0"

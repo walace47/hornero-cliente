@@ -30,6 +30,7 @@ import { NotifierModule } from "angular-notifier";
 import {EditorModule} from 'primeng/editor';
 import {MenubarModule} from 'primeng/menubar';
 import {SidebarModule} from 'primeng/sidebar';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 import {FileUploadModule} from 'primeng/fileupload';
@@ -40,6 +41,7 @@ import {FileUploadModule} from 'primeng/fileupload';
     SidebarModule,
     MenubarModule,
     EditorModule,
+    RadioButtonModule,
     StepsModule,
     NotifierModule,
     ConfirmDialogModule,
@@ -73,6 +75,7 @@ import {FileUploadModule} from 'primeng/fileupload';
     MenubarModule,
     StepsModule,
     EditorModule,
+    RadioButtonModule,
     ConfirmDialogModule,
     MultiSelectModule,
     SplitButtonModule,

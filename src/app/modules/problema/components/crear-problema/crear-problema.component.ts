@@ -131,11 +131,10 @@ export class CrearProblemaComponent implements OnInit {
     if (!this.esEdicion) {
       nuevoProblema.idProblema = this.problema.idProblema;
       console.log(this.problemaForm.value.file);
-      this.subirArchivoService
-      .subirArchivo(
-        "problemas",
-        this.problemaForm.value["archivo"],
-        this.problemaForm.value["file"]
+      this.subirArchivoService.subirArchivo(
+          "problemas",
+          this.problemaForm.value["archivo"],
+          this.problemaForm.value["file"]
       )
         .then(res => console.log(res))
         .catch(error => console.log(error));
@@ -152,6 +151,17 @@ export class CrearProblemaComponent implements OnInit {
 
  
     }else{
+      nuevoProblema.idProblema = Number(this.id)
+      this.problemaService.editar(nuevoProblema).toPromise()
+        .then(()=> {
+          this.notifier.notify("success","Problema editado");
+          this.router.navigate(["/problemas"]);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.notifier.notify("error","Ubo un error al editar el problema");
+
+        })
       //implementar edicion
     }
   }
