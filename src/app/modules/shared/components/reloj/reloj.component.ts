@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-reloj',
@@ -7,13 +7,13 @@ import { Component, OnInit, Input } from '@angular/core';
   .reloj {
     text-align: center;
     font-size: 60px;
-    margin-top: 0px;
     }`
   ]
 })
 export class RelojComponent implements OnInit {
 
   @Input() tiempo:number;
+  @Output() tiempoCero = new EventEmitter();
   public days:Number;
   public hours:Number;
   public minutes:Number;
@@ -45,6 +45,7 @@ export class RelojComponent implements OnInit {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
+        this.tiempoCero.emit();
       }
     this.tiempo = this.tiempo - 1000;
     }, 1000);

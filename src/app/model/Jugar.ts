@@ -1,6 +1,8 @@
 export interface EntradaJuego {
-    parametrosEntrada:string;
-    token:string;
+    parametrosEntrada?:string;
+    token?:string;
+    status:number;
+    penalidad?:number;
     parametrosHornereando?:any;
 }
 

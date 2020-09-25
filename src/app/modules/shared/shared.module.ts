@@ -17,7 +17,7 @@ import { RelojComponent } from './components/reloj/reloj.component';
     CommonModule,
     PrimengModule,
     FormsModule,
-    TorneoModule
+    //TorneoModule
   ],
   exports:[
     LoginComponent,

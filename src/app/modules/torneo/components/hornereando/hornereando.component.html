@@ -1,35 +1,40 @@
+<div *ngIf="penalidad > 0" class="p-grid">
+	<div style="font-size: 60px;"> Debe esperar: &nbsp;	</div>  <app-reloj (tiempoCero)="tiempoCero()" [tiempo]="penalidad"></app-reloj>
+</div>
 
-<p-panel [header]="problemaActual.nombre">
-   
-   <div class="p-grid">
-      
-      <div class="p-col-6">
-         <b>Enunciado:</b>{{problemaActual.enunciado}}
-         <br>
-         <b> Parametros: </b>{{parametros}}
-         <br>
-         Seleccione la respuesta correcta:
-         <br>
-            <div class="p-grid">
-               <div *ngFor="let r of respuestas;let i=index" class="p-col-5 p-field-radiobutton ">
-                  <p-radioButton [label]="r" name="respuesta" [value]="r" [(ngModel)]="respuestaSeleccionda" inpudIt="r" [inputId]="r"></p-radioButton>
-               </div>
-            </div>
+<p-panel *ngIf="torneo" [header]="torneo.nombre">
 
-        <button pButton pRipple  type="button" label="Enviar Respuesta"  class="ui-button-raised ui-button-success mt-4"></button>
+	<div class="p-grid">
+		<div class="p-col-12">
+				<p-dropdown (onChange)="cambioProblema()" [options]="torneo.torneosProblemas" [(ngModel)]="problemaActual" placeholder="Seleccionar problema" optionLabel="problema.nombre" [showClear]="true"></p-dropdown>
+		</div>
+		<div *ngIf="!loading&&problemaActual" class="p-col-6">
+			<b>Enunciado:</b>{{problemaActual.problema.enunciado}}
+			<br>
+			<b> Parametros: </b>{{parametros}}
+			<br>
+			Seleccione la respuesta correcta:
+			<br>
+			<div class="p-grid">
+				<div *ngFor="let r of respuestas;let i=index" class="p-col-5 p-field-radiobutton ">
+					<p-radioButton [label]="r" name="respuesta" [value]="r" [(ngModel)]="respuestaSeleccionda"
+						inpudIt="r" [inputId]="r"></p-radioButton>
+				</div>
+			</div>
 
-      </div>
-      <div class="p-col-6">
-         <div  *ngIf="problemaActual" >
-            <div *ngIf="problemaActual.archivo">
-                    <img id="imgid" class="imgResponsive" src="{{environment.url}}/problemas/{{problemaActual.archivo}}"  >
-            </div>
-        </div>
+			<button pButton (click)="submit()" pRipple [disabled]="bloquear" type="button" label="Enviar Respuesta"
+				class="ui-button-raised ui-button-success mt-4"></button>
 
-      </div>
-      
+		</div>
+		<div  *ngIf="!loading&&problemaActual" class="p-col-6">
+			<div *ngIf="problemaActual">
+				<div *ngIf="problemaActual.problema.archivo">
+					<img id="imgid" class="imgResponsive"
+						src="{{environment.url}}/problemas/{{problemaActual.problema.archivo}}">
+				</div>
+			</div>
 
-      <div class="p-col-4">
-      </div>
-   </div>
+		</div>
+
+	</div>
 </p-panel>

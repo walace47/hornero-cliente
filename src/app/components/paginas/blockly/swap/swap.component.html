@@ -1,9 +1,8 @@
 
 <div *ngIf="penalidad > 0" class="p-grid">
-    <div class="p-col">
-        <app-reloj tiempo="300000"></app-reloj>
-    </div>
+	<div style="font-size: 60px;"> Debe esperar: &nbsp;	</div>  <app-reloj (tiempoCero)="tiempoCero()" [tiempo]="penalidad"></app-reloj>
 </div>
+
 <div class="p-grid">
     <div class="p-col" *ngIf="torneo">
         <p-dropdown [options]="torneo.torneosProblemas" [(ngModel)]="selectedProblem" placeholder="Seleccionar problema" optionLabel="problema.nombre" [showClear]="true"></p-dropdown>

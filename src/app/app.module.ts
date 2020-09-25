@@ -21,7 +21,6 @@ import { BlocklySocketHandler } from './services/blocklySocketHandler.service';
 import { CodigoUsuarioComponent } from './components/paginas/blockly/codigo-usuario/codigo-usuario.component';
 import { ChatComponent } from './components/paginas/blockly/chat/chat.component';
 
-
 import { UsuarioModule } from './modules/usuario/usuario.module';
 import { TorneoModule } from './modules/torneo/torneo.module';
 import { UtilesModule } from './modules/utiles/utiles.module';
@@ -55,8 +54,8 @@ import { PaginasEstaticasModule } from './modules/paginas-estaticas/paginas-esta
     PrimengModule,
     HttpClientModule,
     UtilesModule,
-    appRouting,
     SharedModule,
+    appRouting,
    
   ],
   providers: [
