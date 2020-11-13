@@ -31,6 +31,8 @@ import {EditorModule} from 'primeng/editor';
 import {MenubarModule} from 'primeng/menubar';
 import {SidebarModule} from 'primeng/sidebar';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {TooltipModule} from 'primeng/tooltip';
 
 
 import {FileUploadModule} from 'primeng/fileupload';
@@ -38,7 +40,9 @@ import {FileUploadModule} from 'primeng/fileupload';
 @NgModule({
   declarations: [],
   imports: [
+    TooltipModule,
     SidebarModule,
+    OverlayPanelModule,
     MenubarModule,
     EditorModule,
     RadioButtonModule,
@@ -71,6 +75,8 @@ import {FileUploadModule} from 'primeng/fileupload';
     PasswordModule
   ],
   exports:[
+    TooltipModule,
+    OverlayPanelModule,
     SidebarModule,
     MenubarModule,
     StepsModule,

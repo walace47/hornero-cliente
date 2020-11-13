@@ -46,6 +46,9 @@ export class TorneosService {
   getTipos(){
     return this.http.get(this.tiposUrl)
   }
+  problemaResuelto(idTorneo){
+    return this.http.get<any[]>(`${this.url}/problemas-resueltos/${idTorneo}`).toPromise();
+  }
 
   inscribirse(id:number){
     return this.http.post(`${this.url}/inscribir/${id}`,{}).toPromise();

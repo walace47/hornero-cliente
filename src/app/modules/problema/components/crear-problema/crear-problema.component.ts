@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
+	FormGroup,
+	FormBuilder,
+	Validators,
+	FormControl,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SelectItem } from "primeng/api/selectitem";
@@ -20,191 +20,206 @@ import { ProblemaService } from "src/app/modules/problema/services/problema.serv
 import { NotifierService } from 'angular-notifier';
 
 @Component({
-  selector: "app-crear-problema",
-  templateUrl: "./crear-problema.component.html",
-  styleUrls: [`./crear-problema.component.css`],
-  providers: [
-    ComplejidadService,
-    EtiquetasService,
-    ArchivoService,
-    ProblemaService,
-  ],
+	selector: "app-crear-problema",
+	templateUrl: "./crear-problema.component.html",
+	styleUrls: [`./crear-problema.component.css`],
+	providers: [
+		ComplejidadService,
+		EtiquetasService,
+		ArchivoService,
+		ProblemaService,
+	],
 })
 export class CrearProblemaComponent implements OnInit {
-  @ViewChild("ms") ms: MultiSelect;
-  complejidades: SelectItem[] = [];
-  complejidadSeleccionada: string[] = [];
+	@ViewChild("ms") ms: MultiSelect;
+	complejidades: SelectItem[] = [];
+	complejidadSeleccionada: string[] = [];
 
-  items: SelectItem[];
-  item: string;
+	items: SelectItem[];
+	item: string;
 
-  public etiquetasOpt: SelectItem[] = [];
-  private suscripciones: Subscription[] = [];
-  public problemaForm: FormGroup;
-  public submitted: boolean;
-  public loading: boolean;
-  public id: string;
+	public etiquetasOpt: SelectItem[] = [];
+	private suscripciones: Subscription[] = [];
+	public problemaForm: FormGroup;
+	public submitted: boolean;
+	public loading: boolean;
+	public id: string;
 
-  public soluciones: Solucion[];
-  private esEdicion = false;
-  public archivo: File;
-  public problema: Problema;
+	public soluciones: Solucion[];
+	private esEdicion = false;
+	public archivo: File;
+	public problema: Problema;
 
-  constructor(
-    private fb: FormBuilder,
-    private activeRoute: ActivatedRoute,
-    private complejidadService: ComplejidadService,
-    private etiquetaService: EtiquetasService,
-    private subirArchivoService: ArchivoService,
-    private problemaService: ProblemaService,
-    private notifier: NotifierService,
-    private router:Router
-  ) {}
+	constructor(
+		private fb: FormBuilder,
+		private activeRoute: ActivatedRoute,
+		private complejidadService: ComplejidadService,
+		private etiquetaService: EtiquetasService,
+		private subirArchivoService: ArchivoService,
+		private problemaService: ProblemaService,
+		private notifier: NotifierService,
+		private router: Router
+	) { }
 
-  ngOnInit(): void {
-    this.id = this.activeRoute.snapshot.paramMap.get("id");
-    this.complejidadService
-      .getAll()
-      .then(
-        (complejidades: Complejidad[]) =>
-          (this.complejidades = complejidades.map((e) => ({
-            label: e.complejidad,
-            value: e,
-          })))
-      )
-      .catch((error) => console.log(error));
+	ngOnInit(): void {
+		this.id = this.activeRoute.snapshot.paramMap.get("id");
+		this.complejidadService
+			.getAll()
+			.then(
+				(complejidades: Complejidad[]) =>
+					(this.complejidades = complejidades.map((e) => ({
+						label: e.complejidad,
+						value: e,
+					})))
+			)
+			.catch((error) => console.log(error));
 
-    this.problemaForm = this.fb.group({
-      nombre: new FormControl("", Validators.required),
-      archivo: new FormControl(""),
-      file: new FormControl(""),
-      enunciado: new FormControl("", Validators.required),
-      complejidad: new FormControl("", Validators.required),
-      tiempoEjecucion: new FormControl("", Validators.required),
-      etiquetas: new FormControl(""),
-    });
+		this.problemaForm = this.fb.group({
+			nombre: new FormControl("", Validators.required),
+			archivo: new FormControl(""),
+			file: new FormControl(""),
+			enunciado: new FormControl("", Validators.required),
+			complejidad: new FormControl("", Validators.required),
+			tiempoEjecucion: new FormControl("", Validators.required),
+			etiquetas: new FormControl(""),
+		});
 
-    this.etiquetaService
-      .getAll()
-      .then((etiquetas: Etiqueta[]) => {
-        this.etiquetasOpt = etiquetas.map((e) => ({
-          label: e.etiqueta,
-          value: e,
-        }));
-      })
-      .catch((error) => console.log(error));
+		this.etiquetaService
+			.getAll()
+			.then((etiquetas: Etiqueta[]) => {
+				this.etiquetasOpt = etiquetas.map((e) => ({
+					label: e.etiqueta,
+					value: e,
+				}));
+			})
+			.catch((error) => console.log(error));
 
-    if (Number(this.id)) {
-      this.esEdicion = true;
-      this.problemaService
-        .get(this.id, ["complejidad", "etiquetas", "soluciones"])
-        .toPromise()
-        .then((problema: Problema) => {
-          console.log(problema);
-          this.problema = problema;
-          this.soluciones = problema.soluciones;
-          this.problemaForm.controls["nombre"].setValue(problema.nombre);
-          this.problemaForm.controls["archivo"].setValue(problema.archivo);
-          this.problemaForm.controls["enunciado"].setValue(problema.enunciado);
-          this.problemaForm.controls["complejidad"].setValue(problema.complejidad);
-          this.problemaForm.controls["etiquetas"].setValue(problema.etiquetas);
-          this.problemaForm.controls["tiempoEjecucion"].setValue(
-            problema.tiempoEjecucionMax
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }
+		if (Number(this.id)) {
+			this.esEdicion = true;
+			this.problemaService
+				.get(this.id, ["complejidad", "etiquetas", "soluciones"])
+				.toPromise()
+				.then((problema: Problema) => {
+					console.log(problema);
+					this.problema = problema;
+					this.soluciones = problema.soluciones;
+					this.problemaForm.controls["nombre"].setValue(problema.nombre);
+					this.problemaForm.controls["archivo"].setValue(problema.archivo);
+					this.problemaForm.controls["enunciado"].setValue(problema.enunciado);
+					this.problemaForm.controls["complejidad"].setValue(problema.complejidad);
+					this.problemaForm.controls["etiquetas"].setValue(problema.etiquetas);
+					this.problemaForm.controls["tiempoEjecucion"].setValue(
+						problema.tiempoEjecucionMax
+					);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+	}
 
-  onSubmit(problema: object) {
-    let nuevoProblema: Problema = {
-      nombre: this.problemaForm.value["nombre"],
-      archivo: this.problemaForm.value["archivo"],
-      enunciado: this.problemaForm.value["enunciado"],
-      complejidad: this.problemaForm.value["complejidad"],
-      tiempoEjecucionMax: this.problemaForm.value["tiempoEjecucion"],
-      etiquetas: this.problemaForm.value["etiquetas"],
-      soluciones: this.soluciones,
-    };
-    if (!this.esEdicion) {
-      nuevoProblema.idProblema = this.problema.idProblema;
-      console.log(this.problemaForm.value.file);
-      this.subirArchivoService.subirArchivo(
-          "problemas",
-          this.problemaForm.value["archivo"],
-          this.problemaForm.value["file"]
-      )
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-      this.problemaService.crear(nuevoProblema)
-        .then((res) => {
-          this.notifier.notify("success","Problema creado");
-          this.router.navigate(["/problemas"]);
-        })
-        .catch((error) =>{
-          console.log(error)
-          this.notifier.notify("error","Ubo un error al crear el problema");
-        });
-      console.log(this.problemaForm);
+	test() {
+		console.log(this.problemaForm);
+	}
 
- 
-    }else{
-      nuevoProblema.idProblema = Number(this.id)
-      this.problemaService.editar(nuevoProblema).toPromise()
-        .then(()=> {
-          this.notifier.notify("success","Problema editado");
-          this.router.navigate(["/problemas"]);
-        })
-        .catch((error) => {
-          console.log(error);
-          this.notifier.notify("error","Ubo un error al editar el problema");
+	onSubmit(problema: object) {
+		let nuevoProblema: Problema = {
+			nombre: this.problemaForm.value["nombre"],
+			archivo: this.problemaForm.value["archivo"],
+			enunciado: this.problemaForm.value["enunciado"],
+			complejidad: this.problemaForm.value["complejidad"],
+			tiempoEjecucionMax: this.problemaForm.value["tiempoEjecucion"],
+			etiquetas: this.problemaForm.value["etiquetas"],
+			soluciones: this.soluciones,
+		};
+		if (!this.esEdicion) {
+			//nuevoProblema.idProblema = this.problema.idProblema;
+			//console.log(this.problemaForm.value.file);
+			this.subirArchivoService.subirArchivo(
+				"problemas",
+				this.problemaForm.value["archivo"],
+				this.problemaForm.value["file"]
+			)
+				.then(res => console.log(res))
+				.catch(error => console.log(error));
+			
+				console.log("voy a crear el problema")
+			this.problemaService.crear(nuevoProblema)
+				.then((res) => {
+					this.notifier.notify("success", "Problema creado");
+					this.router.navigate(["/problemas"]);
+				})
+				.catch((error) => {
+					console.log(error)
+					this.notifier.notify("error", "Ubo un error al crear el problema");
+				})
+				.finally(()=> console.log("paso por el finaly"))
+			//console.log(this.problemaForm);
 
-        })
-      //implementar edicion
-    }
-  }
 
-  onChangeTest(event1) {
-    event1.preventDefault();
-    if (!this.ms.filterInputChild) return false;
-    let elemento = this.ms.filterInputChild.nativeElement.value;
-    elemento = elemento.trim();
-    if (elemento) {
-      let existe = this.etiquetasOpt.find(
-        (e) => e.value.etiqueta.toLowerCase() === elemento.toLowerCase()
-      );
-      if (existe) return false;
-      let nuevaEtiqueta: Etiqueta = { etiqueta: elemento };
-      this.etiquetasOpt.push({ label: elemento, value: nuevaEtiqueta });
-      if (typeof this.problemaForm.value["etiquetas"] === "string") {
-        this.problemaForm.get("etiquetas").setValue([nuevaEtiqueta]);
-      } else {
-        this.problemaForm.value["etiquetas"].push(nuevaEtiqueta);
-      }
-    }
-    return false;
-  }
+		} else {
+			nuevoProblema.idProblema = Number(this.id)
+			this.subirArchivoService.subirArchivo(
+				"problemas",
+				this.problemaForm.value["archivo"],
+				this.problemaForm.value["file"]
+			)
+				.then(res => console.log(res))
+				.catch(error => console.log(error));
 
-  agregarSoluciones(solucines: Solucion[]) {
-    console.log(solucines);
-    this.soluciones = solucines;
-  }
-  myUploader(event) {
-    //event.files == files to upload
-    console.log(event);
-    let ArchivoASubir = event.srcElement.files[0];
-    const nombreArchivo = `${Math.floor(Math.random() * 9999999 + 99999)}${
-      ArchivoASubir.name
-    }`;
+			this.problemaService.editar(nuevoProblema).toPromise()
+				.then(() => {
+					this.notifier.notify("success", "Problema editado");
+					this.router.navigate(["/problemas"]);
+				})
+				.catch((error) => {
+					console.log(error);
+					this.notifier.notify("error", "Ubo un error al editar el problema");
 
-    this.problemaForm.get("archivo").setValue(nombreArchivo);
-    this.problemaForm.get("file").setValue(ArchivoASubir);
-  }
+				})
+		}
+	}
 
-  verDatos() {
-    console.log(this.problemaForm.value);
-    console.log(this.archivo);
-  }
+	onChangeTest(event1) {
+		if(event1.preventDefault) event1.preventDefault() 
+		
+		if (!this.ms.filterInputChild) return false;
+		let elemento = this.ms.filterInputChild.nativeElement.value;
+		elemento = elemento.trim();
+		if (elemento) {
+			let existe = this.etiquetasOpt.find(
+				(e) => e.value.etiqueta.toLowerCase() === elemento.toLowerCase()
+			);
+			if (existe) return false;
+			let nuevaEtiqueta: Etiqueta = { etiqueta: elemento };
+			this.etiquetasOpt.push({ label: elemento, value: nuevaEtiqueta });
+			if (typeof this.problemaForm.value["etiquetas"] === "string") {
+				this.problemaForm.get("etiquetas").setValue([nuevaEtiqueta]);
+			} else {
+				this.problemaForm.value["etiquetas"].push(nuevaEtiqueta);
+			}
+		}
+		return false;
+	}
+
+	agregarSoluciones(solucines: Solucion[]) {
+		console.log(solucines);
+		this.soluciones = solucines;
+	}
+	myUploader(event) {
+		//event.files == files to upload
+		let ArchivoASubir = event.srcElement.files[0];
+		console.log(ArchivoASubir)
+		const nombreArchivo = `${Math.floor(Math.random() * 9999999 + 99999)}${
+			ArchivoASubir.name
+			}`;
+
+		this.problemaForm.get("archivo").setValue(nombreArchivo);
+		this.problemaForm.get("file").setValue(ArchivoASubir);
+	}
+
+	verDatos() {
+		console.log(this.problemaForm.value);
+		console.log(this.archivo);
+	}
 }

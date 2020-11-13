@@ -18,7 +18,7 @@ export class AgregarProblemaComponent implements OnInit, OnDestroy {
   private suscripciones:Subscription[] = [];
   displayDialog: boolean;
   @Output("problemaSeleccionado") problemasOutput = new EventEmitter();
-  @Input("esEdicion") esEdicion:boolean = false;
+  @Input("esEdicion") esEdicion:boolean;
   @Input("problemasTorneo") 
   set problemasTorneo(problemas:any[]){
     if(problemas.length > 0){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -16,6 +16,7 @@ import invert from 'invert-color';
 import { CodigoUsuarioService } from 'src/app/services/codigo-usuario.service';
 import { CodigoUsuario } from 'src/app/model/CodigoUsuario';
 import { UsuarioService } from 'src/app/modules/usuario/services/usuario.service'
+import { orderBy } from 'lodash';
 
 @Component({
 	selector: 'app-swap',
@@ -31,6 +32,7 @@ import { UsuarioService } from 'src/app/modules/usuario/services/usuario.service
 })
 export class SwapComponent implements OnInit {
 	public items: MenuItem[];
+	@ViewChild("op") public op:any;
 	public environment = environment;
 	public codeJs: string = null;
 	public codeXml: string = null;
@@ -38,7 +40,7 @@ export class SwapComponent implements OnInit {
 	public selectedProblem: TorneoProblema;
 	public penalidad: number = 0;
 	public xmlNuevo = "";
-
+	public tiempoFinalizacion = -1;
 	public torneo: Torneo;
 	private suscripciones: Subscription[] = [];
 	public isVisibleChat: boolean = false;
@@ -73,7 +75,11 @@ export class SwapComponent implements OnInit {
 
 		const relations = ["torneosProblemas", "torneosProblemas.problema"]
 		this.suscripciones.push(this._torneoService.get(idTorneo, relations).subscribe(
-			(torneo: Torneo) => this.torneo = torneo,
+			(torneo: Torneo) => {
+				this.torneo = torneo;
+				const fechaFin = new Date(torneo.fechaFin).getTime();
+				this.tiempoFinalizacion = fechaFin - new Date().getTime(); 
+			},
 			(error: any) => console.log(error)
 		))
 
@@ -93,7 +99,7 @@ export class SwapComponent implements OnInit {
 				label: "Ejecutar", icon: "pi pi-pw pi-play", command: () => {
 					this.ejecutarServidor()
 						.then(() => { })
-						.catch(() => { this.notifier.notify("error", "Ubo un error al conectarse con el servidor") })
+						.catch(() => { this.notifier.notify("error", "Hubo un error al conectarse con el servidor") })
 				}
 			},
 			{
@@ -143,6 +149,16 @@ export class SwapComponent implements OnInit {
 		xml = xml || null;
 		this.codeJs = jsPritier(js);
 		this.codeXml = xml;
+	}
+	actualizarTorneo(){
+		this._torneoService.get(''+this.torneo.idTorneo, ["torneosUsuarios","torneosUsuarios.usuario",'torneosProblemas', 'torneosProblemas.problema']).toPromise()
+			.then(t => {
+				this.torneo = t
+				this.torneo.torneosUsuarios = orderBy(this.torneo.torneosUsuarios, ["puntos", "penalidad", "tiempo"], ["desc", "asc", "asc"])
+			})
+			.catch(e => {
+				this.notifier.notify("error", "Problema al actualizar tabla de puntaje")
+			})
 	}
 
 	//invierte el color recibido en negro o blanco para mejor contraste
@@ -211,8 +227,8 @@ export class SwapComponent implements OnInit {
 					} else if (res.idEstado === 10) {
 						this.notifier.notify("info", "La respuesta es correcta pero ya a ganado el punto del problema")
 					} else if (res.idEstado === 3) {
-						this.penalidad = 300000;
-						this.notifier.notify("error", "La respuesta es incorrecta no lo puede volver a intentar en 5 minutos")
+						this.penalidad = 60000;
+						this.notifier.notify("error", "La respuesta es incorrecta no lo puede volver a intentar en 1 minuto")
 					}
 					else {
 						this.notifier.notify("error", `resultado:${JSON.stringify(res)}`);
@@ -223,9 +239,13 @@ export class SwapComponent implements OnInit {
 			}
 			return true;
 		} catch (error) {
-			const mensaje = error.error.error ? error.error.error : "Ubo un error al conectarse con el servidor";
+			const mensaje = error.error.error ? error.error.error : "Hubo un error al conectarse con el servidor";
 			this.notifier.notify("error", mensaje)
 		}
+	}
+	verPosicion(event){
+		this.actualizarTorneo();
+		this.op.show(event)
 	}
 	//Ejecuta de manera local el codigo que hay en los bloques
 	ejecutarLocal() {

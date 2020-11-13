@@ -16,5 +16,12 @@ export interface Torneo {
   resoluciones?: Resolucion[];
   torneosProblemas?: TorneoProblema[];
   torneosUsuarios?: TorneoUsuario[];
+  penalidad?:number;
   creador?:Usuario;
 }
+
+export const TIPO_TORNEO = {
+  hornerando:4,
+  comun:1
+}
+

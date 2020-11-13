@@ -1,16 +1,38 @@
 <div class="animated fadeIn">
+	<div *ngIf="tiempoRestante > 0" class="">
+		<app-reloj etiqueta="El torneo comienza en" (tiempoCero)="tiempoRestante=-1" [tiempo]="tiempoRestante">
+		</app-reloj>
+	</div>
+
+	<div *ngIf="tiempoRestante < 0 && tiempoFinalizacion >= 0" class="">
+		<app-reloj etiqueta="El torneo finaliza en" (tiempoCero)="tiempoFinalizacion=-1" [tiempo]="tiempoFinalizacion">
+		</app-reloj>
+	</div>
+
+
 	<i class="pi pi-spin pi-spinner" style="font-size: 3em;" *ngIf="!torneo"></i>
 	<div class="br-ln" *ngIf="torneo">
 		<h3>Torneo: {{ torneo.nombre }}</h3>
 		<div *ngIf="isLogin() && torneoUsuario">
 			<b>Token: {{ torneoUsuario.token }} </b>
 			<br />
-			<button pButton type="button" [routerLink]="['/bloques', torneo.idTorneo, torneoUsuario.token]"
-				label="Jugar con Bloques" class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
+			<button *ngIf="tiempoFinalizacion >= 0 && !esHornerando && tiempoRestante<=0" pButton type="button"
+				[routerLink]="['/bloques', torneo.idTorneo, torneoUsuario.token]" label="Jugar con Bloques"
+				class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
 
-			<button pButton type="button" [routerLink]="['/hornereando', torneo.idTorneo, torneoUsuario.token]"
-				label="Hornerear" class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
+			<button *ngIf="tiempoFinalizacion >= 0 && esHornerando && tiempoRestante<=0" pButton type="button"
+				[routerLink]="['/hornereando', torneo.idTorneo, torneoUsuario.token]" label="Hornerear"
+				class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
 
+			<button *ngIf="puedeEditar" pButton type="button" [routerLink]="['/crear-torneo', torneo.idTorneo]"
+				label="Editar Torneo" class="ui-button-rounded ui-button-primary mt-2 mb-1"></button>
+
+
+			<br />
+
+			<div *ngIf="tiempoFinalizacion < 0">
+				<h4>El torneo esta finalizado</h4>
+			</div>
 		</div>
 		<div *ngIf="isLogin() && !torneoUsuario">
 			<button pButton type="button" (click)="inscribirse()" label="Incribirse"
@@ -20,7 +42,7 @@
 			<button pButton type="button" (click)="login()" label="Login"
 				class="ui-button-rounded ui-button-primary"></button>
 		</div>
-		<h1>Participantes</h1>
+		<h1>Tabla de puntaje:</h1>
 		<p-table [value]="torneo.torneosUsuarios" [responsive]="true">
 			<ng-template pTemplate="header">
 				<tr>
@@ -28,14 +50,15 @@
 					<th class="header-table">Institución</th>
 					<th class="header-table">Equipo</th>
 					<th class="header-table">Lenguaje</th>
-					<th class="header-table">Tiempo</th>
-					<th class="header-table">Penalidad</th>
 					<th class="header-table">Puntos</th>
+					<th class="header-table">Penalidad</th>
+					<th class="header-table">Tiempo</th>
 				</tr>
 			</ng-template>
 			<ng-template pTemplate="body" let-torneoUsuario let-i="rowIndex">
 				<div class="tabla-responsiva"><br /></div>
 				<tr class="shadow">
+
 					<td>
 						<span class="ui-column-title">Posicion:</span>
 						{{ i + 1 }}
@@ -53,32 +76,51 @@
 						{{ torneoUsuario.usuario.lenguajeFavorito.lenguaje }}
 					</td>
 					<td class="ui-column-title">
-						<span class="ui-column-title">Tiempo:</span>
-						{{ torneoUsuario.tiempo | date:'shortTime'}}
+						<span class="ui-column-title">Puntos:</span>
+						{{ torneoUsuario.puntos }}
 					</td>
 					<td class="ui-column-title">
 						<span class="ui-column-title">Penalidad:</span>
 						{{ torneoUsuario.penalidad }}
 					</td>
-					<td class="ui-column-title">
-						<span class="ui-column-title">Puntos:</span>
-						{{ torneoUsuario.puntos }}
+					<td *ngIf="torneoUsuario.tiempo != 0" class="ui-column-title">
+						<span  class="ui-column-title">Tiempo:</span>
+						{{ torneoUsuario.tiempo | date:'dd/LL/yy H:mm'}} 
 					</td>
+
+					<td *ngIf="torneoUsuario.tiempo == 0" class="ui-column-title">
+						<span  class="ui-column-title">Tiempo:</span>
+						0
+					</td>
+
 				</tr>
 			</ng-template>
+
 		</p-table>
+
+
+
+
+
 		<h1>Problemas</h1>
-		<p-table [responsive]="true" [value]="torneo.torneosProblemas">
+		<p-table dataKey="orden" [responsive]="true" [value]="torneo.torneosProblemas">
 			<ng-template pTemplate="header">
 				<tr>
+					<th class="header-table" style="width: 3em"> </th>
 					<th class="header-table">Orden</th>
 					<th class="header-table">Problema</th>
 					<th class="header-table">Tiempo Max (ms)</th>
 				</tr>
 			</ng-template>
-			<ng-template pTemplate="body" let-torneoProblema let-i="rowIndex">
+			<ng-template pTemplate="body" let-columns="columns" let-expanded="expanded" let-torneoProblema
+				let-i="rowIndex">
 				<div class="tabla-responsiva"><br /></div>
 				<tr class="shadow">
+					<td>
+						<a href="#" [pRowToggler]="torneoProblema">
+							<i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+						</a>
+					</td>
 					<td>
 						<span class="ui-column-title">Orden:</span>
 						{{ i + 1 }}
@@ -92,6 +134,19 @@
 						{{ torneoProblema.problema.tiempoEjecucionMax }}
 					</td>
 				</tr>
+			</ng-template>
+			<ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+				<td colspan="4">
+					<div class="p-grid -fluid" style="font-size:16px;padding:20px">
+						<div class="p-col-12 p-md-9">
+							<div class="p-grid">
+								<div class="p-col-12">
+									<b>Solucionado por:</b> {{getUsuarios(rowData.orden - 1)}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
 			</ng-template>
 		</p-table>
 	</div>

@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         .then(() => this.notifier.notify('info',"Revise su casilla de correo"))
         .catch(error => {
           console.log(error)
-          this.notifier.notify('error',"ubo un error con el servidor")
+          this.notifier.notify('error',"hubo un error con el servidor")
         })
         .finally(() => this.loading = false)
    }

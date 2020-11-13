@@ -30,6 +30,7 @@ export class ProblemaService {
   }
 
   crear(problema:Problema){
+    console.log("El problema que se va a crear es " + problema);
     return this.http.post(this.url,problema).toPromise();
   }
 

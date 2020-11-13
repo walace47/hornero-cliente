@@ -5,6 +5,9 @@
         <button type="button" pButton icon="pi pi-times" (click)="displayMensaje=false" label="Cerrar" class="ui-button-info"></button>
     </p-footer>
 </p-dialog>
+
+
+
 <div  class="animated fadeIn">
 
 <i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneos"></i>
@@ -37,19 +40,19 @@
         <div class="car-details">
             <div>
                 <div class="ui-g-12 br-ln">
-                        <div class=""> <a [routerLink]="['/torneos',torneo.idTorneo]"><h3>{{torneo.nombre}}</h3></a></div>
-                    <div class="ui-g-10">
+                        <div class=""> <a [routerLink]="['/torneos',torneo.idTorneo]"><h5>{{torneo.nombre}}</h5></a></div>
+                    <div class="ui-g-8">
                         <div class=""><p> Descripcion: <b>{{torneo.descripcion}}</b></p></div>
                     </div>
                     <div class="ui-g-6">
-                        <div class="" ><p> Inicio: {{torneo.fechaInicio | date}}</p></div>
+                        <div class="" ><p> Inicio: {{torneo.fechaInicio | date:'dd/LL/yy H:mm'}}</p></div>
                     </div>
                     <div class="ui-g-6">
-                        <div class=""> Fin: {{torneo.fechaFin | date}}</div>
+                        <div class=""> Fin: {{torneo.fechaFin| date:'dd/LL/yy H:mm'}}</div>
                     </div>
                 </div>
             </div>
-            <p-splitButton (onClick)=navegarTorneoDetalle(torneo.idTorneo) class="p-col-fixed p-sm p-md p-lg" *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label="Acciones" (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-info" icon="pi pi-list"  [model]="torneoMapItems[torneo.idTorneo]"></p-splitButton>
+            <p-splitButton (onClick)=navegarTorneoDetalle(torneo.idTorneo) class="p-sm-0 p-md-0 p-lg" *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label="" (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-info" icon="pi pi-list"  [model]="torneoMapItems[torneo.idTorneo]"></p-splitButton>
     </div>
     </div>
 </ng-template>

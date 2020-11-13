@@ -1,7 +1,14 @@
 
 <div *ngIf="penalidad > 0" class="p-grid">
-	<div style="font-size: 60px;"> Debe esperar: &nbsp;	</div>  <app-reloj (tiempoCero)="tiempoCero()" [tiempo]="penalidad"></app-reloj>
+	<app-reloj etiqueta="Debe esperar" (tiempoCero)="tiempoCero()" [tiempo]="penalidad"></app-reloj>
 </div>
+
+<div *ngIf="tiempoFinalizacion >= 0" class="">
+    <app-reloj etiqueta="El torneo finaliza en" (tiempoCero)="tiempoFinalizacion=-1" [tiempo]="tiempoFinalizacion"></app-reloj>
+</div>
+
+<i class="pi pi-search" (mouseenter)="verPosicion($event)" style="font-size:24px">Posicion</i>
+
 
 <div class="p-grid">
     <div class="p-col" *ngIf="torneo">
@@ -24,8 +31,8 @@
             <p-menubar  [model]="itemsTab">
                 <div class="p-grid">
 
-                    <div  *ngFor="let usuarioConectado of usuariosConectados" class="p-col">
-                            <a [title]="usuarioConectado.nombreUsuario" class="badge" [style.color]="cambiarColor(usuarioConectado.color)" [style.background]="usuarioConectado.color">
+                    <div   *ngFor="let usuarioConectado of usuariosConectados" class="p-col">
+                            <a  class="badge" [pTooltip]="usuarioConectado.nombreUsuario"  tooltipPosition="bottom" [style.color]="cambiarColor(usuarioConectado.color)" [style.background]="usuarioConectado.color">
                                 {{getfirstLeter(usuarioConectado.nombreUsuario)}}
                             </a>
                     </div>
@@ -93,3 +100,57 @@
         <button type="button" class="ui-button-success" (click)="guardarXml()" pButton icon="pi pi-check" label="Guardar"></button>
     </p-footer>
 </p-dialog>
+
+<!--overlap element tabla de puntos -->
+
+<p-overlayPanel #op [showCloseIcon]="true" [dismissable]="true">
+    <ng-template pTemplate>
+		<p-table [value]="torneo.torneosUsuarios" [responsive]="true" [style]="{width: '60vw'}"  [paginator]="true" [rows]="3">
+			<ng-template pTemplate="header">
+				<tr>
+					<th class="header-table">Posición</th>
+					<th class="header-table">Institución</th>
+					<th class="header-table">Equipo</th>
+					<th class="header-table">Puntos</th>
+					<th class="header-table">Penalidad</th>
+					<th class="header-table">Tiempo</th>
+				</tr>
+			</ng-template>
+			<ng-template pTemplate="body" let-torneoUsuario let-i="rowIndex">
+				<div class="tabla-responsiva"><br /></div>
+				<tr class="shadow">
+					<td>
+						<span class="ui-column-title">Posicion:</span>
+						{{ i + 1 }}
+					</td>
+					<td>
+						<span class="ui-column-title">Institucion:</span>
+						{{ torneoUsuario.usuario.institucion }}
+					</td>
+					<td>
+						<span class="ui-column-title">Nombre usuario:</span>
+						{{ torneoUsuario.usuario.nombreUsuario }}
+					</td>
+					<td class="ui-column-title">
+						<span class="ui-column-title">Puntos:</span>
+						{{ torneoUsuario.puntos }}
+					</td>
+					<td class="ui-column-title">
+						<span class="ui-column-title">Penalidad:</span>
+						{{ torneoUsuario.penalidad }}
+					</td>
+					<td *ngIf="torneoUsuario.tiempo != 0" class="ui-column-title">
+						<span  class="ui-column-title">Tiempo:</span>
+						{{ torneoUsuario.tiempo | date:'short'}} 
+					</td>
+
+					<td *ngIf="torneoUsuario.tiempo == 0" class="ui-column-title">
+						<span  class="ui-column-title">Tiempo:</span>
+						0
+					</td>
+
+				</tr>
+			</ng-template>
+		</p-table>
+    </ng-template>
+</p-overlayPanel>
