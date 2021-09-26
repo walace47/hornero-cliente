@@ -5,6 +5,8 @@
   [resizableColumns]="true"
   selectionMode="single"
   [reorderableColumns]="true"
+  (onRowReorder)="reordenar($event)"
+  
 >
   <ng-template pTemplate="colgroup" let-columns>
  
@@ -83,7 +85,7 @@
     [value]="todoLosProblemas"
     [(selection)]="problemasSeleccionadoAux"
     dataKey="idProblema"
-    [globalFilterFields]="['nombre','enunciado']"
+    [globalFilterFields]="['nombre','enunciado','etiquetas.idEtiqueta']"
   >
 
     <ng-template pTemplate="caption">
@@ -96,8 +98,8 @@
             <col [style.width]="'5%'">
             <col [style.width]="'20%'">
             <col [style.width]="'40%'">
-            <col [style.width]="'15%'">
-            <col [style.width]="'15%'">
+            <col [style.width]="'10%'">
+            <col [style.width]="'20%'">
         </colgroup>
     </ng-template>
     <ng-template pTemplate="header">
@@ -134,8 +136,19 @@
                 [options]="opcionesComplejidad" 
                 placeholder="All" 
                 (onChange)="filtratPorComplejidad($event)" 
-                styleClass="ui-column-filter" >
+                >
             </p-multiSelect>
+        </th>
+
+        <th>
+          <p-multiSelect 
+          		[filter]="true" 
+				optionLabel="etiqueta"
+				placeholder="All"
+				[options]= todasEtiquetas
+				(onChange)="filtrarPorEtiqueta($event)"
+				></p-multiSelect>
+
         </th>
 
       </tr>
@@ -157,7 +170,7 @@
             {{problema.complejidad.complejidad}}
         </td>
         <td>
-          Etiquetas
+          {{mostrarEtiquetas(problema.etiquetas)}}
         </td>
       </tr>
     </ng-template>

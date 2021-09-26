@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StubsService } from 'src/app/services/stubs.service';
+import { StubsService } from '../../services/stubs.service';
 import { Subscription } from 'rxjs';
 import { Stub } from 'src/app/model/Stub';
 import * as fileSaver from 'file-saver';

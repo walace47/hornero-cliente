@@ -13,7 +13,7 @@ export interface Usuario {
   clave?: string;
   rol?: Rol | null;
   email?: string;
-  lenguaje?: Lenguaje | null;
+  lenguajeFavorito?: Lenguaje | null;
   cambioClaves?: CambioClave[];
   resoluciones?: Resolucion[];
   torneosUsuarios?: TorneoUsuario[];

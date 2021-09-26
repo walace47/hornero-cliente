@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
-import { Stub } from '../model/Stub';
+import { Stub } from '../../../model/Stub';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -20,7 +20,14 @@ export class StubsService {
     return this.http.get<Stub[]>(this.url+`?relations=${relationsString}&select=${selectString}`)  
   }
 
+  create(stub:Stub){
+    return this.http.post<Stub>(this.url,stub);  
+  }
 
+  edit(stub:Stub){
+      return this.http.put<Stub>(this.url+"/"+stub.idStubs,stub);  
+  }
+  
   get(id:string,relations:string[] = null,select:string[] = null){
     const relationsString = JSON.stringify(relations);
     const selectString = JSON.stringify(select);

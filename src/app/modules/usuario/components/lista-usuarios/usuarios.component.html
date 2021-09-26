@@ -43,7 +43,7 @@
                 <span class="ui-column-title">Rol:</span>
                 {{usuario.rol.rol}}</td>
             <td align="right" >
-                <button pButton type="button" class="ui-button-success ui-corner-all" icon="pi pi-user-edit" ></button>
+                <button pButton [routerLink]="['/crear-usuario',usuario.idUsuario]" type="button" class="ui-button-success ui-corner-all" icon="pi pi-user-edit" ></button>
             </td>
         </tr>
     </ng-template>

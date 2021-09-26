@@ -72,6 +72,16 @@ export class TorneosComponent implements OnInit {
           this._usuarioService.getTorneos().then((torneoDelUsuario) => {
             torneos.forEach((torneo) => {
               let item = [];
+              item.push({
+                label:"Detalle",
+                icon: "pi pi-eye",
+                command:(torneo) => {
+                  this.router.navigate([
+                    "/torneos",
+                    torneo.idTorneo,
+                  ]);
+                }
+              })
               //Si esta incripto en el torneo
               if (torneo.estado.idEstado === ESTADO.EN_PROCESO) {
                 if (
@@ -82,8 +92,8 @@ export class TorneosComponent implements OnInit {
                   item.push({
                     label: "Incribirse",
                     icon: "pi pi-pencil",
-                    command: () => {
-                      this.inscribirse(this.selectTorneo);
+                    command: (torneo) => {
+                      this.inscribirse(torneo);
                     },
                   });
                   //sino esta inscripto
@@ -91,8 +101,8 @@ export class TorneosComponent implements OnInit {
                   item.push({
                     label: "Desinscribirse",
                     icon: "pi pi-pencil",
-                    command: () => {
-                      console.log(this.selectTorneo);
+                    command: (torneo) => {
+                      console.log(torneo);
                     },
                   });
                 }
@@ -105,10 +115,10 @@ export class TorneosComponent implements OnInit {
                 item.push({
                   label: "Editar",
                   icon: "pi pi-user-edit",
-                  command: () => {
+                  command: (torneo) => {
                     this.router.navigate([
                       "/crear-torneo",
-                      this.selectTorneo.idTorneo,
+                      torneo.idTorneo,
                     ]);
                   },
                 });
@@ -252,16 +262,16 @@ export class TorneosComponent implements OnInit {
       {
         label: "Incribirse",
         icon: "pi pi-pencil",
-        command: () => {
-          this.inscribirse(this.selectTorneo);
+        command: (torneo) => {
+          this.inscribirse(torneo);
         },
         visible: true,
       },
       {
         label: "Editar",
         icon: "pi pi-user-edit",
-        command: () => {
-          this.router.navigate(["/crear-torneo", this.selectTorneo.idTorneo]);
+        command: (torneo) => {
+          this.router.navigate(["/crear-torneo", torneo.idTorneo]);
         },
       },
     ];

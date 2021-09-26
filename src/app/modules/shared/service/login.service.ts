@@ -61,6 +61,12 @@ export class LoginService {
     }
   }
 
+  getId(){
+    const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
+    if (!usuario)  return null;
+    return usuario.usuario.idUsuario
+  }
+
   isAdmin(){
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario)  return false;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MessageService, SelectItem } from 'primeng/api';
@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Problema } from 'src/app/model/Problema';
 import { TorneoProblema } from 'src/app/model/TorneoProblema';
 import { NotifierService } from 'angular-notifier';
+import { orderBy } from 'lodash';
 
 
 @Component({
@@ -41,47 +42,64 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 		this.loading = false
 	}
 
+
+
+
 	ngOnInit(): void {
-		this.id = this.activeRoute.snapshot.paramMap.get('id');
-		this.configIdioma();
-		this.torneoform = this.fb.group({
-			'nombre': new FormControl('', Validators.required),
-			'descripcion': new FormControl('', Validators.required),
-			'fechaInicio': new FormControl('', Validators.required),
-			'fechaFin': new FormControl('', Validators.required),
-			'estado': new FormControl('', Validators.required),
-			'tipoTorneo': new FormControl('', Validators.required)
-		}, { validators: this.fechasInicioDebeSerMenor() })
+		this.activeRoute.paramMap.subscribe(params => {
+			this.problemas = [];
+			this.esEdicion = false;
 
-		this.suscripciones.push(
-			this._torneoService.getEstados().subscribe((estados: EstadoTorneo[]) => {
-				this.estadosTorneo = estados.map(elem => { return { label: elem.estado, value: elem } })
-				this.estadosTorneo.unshift({ label: "Elija un estado del torneo", value: null })
+			this.torneoEdicion = null;
+			this.suscripciones.forEach(sub => sub.unsubscribe())
+			this.suscripciones = [];
+			this.id = this.activeRoute.snapshot.paramMap.get("id");
+			console.log(this.id);
+			this.configIdioma();
+			this.torneoform = this.fb.group({
+				'nombre': new FormControl('', Validators.required),
+				'descripcion': new FormControl('', Validators.required),
+				'fechaInicio': new FormControl('', Validators.required),
+				'fechaFin': new FormControl('', Validators.required),
+				'estado': new FormControl('', Validators.required),
+				'tipoTorneo': new FormControl('', Validators.required)
+			}, { validators: this.fechasInicioDebeSerMenor() })
 
-			}))
-		this.suscripciones.push(
-			this._torneoService.getTipos().subscribe((tipos: TipoTorneo[]) => {
-				this.tiposTorneo = tipos.map(elem => { return { label: elem.tipo, value: elem } })
-				this.tiposTorneo.unshift({ label: "Elija un tipo de torneo", value: null })
-			}))
-
-		if (Number(this.id)) {
 			this.suscripciones.push(
-				this._torneoService.get(this.id, ['tipo', 'estado', 'torneosProblemas', 'torneosProblemas.problema']).subscribe((torneo) => {
-					this.torneoEdicion = torneo;
-					console.log(torneo)
-					this.problemas = torneo.torneosProblemas;
-					this.esEdicion = true;
-					this.torneoform.controls['nombre'].setValue(torneo.nombre);
-					this.torneoform.controls['descripcion'].setValue(torneo.descripcion);
-					this.torneoform.controls['fechaInicio'].setValue(new Date(torneo.fechaInicio));
-					this.torneoform.controls['fechaFin'].setValue(new Date(torneo.fechaFin));
-					this.torneoform.controls['estado'].setValue(torneo.estado);
-					this.torneoform.controls['tipoTorneo'].setValue(torneo.tipo);
-				},
-					(error) => console.log(error))
-			)
-		}
+				this._torneoService.getEstados().subscribe((estados: EstadoTorneo[]) => {
+					this.estadosTorneo = estados.map(elem => { return { label: elem.estado, value: elem } })
+					this.estadosTorneo.unshift({ label: "Elija un estado del torneo", value: null })
+
+				}))
+			this.suscripciones.push(
+				this._torneoService.getTipos().subscribe((tipos: TipoTorneo[]) => {
+					this.tiposTorneo = tipos.map(elem => { return { label: elem.tipo, value: elem } })
+					this.tiposTorneo.unshift({ label: "Elija un tipo de torneo", value: null })
+				}))
+
+
+
+			if (Number(this.id)) {
+				console.log("hola mundo");
+				this.suscripciones.push(
+					this._torneoService.get(this.id, ['tipo', 'estado', 'torneosProblemas', 'torneosProblemas.problema']).subscribe((torneo) => {
+						this.torneoEdicion = torneo;
+
+						this.problemas = orderBy(torneo.torneosProblemas, "orden", "asc");
+
+						this.esEdicion = true;
+						this.torneoform.controls['nombre'].setValue(torneo.nombre);
+						this.torneoform.controls['descripcion'].setValue(torneo.descripcion);
+						this.torneoform.controls['fechaInicio'].setValue(new Date(torneo.fechaInicio));
+						this.torneoform.controls['fechaFin'].setValue(new Date(torneo.fechaFin));
+						this.torneoform.controls['estado'].setValue(torneo.estado);
+						this.torneoform.controls['tipoTorneo'].setValue(torneo.tipo);
+					},
+						(error) => console.log(error))
+				)
+			}
+		})
+
 
 	}
 	agregarProblemas(problemas: Problema[]) {
@@ -90,16 +108,23 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 			orden: i + 1,
 			problema: p
 		}))
+		console.log(problemaTorneo);
 		for (let i = 0; i < problemaTorneo.length; i++) {
-			let buscarProblema = this.problemas.find((p: TorneoProblema) => p.problema.idProblema === problemaTorneo[i].problema.idProblema);
+			let buscarProblema = this.problemas.find(
+				(p: TorneoProblema) => p.problema.idProblema === problemaTorneo[i].problema.idProblema
+			);
+
 			if (buscarProblema) {
 				buscarProblema.orden = problemaTorneo[i].orden;
 			} else {
 				this.problemas.push(problemaTorneo[i]);
 			}
 		}
+		console.log(this.problemas);
+
 
 	}
+
 	handleKeyEnter(event) {
 		event.preventDefault();
 	}
@@ -132,6 +157,7 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 					}
 				))
 		} else {
+			console.log(nuevoTorneo);
 			this.suscripciones.push(
 				this._torneoService.save(nuevoTorneo).subscribe(
 					() => {

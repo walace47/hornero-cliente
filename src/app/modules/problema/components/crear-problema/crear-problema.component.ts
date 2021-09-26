@@ -166,7 +166,7 @@ export class CrearProblemaComponent implements OnInit {
 			)
 				.then(res => console.log(res))
 				.catch(error => console.log(error));
-
+			console.log(nuevoProblema)
 			this.problemaService.editar(nuevoProblema).toPromise()
 				.then(() => {
 					this.notifier.notify("success", "Problema editado");

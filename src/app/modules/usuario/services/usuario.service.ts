@@ -24,8 +24,10 @@ export class UsuarioService {
     const selectString = JSON.stringify(select);
     return this.http.get<Usuario[]>(this.url+`/?select=${selectString}&relations=${relationsString}`);
   }
-  get(id:string,select:string = null,relations:string = null){
-    return this.http.get(this.url+`/${id}?relations=${relations}`)
+  get(id:string,select:string[] = null,relations:string[] = null){
+    const relationsString = JSON.stringify(relations);
+    const selectString = JSON.stringify(select);
+    return this.http.get(this.url+`/${id}?select=${selectString}&relations=${relationsString}`)
   }
 
   existeUsuario(nombreUsuario:string){
@@ -37,6 +39,10 @@ export class UsuarioService {
     return this.http.post(this.url,usuario);
   }
 
+  edit(id,usuario:Usuario){
+    return this.http.put(this.url+"/"+id,usuario);
+  }
+
   existeEmail(email:string){
     return this.http.post(this.url+`/emailRegistrado`,{email:email})
   }
@@ -44,8 +50,8 @@ export class UsuarioService {
   async getTorneos(){
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if(!usuario) return []
-    const relations = JSON.stringify(['rol','torneosUsuarios','torneosUsuarios.torneo','torneosUsuarios.torneo.estado']);
-    usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null,relations).toPromise()
+    const relations = (['rol','torneosUsuarios','torneosUsuarios.torneo','torneosUsuarios.torneo.estado']);
+    usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null, relations).toPromise()
     return usuario.usuario.torneosUsuarios;
     
   }
@@ -53,7 +59,7 @@ export class UsuarioService {
   async getCodigos(){
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if(!usuario) return []
-    const relations = JSON.stringify(["codigosGuardados"]);
+    const relations = (["codigosGuardados"]);
     usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null,relations).toPromise()
     return usuario.usuario.codigosGuardados;
     

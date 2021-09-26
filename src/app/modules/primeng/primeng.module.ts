@@ -33,6 +33,7 @@ import {SidebarModule} from 'primeng/sidebar';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {TooltipModule} from 'primeng/tooltip';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 
 import {FileUploadModule} from 'primeng/fileupload';
@@ -41,6 +42,7 @@ import {FileUploadModule} from 'primeng/fileupload';
   declarations: [],
   imports: [
     TooltipModule,
+    AutoCompleteModule,
     SidebarModule,
     OverlayPanelModule,
     MenubarModule,
@@ -77,6 +79,7 @@ import {FileUploadModule} from 'primeng/fileupload';
   exports:[
     TooltipModule,
     OverlayPanelModule,
+    AutoCompleteModule,
     SidebarModule,
     MenubarModule,
     StepsModule,

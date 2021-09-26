@@ -11,7 +11,6 @@ export class AuthGuardService implements CanActivate {
   
   canActivate(route:ActivatedRouteSnapshot): boolean {
     const rolEsperado = route.data.rol;
-    console.log(route)
     let pasoAuth:boolean = false
     switch(rolEsperado){
         case ROLES.admin:{
@@ -39,7 +38,7 @@ export class AuthGuardService implements CanActivate {
     }
     if (!pasoAuth) {
         
-        this.router.navigate(['inicio']);
+        this.router.navigate(['/inicio']);
 
         return false;
     }

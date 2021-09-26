@@ -66,7 +66,7 @@ export class TorneoDetalleComponent implements OnInit, OnDestroy {
 						.catch(e => console.log(e))
 
 					this.puedeEditar = (this._loginService.isDocente() && this._loginService.esDuenio(torneo)) || this._loginService.isAdmin();
-
+					this.torneo.torneosProblemas = orderBy(this.torneo.torneosProblemas,"orden","asc")
 					this.esHornerando = torneo.tipo.idTipo === TIPO_TORNEO.hornerando;
 					this.torneo.torneosUsuarios = orderBy(this.torneo.torneosUsuarios, ["puntos", "penalidad", "tiempo"], ["desc", "asc", "asc"])
 					if (this._loginService.isLogin()) {

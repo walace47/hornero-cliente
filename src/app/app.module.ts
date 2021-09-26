@@ -13,7 +13,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
 import { AboutComponent } from './modules/paginas-estaticas/components/about/about.component';
-import { StubsComponent } from './components/paginas/stubs/stubs.component';
 import { BlocklyComponent } from './components/paginas/blockly/bloques/blockly.component';
 import { SwapComponent } from './components/paginas/blockly/swap/swap.component';
 import { XmlPipePipe } from './pipes/xml-pipe.pipe';
@@ -22,6 +21,7 @@ import { CodigoUsuarioComponent } from './components/paginas/blockly/codigo-usua
 import { ChatComponent } from './components/paginas/blockly/chat/chat.component';
 
 import { UsuarioModule } from './modules/usuario/usuario.module';
+import { StubModule } from './modules/stub/stub.module';
 import { TorneoModule } from './modules/torneo/torneo.module';
 import { UtilesModule } from './modules/utiles/utiles.module';
 import { ProblemaModule } from './modules/problema/problema.module';
@@ -35,7 +35,6 @@ import { PaginasEstaticasModule } from './modules/paginas-estaticas/paginas-esta
     AppComponent,
     InicioComponent,
     AboutComponent,
-    StubsComponent,
     BlocklyComponent,
     SwapComponent,
     XmlPipePipe,
@@ -47,6 +46,8 @@ import { PaginasEstaticasModule } from './modules/paginas-estaticas/paginas-esta
     FormsModule,
     PaginasEstaticasModule,
     TorneoModule,
+    StubModule,
+
     UsuarioModule,
     ProblemaModule,
     BrowserModule,

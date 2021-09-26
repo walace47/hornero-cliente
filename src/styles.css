@@ -166,6 +166,7 @@ body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active, body .ui-tab
   border: 1px solid #2332e0;
 }
 
+
 body .ui-panelmenu .ui-panelmenu-header.ui-state-active > a:hover {
   outline: 0 none;
   border: 1px solid #8c66e9;

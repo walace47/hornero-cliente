@@ -1,92 +1,107 @@
 <nav class="navbar border border-white rounded navbar-light" style="background-color: #F6F3E7;">
+
   <a class="navbar-brand" href="#">
     <img src="./assets/img/logozorzal3.png" width="40" height="30" alt="" />
     Hornero-Zorzal
   </a>
 </nav>
 
-<nav
-  class="navbar bg-primary border navbar-dark border-secondary rounded navbar-expand-lg"
-  >
-  
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarTogglerDemo03"
-    aria-controls="navbarTogglerDemo03"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar bg-primary border navbar-dark border-secondary rounded navbar-expand-lg">
+  <div class="container-fluid">
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/inicio']"  [routerLinkActive]="['active']">Inicio</a>
+        <a class="nav-link" [routerLink]="['/inicio']" [routerLinkActive]="['active']">Inicio</a>
       </li>
+
 
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"   [routerLinkActive]="['active']" id="navbarDropdown5" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Torneo</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown5" >
-            <div *ngIf="loginService.isDocente()">
-              <a  class="dropdown-item" [routerLink]="['crear-torneo','nuevo']">
-                Nuevo torneo
-              </a>
-              <div class="dropdown-divider"></div>
-            </div>
-              <a class="dropdown-item" [routerLink]="['/torneos']" >Torneos</a>
-          </div>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">Ayuda</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/stubs']"  [routerLinkActive]="['active']">Stubs</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/usuarios']"  [routerLinkActive]="['active']">Usuarios</a>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Torneo
+        </a>
+        <ul class="dropdown-menu">
+          <li *ngIf="loginService.isDocente()"><a class="dropdown-item" [routerLink]="['crear-torneo','nuevo']">Nuevo
+              torneo</a></li>
+          <li ><a class="dropdown-item" [routerLink]="['/torneos']">Torneos</a></li>
+        </ul>
       </li>
 
 
 
+
+
       <li class="nav-item">
-        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/problemas']"  [routerLinkActive]="['active']">Problemas</a>
+        <a class="nav-link" [routerLink]="['/ayuda']"
+        [routerLinkActive]="['active']">Ayuda</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"  [routerLink]="['/about']"  [routerLinkActive]="['active']">Acerca De</a>
+        <a class="nav-link" *ngIf="loginService.isLogin()" [routerLink]="['/stubs']"
+          [routerLinkActive]="['active']">Stubs</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/usuarios']"
+          [routerLinkActive]="['active']">Usuarios</a>
+      </li>
+
+
+
+      <li class="nav-item">
+        <a class="nav-link" *ngIf="loginService.isAdmin()" [routerLink]="['/problemas']"
+          [routerLinkActive]="['active']">Problemas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/about']" [routerLinkActive]="['active']">Acerca De</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Contacto</a>
       </li>
-      
+
+
+   
+
+
       <li *ngIf="!loginService.isLogin()" class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"  id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Usuario</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-          <a class="dropdown-item" (click)="mostrarLogin()">Login</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" [routerLink]="['/crear-usuario','nuevo']" >Nuevo usuario</a>
-        </div>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Usuario
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+          <li><a class="dropdown-item" (click)="mostrarLogin()">Login</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li> <a class="dropdown-item" [routerLink]="['/crear-usuario','nuevo']">Nuevo usuario</a></li>
+        </ul>
       </li>
 
       <li *ngIf="loginService.isLogin()" class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
           Usuario
         </a>
-          <div  class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" (click)="loginService.logout()" >Logout</a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+          <li><a class="dropdown-item" (click)="loginService.logout()">Logout</a>
+          </li>
+          <li>
+
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item">Perfil</a>
-          </div>
+          </li>
+          <a class="dropdown-item" [routerLink]="['/crear-usuario',loginService.getId()]">Perfil</a>
+        </ul>
       </li>
 
     </ul>
   </div>
+</div>
+
 </nav>
 
 
-  <app-login [display]="loginService.mostrarLogin()" (displayChange)="cerrarDisplay($event)"></app-login>
+<app-login [display]="loginService.mostrarLogin()" (displayChange)="cerrarDisplay($event)"></app-login>

@@ -77,6 +77,7 @@ export class SwapComponent implements OnInit {
 		this.suscripciones.push(this._torneoService.get(idTorneo, relations).subscribe(
 			(torneo: Torneo) => {
 				this.torneo = torneo;
+				this.torneo.torneosProblemas = orderBy(this.torneo.torneosProblemas, ["orden"], ["asc"])
 				const fechaFin = new Date(torneo.fechaFin).getTime();
 				this.tiempoFinalizacion = fechaFin - new Date().getTime(); 
 			},
@@ -155,6 +156,7 @@ export class SwapComponent implements OnInit {
 			.then(t => {
 				this.torneo = t
 				this.torneo.torneosUsuarios = orderBy(this.torneo.torneosUsuarios, ["puntos", "penalidad", "tiempo"], ["desc", "asc", "asc"])
+				this.torneo.torneosProblemas = orderBy(this.torneo.torneosProblemas, ["orden"], ["asc"])
 			})
 			.catch(e => {
 				this.notifier.notify("error", "Problema al actualizar tabla de puntaje")

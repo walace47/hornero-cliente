@@ -15,7 +15,7 @@ export class TorneosService {
     private _loginService:LoginService) {
     this.url = environment.url + '/torneos/'
     this.tiposUrl = environment.url + '/tipoTorneo/'
-    this.estadosUrl = environment.url + '/estadoTorneo/'
+    this.estadosUrl = environment.url + '/estadoTorneo'
    }
 
   getAll(relations:string[] = null,select:string[] = null){

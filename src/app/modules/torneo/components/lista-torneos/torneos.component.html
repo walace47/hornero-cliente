@@ -1,62 +1,90 @@
-
 <p-dialog [header]="mensaje.header" [(visible)]="displayMensaje">
     {{mensaje.datos}}
     <p-footer>
-        <button type="button" pButton icon="pi pi-times" (click)="displayMensaje=false" label="Cerrar" class="ui-button-info"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="displayMensaje=false" label="Cerrar"
+            class="ui-button-info"></button>
     </p-footer>
 </p-dialog>
 
 
 
-<div  class="animated fadeIn">
+<div class="animated fadeIn">
 
-<i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneos"></i>
+    <i class="pi pi-spin pi-spinner" style="font-size: 3em" *ngIf="!torneos"></i>
 
-<button pButton type="button" *ngIf="!userTorneo&&esDocente()" [routerLink]="['/crear-torneo','nuevo']" label="Nuevo torneo" class="ui-button-raised ui-button-success mb-3"></button>
+    <button pButton type="button" *ngIf="!userTorneo&&esDocente()" [routerLink]="['/crear-torneo','nuevo']"
+        label="Nuevo torneo" class="ui-button-raised ui-button-success mb-3"></button>
 
-<div class="ui-fluid shadow-lg border border-secondary">
+    <div class="ui-fluid shadow-lg border border-secondary">
 
-<p-dataView #dv [value]="torneos" [paginator]="true" [rows]="cantRows" paginatorPosition="both" filterBy="nombre"
-    [sortField]="sortField" [sortOrder]="sortOrder" *ngIf="torneos">
-<p-header>
-    <div class="ui-helper-clearfix">
-        <div class="ui-g">
-            <!--div class="ui-g-12 ui-md-4">
+        <p-dataView #dv [value]="torneos" [paginator]="true" [rows]="cantRows" paginatorPosition="both"
+            filterBy="nombre" [sortField]="sortField" [sortOrder]="sortOrder" *ngIf="torneos">
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <div class="ui-g">
+                        <!--div class="ui-g-12 ui-md-4">
                 <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Ordenar por" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
             </div-->
-            <div class="ui-g-12 ui-md-4">
-                <p-dropdown [options]="opcionesActivo" [(ngModel)]="sortKeyEstado" placeholder="Filtar Estado por" (onChange)="onFilterActivosChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
-            </div>
-            <div class="ui-g-6 ui-md-4 filter-container">
-                <div style="position:relative">
-                    <input type="search" [(ngModel)]="filtroNombre" pInputText placeholder="Buscar por nombre" (input)="dv.filter($event.target.value)">
-                </div>
-            </div>
-        </div>
-    </div>
-</p-header>
-<ng-template let-torneo pTemplate="listItem">
-    <div class="ui-g-12">
-        <div class="car-details">
-            <div>
-                <div class="ui-g-12 br-ln">
-                        <div class=""> <a [routerLink]="['/torneos',torneo.idTorneo]"><h5>{{torneo.nombre}}</h5></a></div>
-                    <div class="ui-g-8">
-                        <div class=""><p> Descripcion: <b>{{torneo.descripcion}}</b></p></div>
-                    </div>
-                    <div class="ui-g-6">
-                        <div class="" ><p> Inicio: {{torneo.fechaInicio | date:'dd/LL/yy H:mm'}}</p></div>
-                    </div>
-                    <div class="ui-g-6">
-                        <div class=""> Fin: {{torneo.fechaFin| date:'dd/LL/yy H:mm'}}</div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p-dropdown [options]="opcionesActivo" [(ngModel)]="sortKeyEstado"
+                                placeholder="Filtar Estado por" (onChange)="onFilterActivosChange($event)"
+                                [style]="{'min-width':'140px'}"></p-dropdown>
+                        </div>
+                        <div class="ui-g-6 ui-md-4 filter-container">
+                            <div style="position:relative">
+                                <input type="search" [(ngModel)]="filtroNombre" pInputText
+                                    placeholder="Buscar por nombre" (input)="dv.filter($event.target.value)">
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <p-splitButton (onClick)=navegarTorneoDetalle(torneo.idTorneo) class="p-sm-0 p-md-0 p-lg" *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label="" (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-info" icon="pi pi-list"  [model]="torneoMapItems[torneo.idTorneo]"></p-splitButton>
+            </p-header>
+            <ng-template let-torneo pTemplate="listItem">
+                <div class="ui-g-12">
+                    <div class="car-details">
+                        <div>
+                            <div class="ui-g-12 br-ln">
+                                <div class=""> <a [routerLink]="['/torneos',torneo.idTorneo]">
+                                        <h5>{{torneo.nombre}}</h5>
+                                    </a></div>
+                                <div class="ui-g-8">
+                                    <div class="">
+                                        <p> Descripcion: <b>{{torneo.descripcion}}</b></p>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6">
+                                    <div class="">
+                                        <p> Inicio: {{torneo.fechaInicio | date:'dd/LL/yy H:mm'}}</p>
+                                    </div>
+                                </div>
+                                <div class="ui-g-6">
+                                    <div class=""> Fin: {{torneo.fechaFin| date:'dd/LL/yy H:mm'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Example single danger button -->
+                        <div *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="pi pi-list"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-primary"   >
+
+                                <li *ngFor="let item of torneoMapItems[torneo.idTorneo]">
+                                    <a class="dropdown-item" (click)="item.command(torneo)"> <i [ngClass]="item.icon"></i> {{item.label}}</a></li>
+                                
+                            </ul>
+                        </div>
+
+
+                        <!--p-splitButton (onClick)=navegarTorneoDetalle(torneo.idTorneo) class="p-sm-0 p-md-0 p-lg"
+                            *ngIf="torneoMapItems[torneo.idTorneo]&&torneoMapItems[torneo.idTorneo].length>0" label=""
+                            (onDropdownClick)="selectTorneoFunc(torneo)" styleClass="ui-button-info" icon="pi pi-list"
+                            [model]="torneoMapItems[torneo.idTorneo]"></-p-splitButton-->
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
     </div>
-    </div>
-</ng-template>
-</p-dataView>
-</div>
 
 </div>

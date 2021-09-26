@@ -56,7 +56,8 @@ export class HornereandoComponent implements OnInit {
 			.then(t => {
 				this.torneo = t;
 				this.torneo.torneosUsuarios = orderBy(this.torneo.torneosUsuarios, ["puntos", "penalidad", "tiempo"], ["desc", "asc", "asc"])
-				this.itemDropdown = t.torneosProblemas.map( e =>({...e,label:e.orden + "-" + e.problema.nombre}) )
+				
+				this.itemDropdown = orderBy(t.torneosProblemas,['orden'],['asc']).map( e =>({...e,label:e.orden + "-" + e.problema.nombre}) )
 				const fechaFin = new Date(t.fechaFin).getTime();
 				this.tiempoFinalizacion = fechaFin - new Date().getTime(); 
 				if(this.tiempoFinalizacion <= 0 ){
