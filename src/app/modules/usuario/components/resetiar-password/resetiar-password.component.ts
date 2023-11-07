@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators, UntypedFormBuilder } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import { NotifierService } from 'angular-notifier';
 
@@ -10,7 +10,7 @@ import { NotifierService } from 'angular-notifier';
 })
 export class ResetiarPasswordComponent implements OnInit {
   public hash:string;
-  public userform: FormGroup;
+  public userform: UntypedFormGroup;
   public mostrarPass:boolean = false;
   public mostrarPassRepe:boolean = false;
   public loading:boolean = false;
@@ -18,7 +18,7 @@ export class ResetiarPasswordComponent implements OnInit {
 
   constructor(
     private activeRoute:ActivatedRoute,
-    private fb: FormBuilder, 
+    private fb: UntypedFormBuilder, 
     private _userService: UsuarioService,
     private notifier:NotifierService,
     private router: Router,
@@ -48,8 +48,8 @@ export class ResetiarPasswordComponent implements OnInit {
 
   formConfig(){
     this.userform = this.fb.group({
-      'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
-      'passwordRepetir': new FormControl('',Validators.compose([Validators.required])),
+      'password': new UntypedFormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
+      'passwordRepetir': new UntypedFormControl('',Validators.compose([Validators.required])),
     },
     {
       validator: [this.MustMatch('password', 'passwordRepetir')]
@@ -57,7 +57,7 @@ export class ResetiarPasswordComponent implements OnInit {
   }
 
   MustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
+    return (formGroup: UntypedFormGroup) => {
         const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
 

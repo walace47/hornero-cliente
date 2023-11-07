@@ -37,7 +37,7 @@
 					</td>
 					<td *ngIf="torneoUsuario.tiempo != 0" class="ui-column-title">
 						<span  class="ui-column-title">Tiempo:</span>
-						{{ torneoUsuario.tiempo | date:'short'}} 
+						{{ torneoUsuario.tiempo | date:'short'}}
 					</td>
 
 					<td *ngIf="torneoUsuario.tiempo == 0" class="ui-column-title">
@@ -64,11 +64,11 @@
 
 <p-panel *ngIf="torneo" [header]="torneo.nombre">
 
-	<div class="p-grid">
-		<div class="p-col-12">
+	<div class="grid">
+		<div class="col-12">
 				<p-dropdown (onChange)="cambioProblema()" [options]="itemDropdown" [(ngModel)]="problemaActual" placeholder="Seleccionar problema" optionLabel="label" [showClear]="true"></p-dropdown>
 		</div>
-		<div *ngIf="!loading&&problemaActual" class="p-col-6">
+		<div *ngIf="!loading&&problemaActual" class="col-6">
 			<b>Enunciado:</b>
 			<div [innerHTML]="problemaActual.problema.enunciado"></div>
 			<br>
@@ -76,8 +76,8 @@
 			<br>
 			Seleccione la respuesta correcta:
 			<br>
-			<div class="p-grid">
-				<div *ngFor="let r of respuestas;let i=index" class="p-col-5 p-field-radiobutton ">
+			<div class="grid">
+				<div *ngFor="let r of respuestas;let i=index" class="col-5 p-field-radiobutton ">
 					<p-radioButton [label]="r" name="respuesta" [value]="r" [(ngModel)]="respuestaSeleccionda"
 						inpudIt="r" [inputId]="r"></p-radioButton>
 				</div>
@@ -87,7 +87,7 @@
 				class="ui-button-raised ui-button-success mt-4"></button>
 
 		</div>
-		<div  *ngIf="!loading&&problemaActual" class="p-col-6">
+		<div  *ngIf="!loading&&problemaActual" class="col-6">
 			<div *ngIf="problemaActual">
 				<div *ngIf="problemaActual.problema.archivo">
 					<img id="imgid" class="imgResponsive"

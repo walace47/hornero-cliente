@@ -1,5 +1,5 @@
 
-<div *ngIf="penalidad > 0" class="p-grid">
+<div *ngIf="penalidad > 0" class="grid">
 	<app-reloj etiqueta="Debe esperar" (tiempoCero)="tiempoCero()" [tiempo]="penalidad"></app-reloj>
 </div>
 
@@ -10,28 +10,28 @@
 <i class="pi pi-search" (mouseenter)="verPosicion($event)" style="font-size:24px">Posicion</i>
 
 
-<div class="p-grid">
-    <div class="p-col" *ngIf="torneo">
+<div class="grid">
+    <div class="col" *ngIf="torneo">
         <p-dropdown [options]="torneo.torneosProblemas" [(ngModel)]="selectedProblem" placeholder="Seleccionar problema" optionLabel="problema.nombre" [showClear]="true"></p-dropdown>
     </div>
-        
-    <div *ngIf="selectedProblem" class="p-col">
+
+    <div *ngIf="selectedProblem" class="col">
         {{selectedProblem.problema.enunciado}}
     </div>
-    
-    <div  *ngIf="selectedProblem" class="p-col" >
+
+    <div  *ngIf="selectedProblem" class="col" >
         <div *ngIf="selectedProblem.problema.archivo">
                 <img id="imgid" src="{{environment.url}}/problemas/{{selectedProblem.problema.archivo}}" width="100" height="100" >
         </div>
-    </div>        
+    </div>
 </div>
-<div class="p-grid">
-    <div class="p-col">
+<div class="grid">
+    <div class="col">
         <div class="shadow mt-1">
             <p-menubar  [model]="itemsTab">
-                <div class="p-grid">
+                <div class="grid">
 
-                    <div   *ngFor="let usuarioConectado of usuariosConectados" class="p-col">
+                    <div  *ngFor="let usuarioConectado of usuariosConectados" class="col">
                             <a  class="badge" [pTooltip]="usuarioConectado.nombreUsuario"  tooltipPosition="bottom" [style.color]="cambiarColor(usuarioConectado.color)" [style.background]="usuarioConectado.color">
                                 {{getfirstLeter(usuarioConectado.nombreUsuario)}}
                             </a>
@@ -41,38 +41,38 @@
         </div>
     </div>
 </div>
-<div class="p-grid">
-    <div class="p-col">
+<div class="grid">
+    <div class="col">
 
         <div class="shadow ">
-            
+
             <p-tabView >
                 <p-tabPanel header="Bloques">
                     <ng-template pTemplate="content">
                         <app-blockly [token]="token" [cargarXml]="xmlNuevo" (mostrarJavascript)="mostrarJs($event)"></app-blockly>
                     </ng-template>
-                    
+
                 </p-tabPanel>
                 <p-tabPanel header="Javascript">
                     <textarea *ngIf="codeJs" highlight-js [options]="{}" [lang]="'javascript'">
                         {{codeJs}}
-                    </textarea>        
-                    
+                    </textarea>
+
                 </p-tabPanel>
                 <p-tabPanel header="Xml">
                     <textarea *ngIf="codeXml" highlight-js [options]="{}" [lang]="'xml'">
                         {{codeXml | xml}}
-                    </textarea>   
+                    </textarea>
                 </p-tabPanel>
-                
+
 
             </p-tabView>
-            
+
         </div>
-        
+
         </div>
     </div>
-    
+
 
 <p-sidebar [(visible)]="isVisibleChat" position="right" [baseZIndex]="10000">
     <h3 style="font-weight:normal">Chat</h3>
@@ -93,7 +93,7 @@
 
 <p-dialog header="Guardar Xml" [(visible)]="displayGuardar" [modal]="true" [responsive]="true">
     <span class="ui-float-label mt-2">
-        <input id="float-input-username" [(ngModel)]="nombreCodigoAGuardar"  name="nombreCodigoAGuardar" type="text" pInputText> 
+        <input id="float-input-username" [(ngModel)]="nombreCodigoAGuardar"  name="nombreCodigoAGuardar" type="text" pInputText>
         <label for="float-input-username">Nombre</label>
     </span>
     <p-footer>
@@ -141,7 +141,7 @@
 					</td>
 					<td *ngIf="torneoUsuario.tiempo != 0" class="ui-column-title">
 						<span  class="ui-column-title">Tiempo:</span>
-						{{ torneoUsuario.tiempo | date:'short'}} 
+						{{ torneoUsuario.tiempo | date:'short'}}
 					</td>
 
 					<td *ngIf="torneoUsuario.tiempo == 0" class="ui-column-title">

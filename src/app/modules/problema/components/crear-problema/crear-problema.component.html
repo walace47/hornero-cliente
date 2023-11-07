@@ -1,139 +1,191 @@
-<form (keydown.enter)="onChangeTest($event)" [formGroup]="problemaForm" (ngSubmit)="onSubmit(problemaForm.value)"
-	class="shadow">
-	<p-panel header="Nuevo Problema">
+<p-panel styleClass="shadow-8" header="Nuevo Problema">
+    <form
+        (keydown.enter)="onChangeEtiquetas($event)"
+        [formGroup]="problemaForm"
+        (ngSubmit)="onSubmit()"
+    >
+        <p-tabView>
+            <p-tabPanel header="Datos problema">
+                <div class="grid nested-grid">
+                    <div class="col-12 lg:col-6">
+                        <div class="grid">
+                            <div class="field col-12">
+                                <label for="nombre" class="block"
+                                    >Nombre:</label
+                                >
+                                <input
+                                    pInputText
+                                    class="w-full"
+                                    type="text"
+                                    placeholder="nombre del torneo"
+                                    formControlName="nombre"
+                                />
+                                <small
+                                    *ngIf="
+                                        !problemaForm.controls['nombre']
+                                            .valid &&
+                                        problemaForm.controls['nombre'].dirty
+                                    "
+                                    id="nombre-error"
+                                    class="p-error block"
+                                    >El nombre del problema es requerido</small
+                                >
+                            </div>
+                        </div>
 
-		<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+                        <div class="grid">
+                            <div class="col-12 md:col-6">
+                                <div class="field">
+                                    <label for="tiempoEjecucion" class="block"
+                                        >Tiempo maximo(ms):</label
+                                    >
+                                    <input
+                                        pInputText
+                                        class="w-full"
+                                        type="text"
+                                        placeholder="30000"
+                                        formControlName="tiempoEjecucion"
+                                    />
+                                    <small
+                                        *ngIf="
+                                            !problemaForm.controls[
+                                                'tiempoEjecucion'
+                                            ].valid &&
+                                            problemaForm.controls[
+                                                'tiempoEjecucion'
+                                            ].dirty
+                                        "
+                                        id="lenguaje-error"
+                                        class="p-error block"
+                                        >El tiempo de ejecucion es
+                                        requerido</small
+                                    >
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="field">
+                                    <label for="complejidad" class="block"
+                                        >complejidad</label
+                                    >
+                                    <p-dropdown
+                                        [options]="complejidades"
+                                        formControlName="complejidad"
+                                    >
+                                    </p-dropdown>
+                                    <small
+                                        *ngIf="
+                                            !problemaForm.controls[
+                                                'complejidad'
+                                            ].valid &&
+                                            problemaForm.controls['complejidad']
+                                                .dirty
+                                        "
+                                        id="complejidad-error"
+                                        class="p-error block"
+                                        >La complejidad es requerida</small
+                                    >
+                                </div>
+                            </div>
+                        </div>
 
-			<p-tabView>
-				<p-tabPanel header="Datos problema">
+                        <div class="grid">
+                            <div class="field col-12">
+                                <label for="etiquetas" class="block"
+                                    >Etiquetas:</label
+                                >
+                                <p-multiSelect
+                                    #ms
+                                    class=""
+                                    name="ms"
+                                    (onChange)="onChangeEtiquetas($event)"
+                                    [options]="etiquetasOpt"
+                                    formControlName="etiquetas"
+                                    display="chip"
+                                >
+                                    <ng-template let-etiqueta pTemplate="item">
+                                        <div
+                                            style="
+                                                font-size: 14px;
+                                                float: right;
+                                                margin-top: 4px;
+                                            "
+                                        >
+                                            {{ etiqueta.label }}
+                                        </div>
+                                    </ng-template>
+                                </p-multiSelect>
+                            </div>
+                        </div>
 
+                        <div class="grid">
+                            <div class="col">
+                                <div class="field">
+                                    <label for="archivo" class="block"
+                                        >Imagen</label
+                                    >
+                                    <p-fileUpload
+                                        #fileUpload
+                                        [auto]="true"
+                                        formControlName="file"
+                                        chooseLabel="Buscar"
+                                        [customUpload]="true"
+                                        (uploadHandler)="myUploader($event)"
+                                    >
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-6">
-
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<p-message severity="error" text="El nombre del problema es requerido"
-										*ngIf="!problemaForm.controls['nombre'].valid && problemaForm.controls['nombre'].dirty">
-									</p-message>
-								</div>
-							</div>
-
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<span><b>Nombre:</b></span>
-									<input pInputText type="text" formControlName="nombre" placeholder="" />
-								</div>
-							</div>
-
-							<div class="ui-grid-row mt-1">
-								<div class="ui-grid-col-6">
-									<div class="ui-grid-row">
-										<div class="ui-grid-col-12">
-
-											<p-message severity="error" [text]="problemaForm.controls['tiempoEjecucion'].errors['required'] ? 
-                            'El tiempo de ejecucion es requerido':''" *ngIf="!problemaForm.controls['tiempoEjecucion'].valid && 
-                    problemaForm.controls['tiempoEjecucion'].dirty"></p-message>
-										</div>
-									</div>
-									<div class="ui-grid-row">
-										<div class="ui-grid-col-12">
-
-											<span><b>Tiempo maximo:</b></span>
-											<input pInputText type="text" formControlName="tiempoEjecucion"
-												placeholder="" />
-										</div>
-
-									</div>
-								</div>
-								<div class="ui-grid-col-6">
-									<div class="ui-grid-col-12">
-										<div class="ui-grid-row">
-											<p-message severity="error" [text]="problemaForm.controls['complejidad'].errors['required'] ? 
-                        'La Complejidad es obligatoria' : ''" *ngIf="!problemaForm.controls['complejidad'].valid && 
-                        problemaForm.controls['complejidad'].dirty"></p-message>
-										</div>
-									</div>
-									<div class="ui-grid-row">
-										<div class="ui-grid-col-12">
-											<span><b>Complejidad:</b></span>
-											<p-dropdown [options]="complejidades" formControlName="complejidad">
-											</p-dropdown>
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<span><b>Archivo:</b></span>
-									<div class="custom-file">
-										<input (change)="myUploader($event)" type="file" name="file" placeholder="" />
-									</div>
-								</div>
-							</div>
-
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<p-multiSelect #ms name="ms" (onChange)="onChangeTest($event)"
-										[options]="etiquetasOpt" formControlName="etiquetas">
-										<ng-template let-value pTemplate="selectedItems">
-											<div *ngFor="let val of value"
-												class="ui-multiselected-item-token ui-corner-all">
-												<span
-													style="width:20px;vertical-align:middle;margin-right:.5em">{{val.etiqueta}}</span>
-											</div>
-											<span *ngIf="!value || value.length === 0"
-												class="ui-multiselected-empty-token ui-corner-all">Etiquetas</span>
-										</ng-template>
-										<ng-template let-car pTemplate="item">
-											<div style="font-size:14px;float:right;margin-top:4px">{{car.label}}</div>
-										</ng-template>
-									</p-multiSelect>
-								</div>
-							</div>
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<button pButton type="submit" label="Submit" [disabled]="!problemaForm.valid"
-										*ngIf="!loading"></button>
-
-
-									<button pButton type="submit" label="Submit" disabled *ngIf="loading">
-										<i class="pi pi-spin pi-spinner" style="font-size: 3em"></i>
-									</button>
-
-								</div>
-							</div>
-						</div>
-
-						<div class="ui-grid-col-6">
-							<div class="ui-grid-row">
-								<div class="ui-grid-col-12">
-									<p-message severity="error" text="El enunciado es obligatorio"
-										*ngIf="!problemaForm.controls['enunciado'].valid && problemaForm.controls['enunciado'].dirty">
-									</p-message>
-								</div>
-							</div>
-							<div class="ui-grid-col-12">
-								<span><b>Enunciado:</b></span>
-								<p-editor formControlName="enunciado" [style]="{'height':'320'}"></p-editor>
-
-							</div>
-						</div>
-
-
-
-					</div>
-				</p-tabPanel>
-				<p-tabPanel header="Resoluciones">
-					<app-resoluciones [soluciones]="soluciones" (solucionesEmiter)="agregarSoluciones($event)">
-					</app-resoluciones>
-				</p-tabPanel>
-
-			</p-tabView>
-		</div>
-
-	</p-panel>
-</form>
+                    <div class="col-12 lg:col-6">
+                        <div class="grid">
+                            <div class="col-12">
+                                <p-message
+                                    severity="error"
+                                    text="El enunciado es obligatorio"
+                                    *ngIf="
+                                        !problemaForm.controls['enunciado']
+                                            .valid &&
+                                        problemaForm.controls['enunciado'].dirty
+                                    "
+                                >
+                                </p-message>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <span><b>Enunciado:</b></span>
+                            <p-editor
+                                styleClass="bg-primary-reverse"
+                                formControlName="enunciado"
+                                [style]="{ height: '320' }"
+                            ></p-editor>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Resoluciones">
+                <app-resoluciones
+                    [soluciones]="soluciones"
+                    (solucionesEmiter)="agregarSoluciones($event)"
+                >
+                </app-resoluciones>
+            </p-tabPanel>
+            <div class="grid">
+                <div class="col">
+                    <button
+                        pButton
+                        type="submit"
+                        label="Submit"
+                        [disabled]="!problemaForm.valid || loading"
+                    >
+                        <i
+                            *ngIf="loading"
+                            class="pi pi-spin pi-spinner"
+                            style="font-size: 3em"
+                        ></i>
+                    </button>
+                </div>
+            </div>
+        </p-tabView>
+    </form>
+</p-panel>

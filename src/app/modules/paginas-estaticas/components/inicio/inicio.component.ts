@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../shared/service/login.service';
+import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
+    selector: 'app-inicio',
+    templateUrl: './inicio.component.html',
 })
 export class InicioComponent implements OnInit {
 
-  constructor(
-    private _loginService:LoginService,
+    constructor(
+        private _loginService: LoginService,
+        private router: Router
+
     ) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+    onEmpezarClick(){
+        this.router.navigate(['/crear-usuario','nuevo'])
+    }
 
- isLogin(){
-    return this._loginService.isLogin()
-  }
+    isLogin() {
+        return this._loginService.isLogin()
+    }
 
 }

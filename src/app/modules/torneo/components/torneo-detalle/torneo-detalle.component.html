@@ -85,7 +85,7 @@
 					</td>
 					<td *ngIf="torneoUsuario.tiempo != 0" class="ui-column-title">
 						<span  class="ui-column-title">Tiempo:</span>
-						{{ torneoUsuario.tiempo | date:'dd/LL/yy H:mm'}} 
+						{{ torneoUsuario.tiempo | date:'dd/LL/yy H:mm'}}
 					</td>
 
 					<td *ngIf="torneoUsuario.tiempo == 0" class="ui-column-title">
@@ -137,10 +137,10 @@
 			</ng-template>
 			<ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
 				<td colspan="4">
-					<div class="p-grid -fluid" style="font-size:16px;padding:20px">
-						<div class="p-col-12 p-md-9">
-							<div class="p-grid">
-								<div class="p-col-12">
+					<div class="grid -fluid" style="font-size:16px;padding:20px">
+						<div class="col-12 p-md-9">
+							<div class="grid">
+								<div class="col-12">
 									<b>Solucionado por:</b> {{getUsuarios(rowData.orden - 1)}}
 								</div>
 							</div>

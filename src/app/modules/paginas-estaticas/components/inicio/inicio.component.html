@@ -1,9 +1,9 @@
 <div  class="animated fadeIn">
-  <div class="row pt-4" *ngIf="!isLogin()">
-    <div class="col-sm  align-self-center">
+  <div class="grid pt-4" *ngIf="!isLogin()">
+    <div class="col align-self-center">
       <h1>Bienvenidos !!!!!</h1>
       <h2>Al torneo de programacion Hornero</h2>
-      <button type="button" class="btn btn-secondary">Empezar a jugar</button>
+      <button pButton pRipple type="button" label="Empezar" class="p-button-sm p-button-info" (click)="onEmpezarClick()"></button>
       <p class="pt-3">
         Se puede programar/competir con cualquier lenguaje" java, python, php,
         c, c++, pascal, javascript, c#, ciao-prolog, perl, bash, lisp, ruby,

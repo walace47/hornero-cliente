@@ -1,52 +1,95 @@
+<div class="animated fadeIn">
+    <button
+        pButton
+        type="button"
+        label="Nuevo Usuario"
+        [routerLink]="['/crear-usuario', 'nuevo']"
+        class="p-button-raised p-button-primary mb-3"
+    ></button>
 
+    <div class="mt-2">
+        <p-table
+            [columns]="cols"
+            #dt1
+            [paginator]="true"
+            [rows]="10"
+            [value]="usuarios"
+            [responsive]="true"
+            [globalFilterFields]="['nombreUsuario']"
+        >
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col
+                        *ngFor="let col of columns"
+                        [style.width]="col.width"
+                    />
+                </colgroup>
+            </ng-template>
 
-<div  class="animated fadeIn">
-<button pButton type="button" label="Nuevo Usuario" [routerLink]="['/crear-usuario','nuevo']" class="ui-button-raised ui-button-success mb-3"></button>
+            <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="
+                                dt1.filterGlobal(
+                                    $event.target.value,
+                                    'contains'
+                                )
+                            "
+                            placeholder="Filtrar"
+                        />
+                    </span>
+                </div>
+            </ng-template>
 
+            <ng-template pTemplate="header">
+                <tr class="">
+                    <th class="header-table">Id</th>
+                    <th class="header-table">Nombre</th>
+                    <th class="header-table">Institucion</th>
+                    <th class="header-table">Email</th>
+                    <th class="header-table">Rol</th>
+                    <th class="header-table"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-usuario>
+                <div class="tabla-responsiva"><br /></div>
 
-<div class="mt-2">
-<p-table [columns]="cols" [paginator]="true" [rows]="10" styleClass="ui-table-cars"   [responsive]="true" selectionMode="single" [value]="usuarios">
-   
-    <ng-template pTemplate="colgroup" let-columns>
-        <colgroup>
-            <col *ngFor="let col of columns" [style.width]="col.width">
-        </colgroup>
-    </ng-template>
-   
-    <ng-template pTemplate="header">
-        <tr class="shadow">
-            <th class="header-table" >Id</th>
-            <th class="header-table" >Nombre</th>
-            <th class="header-table">Institucion</th>
-            <th class="header-table">Email</th>
-            <th class="header-table">Rol</th>
-            <th class="header-table"></th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-usuario>
-        <div class="tabla-responsiva"> <br></div>
-
-        <tr class="shadow">
-            <td>                    
-                <span class="ui-column-title">Id:</span>
-                {{usuario.idUsuario}}</td>
-            <td>
-                <span class="ui-column-title">Nombre usuario:</span> 
-                {{usuario.nombreUsuario}}</td>
-            <td> 
-                <span class="ui-column-title">Institucion:</span>
-                {{usuario.institucion}}</td>
-            <td>
-                <span class="ui-column-title">Email:</span>
-                {{usuario.email}}</td>            
-            <td>
-                <span class="ui-column-title">Rol:</span>
-                {{usuario.rol.rol}}</td>
-            <td align="right" >
-                <button pButton [routerLink]="['/crear-usuario',usuario.idUsuario]" type="button" class="ui-button-success ui-corner-all" icon="pi pi-user-edit" ></button>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
-</div>
+                <tr>
+                    <td>
+                        <span class="p-column-title">Id:</span>
+                        {{ usuario.idUsuario }}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Nombre usuario:</span>
+                        {{ usuario.nombreUsuario }}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Institucion:</span>
+                        {{ usuario.institucion }}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Email:</span>
+                        {{ usuario.email }}
+                    </td>
+                    <td>
+                        <span class="p-column-title">Rol:</span>
+                        {{ usuario.rol.rol }}
+                    </td>
+                    <td class="text-right">
+                        <button
+                            pButton
+                            [routerLink]="['/crear-usuario', usuario.idUsuario]"
+                            type="button"
+                            class="p-button-primary p-button-outlined p-corner-all"
+                            icon="pi pi-user-edit"
+                        ></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>

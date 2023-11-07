@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MessageService, SelectItem } from 'primeng/api';
 import { TipoTorneo } from 'src/app/model/TipoTorneo';
@@ -21,7 +21,7 @@ import { orderBy } from 'lodash';
 })
 export class CrearTorneoComponent implements OnInit, OnDestroy {
 	private suscripciones: Subscription[] = [];
-	public torneoform: FormGroup;
+	public torneoform: UntypedFormGroup;
 	public submitted: boolean;
 	public loading: boolean;
 	public estadosTorneo: SelectItem[];
@@ -33,7 +33,7 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 	public esEdicion = false;
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private _torneoService: TorneosService,
 		private router: Router,
 		private activeRoute: ActivatedRoute,
@@ -57,12 +57,12 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 			console.log(this.id);
 			this.configIdioma();
 			this.torneoform = this.fb.group({
-				'nombre': new FormControl('', Validators.required),
-				'descripcion': new FormControl('', Validators.required),
-				'fechaInicio': new FormControl('', Validators.required),
-				'fechaFin': new FormControl('', Validators.required),
-				'estado': new FormControl('', Validators.required),
-				'tipoTorneo': new FormControl('', Validators.required)
+				'nombre': new UntypedFormControl('', Validators.required),
+				'descripcion': new UntypedFormControl('', Validators.required),
+				'fechaInicio': new UntypedFormControl('', Validators.required),
+				'fechaFin': new UntypedFormControl('', Validators.required),
+				'estado': new UntypedFormControl('', Validators.required),
+				'tipoTorneo': new UntypedFormControl('', Validators.required)
 			}, { validators: this.fechasInicioDebeSerMenor() })
 
 			this.suscripciones.push(
@@ -174,7 +174,7 @@ export class CrearTorneoComponent implements OnInit, OnDestroy {
 	}
 
 	fechasInicioDebeSerMenor() {
-		return (formGroup: FormGroup) => {
+		return (formGroup: UntypedFormGroup) => {
 			const fechaFin = formGroup.controls['fechaFin'].value;
 			const fechaInicio = formGroup.controls['fechaInicio'].value;
 			const matchingControl = formGroup.controls['fechaFin'];

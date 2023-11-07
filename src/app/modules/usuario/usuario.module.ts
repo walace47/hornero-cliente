@@ -6,9 +6,6 @@ import { PrimengModule } from '../primeng/primeng.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CrearUsuarioComponent } from './components/crear-usuario/crear-usuario.component';
 import { UsuariosComponent } from './components/lista-usuarios/usuarios.component';
-import { UsuarioService } from 'src/app/modules/usuario/services/usuario.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InterceptorTokenService } from 'src/app/modules/utiles/services/interceptor-token.service';
 import { ResetiarPasswordComponent } from './components/resetiar-password/resetiar-password.component';
 
 
@@ -17,7 +14,7 @@ import { ResetiarPasswordComponent } from './components/resetiar-password/reseti
     CrearUsuarioComponent,
     UsuariosComponent,
     ResetiarPasswordComponent],
-  imports: [    
+  imports: [
     FormsModule,
     ReactiveFormsModule,
     CommonModule,

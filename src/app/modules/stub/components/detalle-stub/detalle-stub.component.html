@@ -1,123 +1,111 @@
 <p-toast [style]="{ marginTop: '80px' }"></p-toast>
 
-<form [formGroup]="stubForm" (ngSubmit)="onSubmit(stubForm.value)" class="shadow">
-  <p-panel [header]="valorHeader">
-    <div
-      class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
-      style="margin: 10px 0px"
-    >
-      <div class="ui-grid-row"> 
-        <div class="ui-grid-col-12"><b>Lenguaje</b></div>
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-
-          <p-autoComplete formControlName="lenguaje" [suggestions]="lenguajesMostrados" (completeMethod)="search($event)"  [size]="30"
-    [minLength]="1"></p-autoComplete>
-
-
-
-
-         
-        </div>
-      <div class="ui-grid-col-4">
-        <p-message severity="error" text="El lenguaje de la institucion es requerido" *ngIf="!stubForm.controls['lenguaje'].valid && stubForm.controls['lenguaje'].dirty"></p-message>
-      </div>
-    </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-12"><b>descripcion</b></div>
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <textarea class="form-control"  rows = "3" formControlName="descripcion">
-         </textarea>
-        </div>
-
-        <div class="ui-grid-col-4">
-
-
-          <p-message
-            severity="error"
-            [text]= "stubForm.controls['descripcion'].errors['required'] 
-              ? 'lenguaje usuario es requerido'
-              : stubForm.controls['descripcion'].errors['usuarioExiste'] 
-              ? 'El lenguaje de usuario esta en uso'
-              : ''"
-            *ngIf="
-              (stubForm.controls['descripcion'].errors &&
-              (stubForm.controls['descripcion'].errors['usuarioExiste'] || 
-              stubForm.controls['descripcion'].errors['required'] )) &&
-              stubForm.controls['descripcion'].dirty
-
-            "
-          ></p-message>
-          
-        </div>
-      </div>
-
-
-
-
-        <div class="ui-grid-row">
-          <div class="ui-grid-col-6">
-            <span><b>Archivo:</b></span>
-            <div class="custom-file">
-              <input (change)="myUploader($event)"  class="form-control" type="file" name="file" value="archivoNombre" />
+<form
+    [formGroup]="stubForm"
+    (ngSubmit)="onSubmit(stubForm.value)"
+    class="shadow"
+>
+    <p-panel [header]="valorHeader" styleClass="col-6 col-offset-3">
+        <div class="col-offset-3" style="margin: 10px 0px">
+            <div class="grid">
+                <div class="col-6">
+                    <div class="field">
+                        <label for="username2" class="block">Lenguaje</label>
+                        <p-autoComplete
+                            formControlName="lenguaje"
+                            class="w-full"
+                            [suggestions]="lenguajesMostrados"
+                            (completeMethod)="search($event)"
+                            [size]="30"
+                            [minLength]="1"
+                        ></p-autoComplete>
+                        <small
+                            *ngIf="
+                                !stubForm.controls['lenguaje'].valid &&
+                                stubForm.controls['lenguaje'].dirty
+                            "
+                            id="lenguaje-error"
+                            class="p-error block"
+                            >El lenguaje del stub es requerido</small
+                        >
+                    </div>
+                </div>
             </div>
-            <p-message
-            severity="error"
-            [text]= "stubForm.controls['archivo'].errors['required'] 
-              ? 'el archivo es requerido'
-              : stubForm.controls['archivo'].errors['emailExiste'] 
-              ? 'El archivo de usuario esta en uso'
-              : stubForm.controls['archivo'].errors['archivo']
-              ? 'Porfavor introduzca un archivo valido'
-              : ''"
 
-            *ngIf="
-              ( stubForm.controls['archivo'].errors &&
-                (stubForm.controls['archivo'].errors['emailExiste'] || 
-                stubForm.controls['archivo'].errors['required'] || 
-                stubForm.controls['archivo'].errors['archivo'])) && 
-                stubForm.controls['archivo'].dirty
-            "
-          ></p-message>
-          </div>
+            <div class="grid">
+                <div class="col-6">
+                    <div class="field">
+                        <label for="username2" class="block">Descripcion</label>
+                        <textarea
+                            class="w-full"
+                            rows="3"
+                            formControlName="descripcion"
+                        >
+                        </textarea>
+                        <small
+                            *ngIf="
+                                !stubForm.controls['descripcion'].valid &&
+                                stubForm.controls['descripcion'].dirty
+                            "
+                            id="descripcion-error"
+                            class="p-error block"
+                            >La descripcion es obligatoria</small
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col-6">
+                    <div class="field">
+                        <label for="archivo" class="block">Archivo</label>
+                        <input
+                            pInputText
+                            (change)="myUploader($event)"
+                            class="form-control"
+                            type="file"
+                            name="file"
+                            value="archivoNombre"
+                        />
+                        <small
+                            *ngIf="
+                                !stubForm.controls['archivo'].valid &&
+                                stubForm.controls['archivo'].dirty
+                            "
+                            id="descripcion-error"
+                            class="p-error block"
+                            >El Archivo es obligatorio</small
+                        >
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-6">
+                    <button
+                        pButton
+                        type="submit"
+                        label="Submit"
+                        *ngIf="!loading"
+                    ></button>
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                        label="Submit"
+                        disabled
+                        *ngIf="loading"
+                    >
+                        <i
+                            class="pi pi-spin pi-spinner"
+                            style="font-size: 1.5em"
+                        >
+                        </i>
+                    </button>
+                </div>
+                <div class="ui-grid-col-4"></div>
+            </div>
         </div>
-
-        
-
-
-          
- 
-     
-
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <button
-            pButton
-            type="submit"
-            label="Submit"
-            *ngIf="!loading"
-          ></button>
-          
-          <button
-            class="btn btn-primary" 
-            type="submit"
-            label="Submit"
-            disabled
-            *ngIf="loading"
-          >
-            <i class="pi pi-spin pi-spinner" style="font-size: 1.5em" >
-            </i>
-          </button>
-        </div>
-        <div class="ui-grid-col-4"></div>
-      </div>
-    </div>
-  </p-panel>
+    </p-panel>
 </form>

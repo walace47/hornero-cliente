@@ -70,7 +70,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
   ) {
     this.toolbox = toolbox;
   }
-  
+
   ngOnInit() {
     this.token = this.activeRoute.snapshot.paramMap.get("idToken");
 
@@ -98,13 +98,13 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
       marker.setCurNode(node);
 
     })
-    
+
     //suscribe al evento para obtener el color del usuario
     this._blocklySocket.socket.on("getColor",(color:string)=>{
       this.color = color;
     })
 
-    
+
     //suscribe al evento que Actualiza el xml del espacio de trabajo
     this._blocklySocket.socket.on("updateXml", (data: blockHandler) => {
       //Se desabilitan eventos de los bloques mientras recibe la data
@@ -113,7 +113,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
       let xmlAux = Blockly.Xml.workspaceToDom(this.space);
       //casteo a string
       let xml_text = Blockly.Xml.domToText(xmlAux);
-      
+
       if (xml_text !== data.xml && data.xml != "") {
         let xml = Blockly.Xml.textToDom(data.xml);
         Blockly.mainWorkspace.clear();
@@ -124,10 +124,10 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
         this.mostrarJavascript.emit({ js, xml: xml_text });
       }
       Blockly.Events.enable();
-    
+
       xml_text = Blockly.Xml.domToText(xmlAux);
       let js = javascript.workspaceToCode(this.space);
-      //emite al componente padre el java script y xml nuevo 
+      //emite al componente padre el java script y xml nuevo
       this.mostrarJavascript.emit({ js, xml: xml_text });
       //pide a demanda los marcadores, ya que la actualizacion los borra
       this._blocklySocket.socket.emit("getAllSelects",mensaje);
@@ -164,7 +164,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
             xml: xml_text,
             usuario: this.loginService.getUsuario()
          };
-         
+
          this._blocklySocket.socket.emit("updateXml", mensaje);
     }else{
       //sino si ui y se esta seleccionando un elemento actualizo los marcadores en los espacios de trabajo
@@ -225,7 +225,7 @@ export class BlocklyComponent implements OnInit, AfterContentInit {
 
   // configura la compilacion a ajava script de los bloques personalizados
   configJavascript() {
-    
+
     javascript["salida"] = function (block) {
       var value_respuesta = javascript.valueToCode(
         block,

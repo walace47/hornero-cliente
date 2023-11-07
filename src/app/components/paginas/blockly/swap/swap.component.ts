@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TorneosService } from 'src/app/modules/torneo/services/torneos.service';
 import { Torneo } from 'src/app/model/Torneo';
@@ -53,7 +53,7 @@ export class SwapComponent implements OnInit {
 
 	constructor(
 		private codigoService: CodigoUsuarioService,
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private _torneoService: TorneosService,
 		private _jugarService: JugarService,
 		private notifier: NotifierService,

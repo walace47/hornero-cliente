@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  url:"https://hornero.fi.uncoma.edu.ar/api",
-  URL_SOCKET:"https://hornero.fi.uncoma.edu.ar/",
+  url:"https://pimarta2.ddns.net/hornero-api/api",
+  URL_SOCKET:"https://pimarta2.ddns.net/hornero-api/api",
 };

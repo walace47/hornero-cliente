@@ -1,192 +1,153 @@
 <p-toast [style]="{ marginTop: '80px' }"></p-toast>
 
-<form [formGroup]="userform" (ngSubmit)="onSubmit(userform.value)" class="shadow">
-  <p-panel [header]="valorHeader">
-    <div
-      class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
-      style="margin: 10px 0px"
+<p-panel styleClass="shadow-8" [header]="valorHeader">
+    <form
+        [formGroup]="userform"
+        (ngSubmit)="onSubmit(userform.value)"
     >
-      <div class="ui-grid-row"> 
-        <div class="ui-grid-col-12"><b> Institución, Escuela, Universidad, ...:</b></div>
-      </div>
+        <div class="formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label for="intitucion" class="block">Institución</label>
+                <input
+                    pInputText
+                    class="w-full"
+                    type="text"
+                    placeholder="Institucion, escuela u otras"
+                    formControlName="institucion"
+                />
+                <small
+                    *ngIf="
+                        !userform.controls['institucion'].valid &&
+                        userform.controls['institucion'].dirty
+                    "
+                    id="lenguaje-error"
+                    class="p-error block"
+                    >{{ mensajesError.institucion }}</small
+                >
+            </div>
 
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <input pInputText type="text" formControlName="institucion" placeholder=""/>
+            <div class="field col-12 md:col-6">
+                <label for="username" class="block">Nombre de usuario:</label>
+                <input
+                    pInputText
+                    class="w-full"
+                    type="text"
+                    formControlName="nombreUsuario"
+                    placeholder=""
+                />
+                <small
+                    *ngIf="mostrarMensajeErrorNombreUsuario()"
+                    id="lenguaje-error"
+                    class="p-error block"
+                    >{{ mensajesError.nombreUsuario }}</small
+                >
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <label for="email" class="block">Email:</label>
+                <input
+                    pInputText
+                    class="w-full"
+                    type="text"
+                    formControlName="email"
+                    placeholder="Email"
+                />
+                <small
+                    *ngIf="mostrarMensajeErrorEmail()"
+                    id="email-error"
+                    class="p-error block"
+                    >{{ mensajesError.email }}</small
+                >
+            </div>
+
+            <div *ngIf="!editando" class="field col-12 md:col-6">
+                <label for="password" class="block">Contraseña:</label>
+                <input
+                    pInputText
+                    class="w-full"
+                    type="password"
+                    formControlName="password"
+                />
+                <small
+                    *ngIf="mostrarPasswordErrorEmail()"
+                    id="contrasenia-error"
+                    class="p-error block"
+                    >{{ mensajesError.password }}</small
+                >
+            </div>
+
+            <div *ngIf="!editando" class="field col-12 md:col-6">
+                <label for="password-repeat" class="block"
+                    >Repetir contraseña:</label
+                >
+                <input
+                    pInputText
+                    class="w-full"
+                    type="password"
+                    formControlName="passwordRepetir"
+                />
+                <small
+                    *ngIf="
+                        !userform.controls['passwordRepetir'].valid &&
+                        userform.controls['passwordRepetir'].dirty
+                    "
+                    id="contrasenia-error"
+                    class="p-error block"
+                    >{{ mensajesError.passwordRepetir }}</small
+                >
+            </div>
+
+            <div class="field col-12 lg:col-3 xl:col-3 md:col-3">
+                <label for="lenguaje" class="block">Lenguaje:</label>
+                <p-dropdown
+                    class="w-full"
+                    [options]="lenguajes"
+                    formControlName="lenguajes"
+                ></p-dropdown>
+                <small
+                    *ngIf="
+                        userform.controls['lenguajes'].errors &&
+                        userform.controls['lenguajes'].touched
+                    "
+                    id="lenguaje-error"
+                    class="p-error block"
+                    >{{ mensajesError.lenguaje }}</small
+                >
+            </div>
+            <div class="field col-12 lg:col-3 xl:col-3 md:col-3">
+                <label for="roles" class="block">Rol:</label>
+                <p-dropdown
+                    [options]="roles"
+                    formControlName="roles"
+                ></p-dropdown>
+                <small
+                    *ngIf="
+                        !userform.controls['roles'].valid &&
+                        userform.controls['roles'].touched
+                    "
+                    id="rol-error"
+                    class="p-error block"
+                    >{{ mensajesError.rol }}</small
+                >
+            </div>
         </div>
-      <div class="ui-grid-col-4">
-        <p-message severity="error" text="El nombre de la institucion es requerido" *ngIf="!userform.controls['institucion'].valid && userform.controls['institucion'].dirty"></p-message>
-      </div>
-    </div>
 
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-12"><b> Nombre usuario:</b></div>
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <input pInputText type="text" [disabled]='true' formControlName="nombreUsuario" placeholder=""/>
+        <div class="grid">
+            <div class="col-5 md:col-5 lg:col-5 xl:col-5">
+                <button
+                    pButton
+                    type="submit"
+                    label="Submit"
+                    [disabled]="!userform.valid || loading"
+                    *ngIf="!loading"
+                >
+                    <i
+                        *ngIf="loading"
+                        class="pi pi-spin pi-spinner"
+                        style="font-size: 3em"
+                    ></i>
+                </button>
+            </div>
         </div>
-
-        <div class="ui-grid-col-4">
-
-
-          <p-message
-            severity="error"
-            [text]= "userform.controls['nombreUsuario'].errors['required'] 
-              ? 'nombre usuario es requerido'
-              : userform.controls['nombreUsuario'].errors['usuarioExiste'] 
-              ? 'El nombre de usuario esta en uso'
-              : ''"
-            *ngIf="
-              (userform.controls['nombreUsuario'].errors &&
-              (userform.controls['nombreUsuario'].errors['usuarioExiste'] || 
-              userform.controls['nombreUsuario'].errors['required'] )) &&
-              userform.controls['nombreUsuario'].dirty
-
-            "
-          ></p-message>
-          
-        </div>
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-12"><b>Email:</b></div>
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <input pInputText type="text" formControlName="email" placeholder=""/>
-        </div>
-
-        <div class="ui-grid-col-4">
-
-
-          <p-message
-            severity="error"
-            [text]= "userform.controls['email'].errors['required'] 
-              ? 'el email es requerido'
-              : userform.controls['email'].errors['emailExiste'] 
-              ? 'El email de usuario esta en uso'
-              : userform.controls['email'].errors['email']
-              ? 'Porfavor introduzca un email valido'
-              : ''"
-
-            *ngIf="
-              ( userform.controls['email'].errors &&
-                (userform.controls['email'].errors['emailExiste'] || 
-                userform.controls['email'].errors['required'] || 
-                userform.controls['email'].errors['email'])) && 
-                userform.controls['email'].dirty
-            "
-          ></p-message>
-          
-        </div>
-      </div>
-
-      <div class="ui-grid-row"  *ngIf="!editando">
-        <div class="ui-grid-col-12"><b>Password:</b></div>
-      </div>      
-      <div  *ngIf="!editando" class="ui-grid-row">
-
-        <div class="ui-grid-col-6">
-          <input pInputText type="password" formControlName="password" placeholder=""/>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-message
-            severity="error"
-            [text]="
-              userform.controls['password'].errors['required']
-                ? 'Password is required'
-                : userform.controls['password'].errors['minlength']
-                ? 'tiene que ser mayor a 6 caracteres'
-                : ''
-            "
-            *ngIf="
-              !userform.controls['password'].valid &&
-              userform.controls['password'].dirty
-            "
-          ></p-message>
-        </div>
-      </div>
-
-      <div *ngIf="!editando" class="ui-grid-row">
-        <div class="ui-grid-col-12"><b>Repetir Password:</b></div>
-      </div>      
-      <div *ngIf="!editando" class="ui-grid-row">
-
-        <div class="ui-grid-col-6">
-          <input pInputText type="password" formControlName="passwordRepetir" placeholder=""/>
-        </div>
-        <div class="ui-grid-col-4">
-          <p-message
-            severity="error"
-            text="Las constrasenias no coinciden"
-            *ngIf="
-              !userform.controls['passwordRepetir'].valid &&
-              userform.controls['passwordRepetir'].dirty             "
-          ></p-message>
-        </div>
-      </div>
-
-
-      <div class="ui-grid-row">
-
-          <div class="ui-grid-col-3">
-            <p-message
-              severity="error"
-              text="EL lenguaje es obligatorio"
-              *ngIf="
-                !userform.controls['lenguajes'].valid &&
-                userform.controls['lenguajes'].dirty
-              "
-            ></p-message>
-
-      </div>
-    </div>
-
-
-     
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3"> 
-          <span><b>Lenguaje Favorito:</b></span>
-          <p-dropdown [options]="lenguajes" formControlName="lenguajes"></p-dropdown>
-
-        </div>
-        <div *ngIf="isAdmin()" class="ui-grid-col-3">
-          <span><b>Rol:</b></span>
-          <p-dropdown [options]="roles" formControlName="roles"></p-dropdown>
-        </div>
-        
-        <div *ngIf="!isAdmin()" class="ui-grid-col-3">
-          <span><b>Rol:</b></span>
-          <p-dropdown [options]="rolesCommonUser" formControlName="rolesCommonUser"></p-dropdown>
-        </div>
-        
-      </div>
-
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-6">
-          <button
-            pButton
-            type="submit"
-            label="Submit"
-            [disabled]="!userform.valid"
-            *ngIf="!loading"
-          ></button>
-          
-          <button
-            pButton
-            type="submit"
-            label="Submit"
-            disabled
-            *ngIf="loading"
-          >
-            <i class="pi pi-spin pi-spinner" style="font-size: 3em" ></i>
-          </button>
-        </div>
-        <div class="ui-grid-col-4"></div>
-      </div>
-    </div>
-  </p-panel>
-</form>
+    </form>
+</p-panel>

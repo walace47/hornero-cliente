@@ -1,0 +1,14 @@
+.title{
+    padding-left: 0.5em;
+    padding-top: 1em;
+    font-size: large;
+}
+
+.card {
+    padding: 1rem;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 16px;
+    margin: .5em;
+    border: 0.003em solid #9fa2a5;
+}
+

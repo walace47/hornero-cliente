@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Usuario, UsuarioConectado } from '../../../model/Usuario';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +52,9 @@ export class UsuarioService {
     const usuario:UsuarioConectado = JSON.parse(localStorage.getItem("usuario"));
     if(!usuario) return []
     const relations = (['rol','torneosUsuarios','torneosUsuarios.torneo','torneosUsuarios.torneo.estado']);
-    usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null, relations).toPromise()
+    usuario.usuario = await firstValueFrom(this.get(usuario.usuario.idUsuario.toString(),null, relations))
     return usuario.usuario.torneosUsuarios;
-    
+
   }
 
   async getCodigos(){
@@ -62,11 +63,11 @@ export class UsuarioService {
     const relations = (["codigosGuardados"]);
     usuario.usuario = await this.get(usuario.usuario.idUsuario.toString(),null,relations).toPromise()
     return usuario.usuario.codigosGuardados;
-    
+
   }
-  
+
   isAdmin(){
-    
+
   }
 
 }

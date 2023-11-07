@@ -1,11 +1,11 @@
 import { Component, Input, ElementRef, OnChanges} from '@angular/core';
 
-@Component({    
+@Component({
     selector: 'read-more',
     template: `
         <div [innerHTML]="currentText">
         </div>
-            <a [class.hidden]="hideToggle" style="color:blue;cursor: pointer;" (click)="toggleView()">{{texto()}}</a>
+            <a [class.hidden]="hideToggle" class="text-primary" style="cursor: pointer;" (click)="toggleView()">{{texto()}}</a>
     `
 })
 
@@ -23,13 +23,13 @@ export class ReadMoreComponent implements OnChanges {
     texto(){
       let respuesta = "Ver";
       if(this.isCollapsed){
-        respuesta += " mas" 
+        respuesta += " mas"
       }else if(!this.isCollapsed && this.currentText.length < this.maxLength){
         respuesta = "";
       }else{
-        respuesta +=" menos" 
+        respuesta +=" menos"
       }
-      return respuesta 
+      return respuesta
     }
     toggleView() {
         this.isCollapsed = !this.isCollapsed;
@@ -51,6 +51,6 @@ export class ReadMoreComponent implements OnChanges {
 
     }
     ngOnChanges() {
-        this.determineView();       
+        this.determineView();
     }
 }

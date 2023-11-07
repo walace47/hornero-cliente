@@ -2,20 +2,18 @@
     margin-top: 40px;
     margin-bottom: 150px;
   }
-  .gris{
-    background-color: #DCDCDC;
-  }
-  .br-ln { 
-    overflow-wrap: anywhere; 
+
+  .br-ln {
+    overflow-wrap: anywhere;
  }
   .puntero{
     cursor: pointer;
   }
-  
+
   .w120{
     width: 120px;
   }
-  
+
   /* Animaciones */
   .animated {
     -webkit-animation-duration: 1s;
@@ -23,28 +21,28 @@
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
   }
-  
+
   .fast {
     -webkit-animation-duration: 0.3s;
     animation-duration: 0.3s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
     }
-  
+
     to {
       opacity: 1;
     }
   }
-  
+
   .fadeIn {
     animation-name: fadeIn;
   }
-  
+
 
   .filter-container {
     text-align: center;
@@ -65,13 +63,13 @@
 @media screen and (max-width: 40em) {
   .imgTam {
     width: 60%;
-  } 
+  }
 }
 
 .imgTam {
     width: 455px;
     height: 455px;
-} 
+}
 
 
 .car-details {

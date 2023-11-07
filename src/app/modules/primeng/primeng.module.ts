@@ -34,6 +34,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {TooltipModule} from 'primeng/tooltip';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import {BadgeModule} from 'primeng/badge';
 
 
 import {FileUploadModule} from 'primeng/fileupload';
@@ -74,7 +75,8 @@ import {FileUploadModule} from 'primeng/fileupload';
     TableModule,
     CardModule,
     ScrollPanelModule,
-    PasswordModule
+    PasswordModule,
+    BadgeModule
   ],
   exports:[
     TooltipModule,
@@ -97,7 +99,7 @@ import {FileUploadModule} from 'primeng/fileupload';
     InputTextareaModule,
     ToastModule,
     MessagesModule,
-    MessageModule,    
+    MessageModule,
     PanelModule,
     DataViewModule,
     DialogModule,
@@ -108,7 +110,8 @@ import {FileUploadModule} from 'primeng/fileupload';
     CardModule,
     ScrollPanelModule,
     PasswordModule,
-    TableModule
+    TableModule,
+    BadgeModule
   ]
 })
 export class PrimengModule { }

@@ -1,10 +1,10 @@
 
-    <div class="p-grid">
+    <div class="grid">
         <div class="elemento p-xl-2 p-lg-2 p-md-5 p-sm-6" *ngFor="let codigo of codigos">
             <a (dblclick)="doubleClick(codigo)" [title]="codigo.nombre" ><i  class="pi pi-folder-open"></i>
                 <p>
                     {{achicarTexto(codigo.nombre)}}
-                </p>  
+                </p>
         </a>
         </div>
     </div>

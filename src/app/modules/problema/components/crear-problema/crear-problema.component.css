@@ -1,18 +1,14 @@
-:host ::ng-deep .ui-multiselected-item-token,
-:host ::ng-deep .ui-multiselected-empty-token {
-  padding: 2px 4px;
-  margin: 0 0.286em 0 0;
-  display: inline-block;
-  vertical-align:middle;
-  height: 1.857em;
+
+
+
+::ng-deep .p-editor-container .p-editor-toolbar {
+    background:var(--surface-100);
+}
+::ng-deep .p-fileupload .p-fileupload-buttonbar{
+    background:var(--surface);
 }
 
-:host ::ng-deep .ui-multiselected-item-token {
-  background: #e01f05;
-  color: #ffffff;
-}
-
-:host ::ng-deep .ui-multiselected-empty-token {
-  background: #007ad9;
-  color: #ffffff;
+:host ::ng-deep .p-multiselect {
+    display: flex;
+    flex-wrap: wrap;
 }
